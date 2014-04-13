@@ -45,6 +45,22 @@ body {
   position: relative; /* For scrollyspy */
 }
 
+table {
+    border: 1px solid #e1e1e8;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+th {
+    padding: 10px;
+    border: 1px solid #e1e1e8;
+}
+
+td {
+    padding: 10px;
+    border: 1px solid #e1e1e8;
+}
+
 /* Keep code small in tables on account of limited space */
 .table code {
   font-size: 13px;

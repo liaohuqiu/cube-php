@@ -19,35 +19,39 @@ exclude:            []
 
 # site information
 info:
-  site_name:        BinPack
+  site_name:        Cube-PHP
 
 meta:
-  description:      "Json like, small and most fast."
-  keywords:         "binpack, binary serialize, binary deserialize"
+  description:      "简单的php框架"
+  keywords:         "Cube PHP, 简单的php框架"
   author:           "liaohuqiu@gmail.com"
 
 # multiple language
-language_default:   'en'
+language_default:   'cn'
 
-languages:          ["en", "cn"]
+languages:          ["cn", "en"]
 
 # left navigation
 left_nav:
-  en:
-    title:          BinPack
+  cn:
+    title:          Cube PHP
     path:           /
-    items1:
-      - path:       /page1
-        title:      "Another page"
-      - path:       /page2
-        title:      "Yet another page"
+    items:
+      - path:       /code-style
+        title:      "规范和约定"
+      - path:       /router
+        title:      "路由"
+      - path:       /app
+        title:      "处理请求"
+      - path:       /db
+        title:      "数据库操作"
 
 # right navigation
 right_nav:
   - title:          Fork on Github
-    url:            https://github.com/binpack/binpack
+    url:            https://github.com/liaohuqiu/cube-php
 
 # analytics account information, remember to change this.
 analytics:
   google:
-    account:         UA-43024238-6
+    account:         UA-43024238-7
