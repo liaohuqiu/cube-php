@@ -1,0 +1,88 @@
+.form-sign {
+    max-width: 300px;
+    padding: 19px 29px 29px;
+    margin: 100px auto 20px;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+
+.table th {
+    text-align: center;
+}
+
+.bs-docs-nav {
+    margin-bottom: 30px;
+    border-bottom: 0;
+    background-color: #2A694E;
+    background-image: -webkit-linear-gradient(top, #185E37 0%, #2A694E 100%);
+    background-image: linear-gradient(to bottom, #185E37 0%, #2A694E 100%);
+}
+.bs-docs-nav .navbar-brand,
+.bs-docs-nav .navbar-nav > li > a {
+    color: #fff;
+    font-weight: 500;
+}
+.bs-docs-nav .navbar-nav > li > a:hover,
+.bs-docs-nav .navbar-nav > .active > a,
+.bs-docs-nav .navbar-nav > .active > a:hover {
+    color: #185E37;
+    background-color: #f9f9f9;
+}
+
+.bs-sidenav {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-shadow: 0 1px 0 #fff;
+    background-color: #f7f5fa;
+    border-radius: 5px;
+}
+
+/* All levels of nav */
+.bs-sidebar .nav > li > a {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #999;
+    padding: 4px 20px;
+}
+.bs-sidebar .nav > li > a:hover,
+.bs-sidebar .nav > li > a:focus ,
+.bs-sidebar .nav .nav> li > a:hover,
+.bs-sidebar .nav .nav> li > a:focus {
+    color: #185E37;
+    text-decoration: none;
+    background-color: #e5e3e9;
+}
+.bs-sidebar .nav .nav> li > a:hover,
+.bs-sidebar .nav .nav> li > a:focus {
+    padding-left: 29px;
+    border-left: 1px solid #185E37;
+    border-right: 1px solid #185E37;
+}
+
+/* Nav: second level (shown on .active) */
+.bs-sidebar .nav .nav {
+    padding-bottom: 10px;
+}
+.bs-sidebar .nav .nav > li > a {
+    padding-top:    2px;
+    padding-bottom: 2px;
+    padding-left: 30px;
+    font-size: 12px;
+    font-weight: normal;
+}
+.bs-sidebar .nav .nav > .active > a,
+.bs-sidebar .nav .nav > .active:hover > a,
+.bs-sidebar .nav .nav > .active:focus > a {
+    padding-top:    2px;
+    padding-bottom: 2px;
+    padding-left: 28px;
+    border-left: 2px solid #185E37;
+    border-right: 2px solid #185E37;
+}

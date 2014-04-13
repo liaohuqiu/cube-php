@@ -1,0 +1,11 @@
+2014-04-13 14:30:38	192.168.154.2	1347.63877	127.0.0.1_root_root_3306_at_admin selectDB: at_admin
+2014-04-13 14:30:38	192.168.154.2	1347.63877	127.0.0.1_root_root_3306_at_admin select * from s_at_admin_user where uid = '1' 
+2014-04-13 14:30:40	192.168.154.2	1349.49321	127.0.0.1_root_root_3306_at_admin selectDB: at_admin
+2014-04-13 14:30:40	192.168.154.2	1349.49321	127.0.0.1_root_root_3306_at_admin select * from s_at_admin_user where uid = '1' 
+2014-04-13 14:32:14	192.168.154.2	1348.41702	127.0.0.1_root_root_3306_at_admin selectDB: at_admin
+2014-04-13 14:32:14	192.168.154.2	1348.41702	127.0.0.1_root_root_3306_at_admin select * from s_at_admin_user where uid = '1' 
+2014-04-13 14:32:14	192.168.154.2	1348.41702	127.0.0.1_root_root_3306_at_engine_conf selectDB: at_engine_conf
+2014-04-13 14:32:14	192.168.154.2	1348.41702	127.0.0.1_root_root_3306_at_engine_conf select * from kind_setting where kind = 's_at_admin_user' 
+2014-04-13 14:32:14	192.168.154.2	1348.41702	127.0.0.1_root_root_3306_at_engine_conf select * from table_setting where kind = 's_at_admin_user' 
+2014-04-13 14:32:14	192.168.154.2	1348.41702	127.0.0.1_root_root_3306_at_engine_conf select * from server_setting where (sid in (1) or master_sid in (1)) and active = 1 
+2014-04-13 14:32:14	192.168.154.2	1348.41702	127.0.0.1_root_root_3306_at_admin select * from s_at_admin_user limit 1

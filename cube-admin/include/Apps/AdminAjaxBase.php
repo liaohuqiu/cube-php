@@ -1,0 +1,29 @@
+<?php
+/**
+ * Basic Page for Admin
+ *
+ * @author huqiu
+ */
+abstract class MApps_AdminAjaxBase extends MCore_Web_BaseAjaxApp
+{
+    protected function checkAuth()
+    {
+        $user = MAdmin_UserAuth::getUser();
+        if (!$user)
+        {
+            $this->onNoAuth();
+            return;
+        }
+        $this->user = $user;
+        $this->moduleMan = new MAdmin_Module($this->request->getPath());
+        if (!$this->moduleMan->checkAuth($user))
+        {
+            $this->onNoAuth();
+        }
+    }
+
+    private function onNoAuth()
+    {
+        throw new Exception('Unauthorized');
+    }
+}

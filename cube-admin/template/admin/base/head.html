@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{$header_data.title}}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Bootstrap core CSS -->
+<link href="{{$base_data.static_pre_path}}/bt3/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Documentation extras -->
+<!--[if lt IE 9]><script src="{{$base_data.static_pre_path}}/ie8-responsive-file-warning.js"></script><![endif]-->
+
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+  <script src="{{$base_data.static_pre_path}}/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="{{$base_data.static_pre_path}}/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- jquery -->
+<script src="{{$base_data.static_pre_path}}/jquery.min.js"></script>
+
+{{$header_data.css_html nofilter}}
+{{$header_data.js_html nofilter}}
+</head>
+<body>
+{{if $header_data.user}}
+<header class="navbar-static-top bs-docs-nav" role="banner">
+    <div class="container">
+        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+            <a href="{{$header_data.base_path}}" class="navbar-brand">Home</a>
+            <ul class="nav navbar-nav">
+                {{foreach $header_data.module_list as $key=>$item}}
+                {{if $item.is_current}}
+                <li class='active'>
+                {{else}}
+                <li>
+                {{/if}}
+                <a href="{{$item.url}}" title={{$item.des}}>{{$item.name}} </a>
+                </li>
+                {{/foreach}}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                <a href="javascript:void(0)">Srain</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+{{/if}}
+<div class="container">
+    <div class="row">
+        {{if $header_data.module_info}}
+        <div class="col-md-2">
+            <div class='bs-sidebar'>
+                <ul class="nav bs-sidenav">
+                    <li>
+                    {{foreach $header_data.module_info.units as $unit}}
+                    <a class='active'>{{$unit.name}}</a>
+                    <ul class='nav'>
+                        {{foreach $unit.list as $item}}
+                        {{if $item.is_current}}
+                        <li class='active'>
+                        {{else}} 
+                        <li>
+                        {{/if}}
+                        <a href="{{$item.url}}">{{$item.name}}</a>
+                        </li>
+                        {{/foreach}} 
+                    </ul>
+                    </li>
+                    {{/foreach}} 
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-10">
+        {{else}}
+        <div class="col-md-12">
+        {{/if}}

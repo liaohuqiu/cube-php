@@ -1,0 +1,123 @@
+<div>
+    {{if $_listPageInfo.title}}
+    <h4>
+        {{$_listPageInfo.title}}</h4>
+    {{/if}} 
+    {{if $page_data.conf.edit_info.can_create}} 
+    <div style="padding: 0px 0px 10px 0px"> <a href="{{$page_data.url_create_new}}">create new</a> </div>
+    {{/if}} 
+    <div class="row-fluid">
+        <div class="span8">
+            {{if $_listPageInfo.easySelectInfo}} {{include file='widget/list_header.html'}} {{/if}}
+        </div>
+        {{if $searchInfo}}
+        <div class="span4">
+            <form class="form-horizontal" action='{{$_listPageInfo.pageInfoUrl}}' method = 'POST'>
+                {{$searchInfo.desc}}：
+                <input class="input-mini" name='search_value' type='text' value='{{$searchInfo.searchValue}}' />
+                <input class="btn" type='submit' value='search' />
+                {{if $_listPageInfo.download}}
+                <input class="btn" id = "__j_button_download" type='button' value='download' />
+                {{/if}}
+            </div>
+        </form>
+        {{/if}}
+    </div>
+    {{if $page_data.rowList || $searchInfo || $_listPageInfo.download}}
+    <div class="page-info">
+    </div>
+    {{/if}}
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                {{if $page_data.conf.edit_info.can_delete}}
+                <th>
+                    delete
+                </th>
+                {{/if}} {{foreach $page_data.thead as $headKey => $item}}
+                <th>
+                    {{if $item.url_reverse_order}}
+                    <a href='{{$item.url_reverse_order}}' title="revers order">{{$item.name}}</a>
+                    {{else}}
+                    {{$item.name}}
+                    {{/if}}
+                </th>
+                {{/foreach}} {{if $page_data.conf.edit_info.can_edit}}
+                <th>
+                    edit
+                </th>
+                {{/if}} {{if $_listPageInfo.subTable}}
+                <th>
+                    sub list
+                </th>
+                {{/if}}
+            </tr>
+        </thead>
+        {{foreach $page_data.rowList as $row}}
+        <tr>
+            {{if $page_data.conf.edit_info.can_delete}}
+            <td>
+                <center>
+                    <a class="_j_del" href="{{$row.url_delete_info}}">delete</a>
+                </center>
+            </td>
+            {{/if}} {{foreach $page_data.thead as $headKey => $columnHeadInfo}}
+            <td>
+                <{{$columnHeadInfo.align}}>
+                {{if $columnHeadInfo.url_this_value}}
+                <a href='{{$columnHeadInfo.url_this_value}}&
+                    {{$headKey}}={{$row.dataItem.$headKey}}'>{{$row.dataItem.$headKey nofilter}}</a>
+                {{else}}
+                {{$row.dataItem.$headKey nofilter}}
+                {{/if}}
+                </{{$columnHeadInfo.align}}>
+    </td>
+    {{/foreach}} {{if $page_data.conf.edit_info.can_edit}}
+    <td>
+        <center>
+            <a href="{{$row.url_edit_info}}">edit</a>
+        </center>
+    </td>
+    {{/if}} {{if $_listPageInfo.subTable}}
+    <td>
+        <center>
+            {{if $row.subTableLink}} <a href="{{$row.subTableLink}}">detail</a> {{else}} none
+            {{/if}}
+        </center>
+    </td>
+    {{/if}}
+</tr>
+{{/foreach}}
+    </table>
+    {{if $page_data.rowList}}
+    <div class="page-info">
+    </div>
+    {{/if}}
+    <form id="form_num_perpage" action='{{$_listPageInfo.pageInfoUrl}}' method = 'POST'>
+        <input type='hidden' name='pageinfo_num_perpage' value='' id='__j_id_pageinfo_num_perpage'/>
+    </form>
+    <form id="form_download" action='{{$_listPageInfo.pageInfoUrl}}' method = 'POST'>
+        <input id = "__j_input_action_name" type='hidden' name='action_name' value='' />
+    </form>
+</div>
+<script>
+    var $ = window.jQuery;
+    //<!-- 删除警告 -->
+    $('._j_del').click(function(ev) {
+        if (!confirm('Are you sure to delete?')) {
+            ev.preventDefault();
+        }
+    });
+    //翻页提交
+    $('.__j_pageinfo_num_perpage').change(function(e) {
+        $("#__j_id_pageinfo_num_perpage").val(e.target.value);
+        $('#form_num_perpage').submit();
+    });
+    //下载
+    $('#__j_button_download').click(function(e) {
+        $("#__j_input_action_name").val("download");
+        $('#form_download').submit();
+        $("#__j_input_action_name").val("");
+    });
+</script>
+

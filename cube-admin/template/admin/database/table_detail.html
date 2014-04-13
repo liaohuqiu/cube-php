@@ -1,0 +1,36 @@
+<form class="form-horizontal" action="table-detail" method="post" name="add_form" onsubmit="return onSubmitForm();">
+    <div class="col-md-4">
+        <input class='form-control' name="kind" type="text" value='{{$kind}}' placeholder='table kind'>
+    </div>
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-primary">query table information</button>
+    </div>
+</form>
+<hr/>
+<div class='col-md-10'>
+    <p>{{$kind}}: {{$list|count}} table(s).</p>
+
+    {{foreach $list as $item}}
+    <p>
+    {{$item.tableName}}
+    In  {{$item['host']}},  sid(server id) is {{$item['sid']}}</p>
+    <p>Mysql Connection String(Maste):  {{$item.connectionStr}} -A</p>
+    {{/foreach}}
+
+    <pre>
+{{$sql nofilter}}
+    </pre>
+
+</div>
+<!-- 表单验证 -->
+<script>
+
+$('form[name="add_form"]').submit(function(ev) {
+
+    if($.trim(this['kind'].value) === '') {
+        alert('table kind can not be empty!');
+        ev.preventDefault();
+    }
+});
+
+</script>

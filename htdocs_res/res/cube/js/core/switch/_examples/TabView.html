@@ -1,0 +1,1092 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3c.org/TR/html4/strict.dtd">
+<html>
+    
+    <head>
+        <title>
+        </title>
+        <link href="http://s.kaixin001.com.cn/css/kxcommon-024090dd3.css" rel="stylesheet"
+        type="text/css" />
+        <link type="text/css" rel="stylesheet" href="http://s.kaixin001.com.cn/css/kxchat-0045e79b3.css"
+        />
+        <link href="http://s.kaixin001.com.cn/css/kxindex-010571fff.css" rel="stylesheet"
+        type="text/css" />
+        <link href="http://s.kaixin001.com.cn/css/comment2-0094d9f89.css" rel="stylesheet"
+        type="text/css" />
+        <link href="http://s.kaixin001.com.cn/css/user_card-00067aa6c.css" rel="stylesheet"
+        type="text/css" />
+        <style type="text/css">
+        </style>
+        <script src="/base/k.dev.js">
+        </script>
+    </head>
+    
+    <body>
+        <h1>
+            TabView测试
+        </h1>
+        <style type="text/css">
+            .srl{ margin: 20px auto 0; float:none;} .selected{ display:block} .unselected{
+            display:none} #console{position:absolute;width:200px;height:350px;right:50px;top:50px;border:
+            1px solid #888;padding:3px;} #console .cnt{background:#333;color:rgb(123,194,47);width:100%;height:100%;padding:3px;overflow-y:scroll;font-weight:bold;}
+            #console .cnt div{border-bottom: 1px dotted #fff;}
+        </style>
+        <div class="srl">
+            <div id="newsdivhead">
+                <ul class="action_b_list action_b_list2">
+                    <li class="dt_tab_on" id="tab_news">
+                        <span>
+                            全部动态
+                        </span>
+                    </li>
+                    <li class="dt_tab_off" id="tab_repaste">
+                        <span title="转帖">
+                            转帖
+                        </span>
+                    </li>
+                    <li class="dt_tab_off" id="tab_record">
+                        <span title="记录">
+                            记录
+                        </span>
+                    </li>
+                    <li class="dt_tab_off" id="tab_focus">
+                        <span title="特别好友">
+                            特别好友
+                        </span>
+                    </li>
+                    <li class="dt_tab_off" id="tab_star">
+                        <span title="机构名人的动态">
+                            机构主页
+                        </span>
+                    </li>
+                </ul>
+                <div class="setaction">
+                    <a class="ql2" title="设置">
+                        设置
+                    </a>
+                </div>
+            </div>
+            <div class="sub_aclist clearfix" id="newsdivhead2" style="display: block;">
+                <ul>
+                    <li class="first" id="tab2_news">
+                        <span>
+                            全部
+                        </span>
+                    </li>
+                    <li class="" id="tab2_photo">
+                        <a>
+                            照片
+                        </a>
+                    </li>
+                    <li class="" id="tab2_diary">
+                        <a>
+                            日记
+                        </a>
+                    </li>
+                    <li class="" id="tab2_vote">
+                        <a>
+                            投票
+                        </a>
+                    </li>
+                    <li id="tab2_comment">
+                        <a>
+                            对话
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div style="display: none;" class="sub_aclist clearfix" id="recordsnewsdivhead">
+                <ul>
+                    <li class="first" id="tab2_records0">
+                        全部
+                    </li>
+                    <li id="tab2_records1">
+                        <a>
+                            原创
+                        </a>
+                    </li>
+                    <li id="tab2_records2">
+                        <a>
+                            转发
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="setFocus dn" id="setFocus" style="display: none;">
+                <a class="sl2">
+                    设置特别好友
+                </a>
+            </div>
+            <div class="focus_know dn" id="maybeInterest" style="display: none;">
+            </div>
+            <div class="srr_rlm" id="newsdiv">
+                <div style="display: none;" id="mystarsdiv" class="orga_menu c">
+                    <a class="off1_curr" href="#">
+                        最新动态
+                    </a>
+                    <a class="off0" href="#">
+                        我加的
+                    </a>
+                    <a class="off1" href="#">
+                        好友加的
+                    </a>
+                    <a class="off1" href="#">
+                        最新加入
+                    </a>
+                    <a class="off1" onclick="javascript:loadStarNews('event');return false"
+                    href="#">
+                        最新活动
+                    </a>
+                </div>
+                <div style="border-bottom: medium none; display: none;" id="nonewsdiv"
+                class="gw1">
+                    <div class="gw14">
+                    </div>
+                    <div style="margin-left: 40px;*margin-left: 0px;color:#666;" class="gw12"
+                    id="nonewstipdiv">
+                        目前你还没有加任何机构或名人，
+                        <a href="/page/" class="sl">
+                            查找机构或名人主页&gt;&gt;
+                        </a>
+                    </div>
+                    <br class="c">
+                </div>
+                <div data-cursor="" id="divnews" class="ct selected">
+                    <div class="gw1">
+                        <div class="gw14 action_sp action_addfriend">
+                        </div>
+                        <div class="newscnt">
+                            <a title="徐启斌" class="sl" href="/home/?uid=43046">
+                                徐启斌
+                            </a>
+                            &nbsp;与&nbsp;
+                            <a title="徐黑龙" class="sl" href="/home/?uid=13482">
+                                徐黑龙
+                            </a>
+                            &nbsp;
+                            <a title="陈林飞" class="sl" href="/home/?uid=12814">
+                                陈林飞
+                            </a>
+                            &nbsp;成为好友
+                        </div>
+                        <div class="c">
+                        </div>
+                        <div class="b_func_bar c9">
+                            <span class="l">
+                                06月25日 16:41
+                            </span>
+                            <div class="c">
+                            </div>
+                        </div>
+                        <div class="c">
+                        </div>
+                    </div>
+                    <div class="gw1">
+                        <div class="gw14 action_sp action_addfriend">
+                        </div>
+                        <div class="newscnt">
+                            <a title="陈笑傲" class="sl" href="/home/?uid=52099">
+                                陈笑傲
+                            </a>
+                            &nbsp;与&nbsp;
+                            <a title="王振浩" class="sl" href="/home/?uid=42026">
+                                王振浩
+                            </a>
+                            &nbsp;成为好友
+                        </div>
+                        <div class="c">
+                        </div>
+                        <div class="b_func_bar c9">
+                            <span class="l">
+                                06月25日 14:43
+                            </span>
+                            <div class="c">
+                            </div>
+                        </div>
+                        <div class="c">
+                        </div>
+                    </div>
+                    <div class="gw1">
+                        <div class="gw14 action_sp action_addfriend">
+                        </div>
+                        <div class="newscnt">
+                            <a title="陈笑傲" class="sl" href="/home/?uid=52099">
+                                陈笑傲
+                            </a>
+                            &nbsp;与&nbsp;
+                            <a title="陈晓" class="sl" href="/home/?uid=53432">
+                                陈晓
+                            </a>
+                            &nbsp;成为好友
+                        </div>
+                        <div class="c">
+                        </div>
+                        <div class="b_func_bar c9">
+                            <span class="l">
+                                06月24日 20:30
+                            </span>
+                            <div class="c">
+                            </div>
+                        </div>
+                        <div class="c">
+                        </div>
+                    </div>
+                    <div class="gw1">
+                        <div class="gw14 action_sp action_addfriend">
+                        </div>
+                        <div class="newscnt">
+                            <a title="徐启斌" class="sl" href="/home/?uid=43046">
+                                徐启斌
+                            </a>
+                            &nbsp;与&nbsp;
+                            <a title="徐晓晓" class="sl" href="/home/?uid=13387">
+                                徐晓晓
+                            </a>
+                            &nbsp;
+                            <a title="王林" class="sl" href="/home/?uid=14266">
+                                王林
+                            </a>
+                            &nbsp;成为好友，成为&nbsp;
+                            <span style="z-index:99997" class="pore">
+                                <a id="friend_over_43046_1051_333316" class="sl" href="/home/?uid=1051">
+                                    东方卫视
+                                </a>
+                                <span class="flag_star">
+                                    <img align="absmiddle" src="http://img.kaixin008.com.cn/i/home/flag1_1.gif"
+                                    title="通过机构身份认证">
+                                </span>
+                                &nbsp;&nbsp;
+                                <div style="display:none;" class="friend_info" id="friend_info_43046_1051_333316">
+                                </div>
+                            </span>
+                            <span style="z-index:99996" class="pore">
+                                <a id="friend_over_43046_1221_907027" class="sl" href="/home/?uid=1221">
+                                    佘帅
+                                </a>
+                                <span class="flag_star">
+                                    <img align="absmiddle" src="http://img.kaixin008.com.cn/i/home/flag1_1.gif"
+                                    title="通过机构身份认证">
+                                </span>
+                                &nbsp;&nbsp;
+                                <div style="display:none;" class="friend_info" id="friend_info_43046_1221_907027">
+                                </div>
+                            </span>
+                            的粉丝
+                        </div>
+                        <div class="c">
+                        </div>
+                        <div class="b_func_bar c9">
+                            <span class="l">
+                                06月24日 17:11
+                            </span>
+                            <div class="c">
+                            </div>
+                        </div>
+                        <div class="c">
+                        </div>
+                    </div>
+                    <div class="gw1">
+                        <div class="gw14 action_sp action_addfriend">
+                        </div>
+                        <div class="newscnt">
+                            <a title="徐启斌" class="sl" href="/home/?uid=43046">
+                                徐启斌
+                            </a>
+                            &nbsp;与&nbsp;
+                            <a title="" class="sl" href="/home/?uid=13560">
+                            </a>
+                            &nbsp;
+                            <a title="王振浩" class="sl" href="/home/?uid=42026">
+                                王振浩
+                            </a>
+                            &nbsp;
+                            <a title="" class="sl" href="/home/?uid=12672">
+                            </a>
+                            &nbsp;成为好友
+                        </div>
+                        <div class="c">
+                        </div>
+                        <div class="b_func_bar c9">
+                            <span class="l">
+                                06月23日 21:52
+                            </span>
+                            <div class="c">
+                            </div>
+                        </div>
+                        <div class="c">
+                        </div>
+                    </div>
+                    <div class="gw1">
+                        <div class="gw14 action_sp action_addfriend">
+                        </div>
+                        <div class="newscnt">
+                            <a title="陈笑傲" class="sl" href="/home/?uid=52099">
+                                陈笑傲
+                            </a>
+                            &nbsp;与&nbsp;
+                            <a title="陈靠谱" class="sl" href="/home/?uid=53411">
+                                陈靠谱
+                            </a>
+                            &nbsp;成为好友
+                        </div>
+                        <div class="c">
+                        </div>
+                        <div class="b_func_bar c9">
+                            <span class="l">
+                                06月23日 10:56
+                            </span>
+                            <div class="c">
+                            </div>
+                        </div>
+                        <div class="c">
+                        </div>
+                    </div>
+                    <div class="gw1">
+                        <div class="gw14 action_sp action_repaste">
+                        </div>
+                        <div class="newscnt">
+                            <div>
+                                <a class="sl" href="/home/?uid=52099">
+                                    陈笑傲
+                                </a>
+                                转帖给大家：
+                            </div>
+                            <div>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="/!repaste/detail.php?uid=52099&amp;urpid=3020004033" title="testfafdafdasd"
+                                class="sl ">
+                                    testfafdafdasd
+                                </a>
+                                &nbsp;&nbsp;
+                                <span class="c6">
+                                    (“我的观点哦”)
+                                </span>
+                            </div>
+                        </div>
+                        <div class="c">
+                        </div>
+                        <div class="b_func_bar c9">
+                            <span class="l">
+                                06月21日 14:37
+                            </span>
+                            <div class="c">
+                            </div>
+                        </div>
+                        <div class="c">
+                        </div>
+                    </div>
+                    <div class="gw1">
+                        <div class="gw14 action_sp action_repaste">
+                        </div>
+                        <div class="newscnt">
+                            <div>
+                                <a class="sl" href="/home/?uid=53362">
+                                    陈三帅
+                                </a>
+                                转帖给大家：
+                            </div>
+                            <div>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="/!repaste/detail.php?uid=53362&amp;urpid=3020004027" title="testfafdafdasd"
+                                class="sl ">
+                                    testfafdafdasd
+                                </a>
+                                &nbsp;&nbsp;
+                                <span class="c6">
+                                    (“ddddddd”)
+                                </span>
+                            </div>
+                            <div>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <img src="http://img1.kaixin008.com.cn/i/sy_dt_yh1.gif">
+                                ddddddd
+                                <img src="http://img1.kaixin008.com.cn/i/sy_dt_yh2.gif">
+                            </div>
+                        </div>
+                        <div class="c">
+                        </div>
+                        <div class="b_func_bar c9">
+                            <span class="l">
+                                06月21日 14:22
+                            </span>
+                            <div class="c">
+                            </div>
+                        </div>
+                        <div class="c">
+                        </div>
+                    </div>
+                    <div class="gw1">
+                        <div class="gw14 action_sp action_records">
+                        </div>
+                        <div id="records_1371699101505826" class="newscnt">
+                            <div rid="1371699101505826" class="supcontent">
+                                <a class="sl atuser authlink" follow="0" friend="0" star="0" userid="52099"
+                                name="陈笑傲" href="/home/?uid=52099">
+                                    陈笑傲
+                                </a>
+                                ：
+                                <span class="pieceforward">
+                                    dddd大小
+                                    <b class="del">
+                                        <em>
+                                        </em>
+                                    </b>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="c">
+                        </div>
+                        <div class="b_func_bar c9">
+                            <span class="l">
+                                06月16日 00:09
+                            </span>
+                            <ul id="ch_548693174" class="kx_func_bar">
+                                <li>
+                                    <a targetid="cd_548693174" class="sl2 forward_trigger" href="">
+                                        转发
+                                    </a>
+                                </li>
+                                <li class="pipeline pipeline_sp">
+                                </li>
+                                <li>
+                                    <a conflict="forwardBox forwardtip" class="sl2" href="/records/" rid="548693174"
+                                    name="comment">
+                                        4条评论
+                                    </a>
+                                </li>
+                                <li class="pipeline pipeline_sp">
+                                </li>
+                                <li>
+                                    <a class="sl2" href="/records/" name="zan">
+                                        赞
+                                    </a>
+                                </li>
+                                <li class="pipeline pipeline_sp del">
+                                </li>
+                                <li class="del">
+                                    <a name="del" objid="1371699101505826" class="sl2" href="#">
+                                        删除
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="c">
+                            </div>
+                            <div data-comment="%7B%22rid%22%3A548693174%2C%22vuid%22%3A53360%2C%22owneruid%22%3A%2252099%22%2C%22type%22%3A%221018%22%2C%22id%22%3A1371699101505826%2C%22comment_right%22%3A1%2C%22comtitle%22%3A%22%22%2C%22oreal_name%22%3A%22%5Cu9648%5Cu7b11%5Cu50b2%22%2C%22vlogo50%22%3A%22http%3A%5C%2F%5C%2Fimg.kaixin008.com.cn%5C%2Fi%5C%2F50_0_0.gif%22%2C%22comment_num%22%3A%224%5Cu6761%22%2C%22zandata%22%3A%22%5B0%2C0%2C%5B%5D%2C%5B%5D%5D%22%2C%22autofocus%22%3A0%2C%22news%22%3A1%2C%22expand%22%3A0%2C%22link%22%3A%22%5C%2Frecords%5C%2F%22%2C%22isfriend%22%3A3%2C%22isstar%22%3A0%2C%22forward_right%22%3A1%7D"
+                            data-auto-expand="0" id="cd_548693174">
+                            </div>
+                            <div class="c">
+                            </div>
+                        </div>
+                        <div class="c">
+                        </div>
+                    </div>
+                </div>
+                <div class="ct unselected">
+                    转帖
+                </div>
+                <div class="ct unselected">
+                    记录
+                </div>
+                <div class="ct unselected">
+                    特别好友
+                </div>
+                <div class="ct unselected">
+                    机构
+                </div>
+                <div class="fsmore dn" id="loadFocusNewsMore" style="display: none;">
+                    <a>
+                        更多动态
+                        <img align="absmiddle" src="http://img1.kaixin008.com.cn/i/fsmore.gif">
+                    </a>
+                    <p>
+                        读取中&nbsp;&nbsp;
+                        <img src="http://img1.kaixin008.com.cn/i/home/dt_loading_nobg.gif">
+                    </p>
+                </div>
+                <div style="display:none;" class="tar mt5" id="divnonewshref">
+                    <a href="/!repaste/random.php?viewtype=hotrp" class="sl">
+                        看看热门转帖&gt;&gt;
+                    </a>
+                </div>
+                <div style="" class="tar mt5" id="divallnews">
+                    <a href="/home/news.php?goto=9" class="sl">
+                        全部好友动态&gt;&gt;
+                    </a>
+                </div>
+            </div>
+            <input type="hidden" value="9" id="_kxj_newscount">
+            <div class="h75">
+            </div>
+            <div style="left:400px;" class="dellmtTck lmtTck" id="lmtnewsBox">
+                <div class="bg">
+                </div>
+                <div class="content">
+                    <span title="关闭" class="close">
+                    </span>
+                    <div class="lmttxt">
+                        <p class="mb20">
+                            确定屏蔽此组件动态吗？屏蔽后将不再收到该组件的动态。
+                        </p>
+                        <p>
+                            你也可以在首页动态右上的设置中更改屏蔽，如下：
+                        </p>
+                        <p class="mt10">
+                            <img src="http://img1.kaixin008.com.cn/i/epset.png">
+                        </p>
+                    </div>
+                    <div class="btnL">
+                        <span class="rbs1">
+                            <input type="button" style="width:50px;" class="rb1-12" value="确定" name="">
+                        </span>
+                        <span class="w6 l">
+                        </span>
+                        <span class="gbs1">
+                            <input type="button" style="width:50px;" class="gb1-12" value="取消" name="">
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div style="display: block; height: 0pt; overflow: hidden; visibility: hidden; margin: 0pt; padding: 0pt; border: medium none;"
+            id="extraObjDiv_picZoom">
+            </div>
+        </div>
+        <div id="calendar_box" style="position:absolute; top: 50px; left: 50px;">
+            <div data-time="2011-07-01" id="calendarTimer">
+                <p>
+                    2011年07月01日&nbsp;星期五
+                </p>
+            </div>
+            <div id="calendarApp">
+                <div class="remind_nav">
+                    <div style="height:5px;width:2px;line-height:5px;">
+                    </div>
+                    <a id="a_calendar_remind" href="javascript:tab_calendar('tab_calendar_remind');"
+                    class="curr_remind">
+                        生日
+                    </a>
+                    <a id="a_calendar_weather" href="javascript:tab_calendar('tab_calendar_weather');"
+                    class="sl">
+                        天气
+                    </a>
+                    <a id="a_calendar_activity" href="javascript:tab_calendar('tab_calendar_activity');"
+                    class="sl">
+                        活动
+                    </a>
+                    <a id="a_calendar_calendar" href="javascript:tab_calendar('tab_calendar_calendar');"
+                    class="sl wnl">
+                        万年历
+                    </a>
+                    <div class="c">
+                    </div>
+                </div>
+                <div id="tab_calendar_remind" class="cnt" style="display: block; ">
+                    <div class="tac c9 mt10" style="padding-bottom:15px;">
+                        这几天没有好友过生日
+                    </div>
+                </div>
+                <div id="tab_calendar_weather" class="cnt" style="display: none; ">
+                    <div class="city">
+                        <h4 id="tab_calendar_city">
+                            <span style="margin-right:7px;" id="span_curr_city" class="curr_city"
+                            title="北京">
+                                北京
+                            </span>
+                        </h4>
+                        <div class="city_set">
+                            <img id="open_settings" src="http://img1.kaixin001.com.cn/i3/calendar2/close1.gif"
+                            title="城市订制" onmouseover="this.src='http://img1.kaixin001.com.cn/i3/calendar2/close2.gif'"
+                            onmouseout="this.src='http://img1.kaixin001.com.cn/i3/calendar2/close1.gif'"
+                            style="cursor:pointer;" onclick="s('open_box');$('city_input').value='输入城市名';if(calendar_city_list.length==0){refreshCalendarCityBox('0');}else{refreshCalendarCityBox('');}">
+                            <div class="tc_city" style="display: none; " id="open_box">
+                                <img class="calendar2_abs_close" onclick="javascript:h('open_box');" src="http://img1.kaixin001.com.cn/i3/calendar2/open2.gif"
+                                style="cursor:pointer;">
+                                <div class="tc_city_top">
+                                </div>
+                                <span class="it_s ml10">
+                                    <input id="city_input" type="text" value="输入城市名" style="width: 210px;"
+                                    onblur="this.className='it1';if(this.value==''){this.value='输入城市名';}" onfocus="this.className='it2';"
+                                    class="it1" name="" onkeyup="javascript:refreshCalendarCityBox(this.value);"
+                                    onclick="javascript:clickCityInput(this);" onkeydown="javascript:onKeyDownCityInput(event);">
+                                </span>
+                                <ul id="calendar_city" style="cursor: move; ">
+                                    <div id="Drags0">
+                                        <div id="DragContainer_Calendar2" dropobj="0">
+                                            <li id="1" dragclass="calendar2_bg_c" onmouseout="this.className='calendar2_bg_f';"
+                                            onmouseover="this.className='calendar2_bg_c';" class="calendar2_bg_f" style="mouse:pointer;"
+                                            dragobj="0">
+                                                <a class="c3" href="javascript:clickTabCalendarCity(1);">
+                                                    北京
+                                                </a>
+                                                <img title="删除订制" class="dele" src="http://img1.kaixin001.com.cn/i3/calendar2/icon_dele.gif"
+                                                style="cursor:pointer;" onclick="javascript:deleteCalendarCity(1);">
+                                            </li>
+                                        </div>
+                                    </div>
+                                </ul>
+                                <div class="r mr10 mt5">
+                                    <div class="gbs3">
+                                        <input type="button" onclick="h('open_box');" style="width: 52px;" onmouseout="this.className='gb3_1';"
+                                        onmouseover="this.className='gb3_2';" class="gb3_1" title="关闭" value="关闭"
+                                        id="btn_fb">
+                                    </div>
+                                    <div class="c">
+                                    </div>
+                                </div>
+                                <div class="c">
+                                </div>
+                                <div class="tc_city_bott">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="c">
+                        </div>
+                    </div>
+                    <ul id="weather" style="">
+                        <li>
+                            <span>
+                                今天
+                            </span>
+                            <p align="center">
+                                <img src="http://img.kaixin001.com.cn/i3/calendar2/weather/004.gif" title="阵雨转中雨">
+                                <img src="http://img.kaixin001.com.cn/i3/calendar2/weather/009.gif" title="阵雨转中雨">
+                            </p>
+                            <i>
+                                25℃ ～ 27℃
+                            </i>
+                            <br>
+                        </li>
+                        <li>
+                            <span>
+                                明天
+                            </span>
+                            <p align="center">
+                                <img src="http://img.kaixin001.com.cn/i3/calendar2/weather/008.gif" title="小雨转阴">
+                                <img src="http://img.kaixin001.com.cn/i3/calendar2/weather/003.gif" title="小雨转阴">
+                            </p>
+                            <i>
+                                20℃ ～ 32℃
+                            </i>
+                            <br>
+                        </li>
+                        <li>
+                            <span>
+                                后天
+                            </span>
+                            <p align="center">
+                                <img src="http://img.kaixin001.com.cn/i3/calendar2/weather/003.gif" title="阴转晴">
+                                <img src="http://img.kaixin001.com.cn/i3/calendar2/weather/001.gif" title="阴转晴">
+                            </p>
+                            <i>
+                                21℃ ～ 34℃
+                            </i>
+                            <br>
+                        </li>
+                        <li>
+                            <span>
+                                7月4日
+                            </span>
+                            <p align="center">
+                                <img src="http://img.kaixin001.com.cn/i3/calendar2/weather/002.gif" title="多云转阴">
+                                <img src="http://img.kaixin001.com.cn/i3/calendar2/weather/003.gif" title="多云转阴">
+                            </p>
+                            <i>
+                                24℃ ～ 32℃
+                            </i>
+                            <br>
+                        </li>
+                        <li>
+                            <span>
+                                7月5日
+                            </span>
+                            <p align="center">
+                                <img src="http://img.kaixin001.com.cn/i3/calendar2/weather/004.gif" title="阵雨转雷阵雨">
+                                <img src="http://img.kaixin001.com.cn/i3/calendar2/weather/005.gif" title="阵雨转雷阵雨">
+                            </p>
+                            <i>
+                                25℃ ～ 29℃
+                            </i>
+                            <br>
+                        </li>
+                        <li>
+                            <span>
+                                7月6日
+                            </span>
+                            <p align="center">
+                                <img src="http://img.kaixin001.com.cn/i3/calendar2/weather/002.gif" title="多云转晴">
+                                <img src="http://img.kaixin001.com.cn/i3/calendar2/weather/001.gif" title="多云转晴">
+                            </p>
+                            <i>
+                                20℃ ～ 33℃
+                            </i>
+                            <br>
+                        </li>
+                        <li>
+                            <span>
+                                7月7日
+                            </span>
+                            <p align="center">
+                                <img src="http://img.kaixin001.com.cn/i3/calendar2/weather/002.gif" title="多云转晴">
+                                <img src="http://img.kaixin001.com.cn/i3/calendar2/weather/001.gif" title="多云转晴">
+                            </p>
+                            <i>
+                                21℃ ～ 34℃
+                            </i>
+                            <br>
+                        </li>
+                    </ul>
+                    <!--<p style="display:none;color:#999;text-align:center;" id="nocity">你还没有订制城市</p>-->
+                    <div class="c">
+                    </div>
+                </div>
+                <div id="tab_calendar_activity" class="cnt" style="display: none; ">
+                    <div id="tab_calendar_activity_list" style="display: none; ">
+                    </div>
+                    <div id="tab_calendar_addactivity" style="" actstartdate="2011-07-01"
+                    actstarttime="19">
+                        <div class="addactivity">
+                            <form id="activityform" name="activityform" method="post" action="/!activity/index_new_submit.php"
+                            onsubmit="return checkActivitySubmit(this);">
+                                <input type="hidden" value="" name="actStarttime">
+                                <input type="hidden" value="1" name="actJoinType">
+                                <input type="hidden" value="" name="invitedUsers">
+                                <div class="c9 act_first">
+                                    <a class="sl gopage" href="/!activity/list_new.php">
+                                        查看热门活动&gt;&gt;
+                                    </a>
+                                    最近没有好友活动
+                                </div>
+                                <div id="plan_activity" class="plan_activity">
+                                    <div class="act_l">
+                                        <span class="it_s">
+                                            <input type="text" id="acttitle" name="actTitle" onblur="this.className='it1';if(this.value==''){this.value=this.defaultValue;};"
+                                            onfocus="this.className='it2';if(this.value==this.defaultValue){this.value='';};fold_act();"
+                                            class="it1" style="width:200px;" value="你有什么计划吗？" maxlength="40">
+                                        </span>
+                                    </div>
+                                </div>
+                                <div id="fold_activity" class="fold_activity">
+                                    <div class="act_l">
+                                        <div id="calstartdate" class="it_s l">
+                                            <i class="l">
+                                                <input type="text" id="actstartdate" name="actstartdate" style="width:103px; float:left;"
+                                                value="2011-07-01" onblur="this.className='it1';" onfocus="this.className='it2';"
+                                                class="it1" readonly="">
+                                            </i>
+                                            <div class="act_calendar l">
+                                                <img title="选择日期" class="imgpo" src="http://img1.kaixin001.com.cn/i3/activity/ico_date.gif"
+                                                style="cursor:pointer">
+                                            </div>
+                                        </div>
+                                        <div class="act_time l ml5">
+                                            <select id="actstarttime" name="actstarttime" style="width:70px;">
+                                                <option value="00:00">
+                                                    0:00
+                                                </option>
+                                                <option value="01:00">
+                                                    1:00
+                                                </option>
+                                                <option value="02:00">
+                                                    2:00
+                                                </option>
+                                                <option value="03:00">
+                                                    3:00
+                                                </option>
+                                                <option value="04:00">
+                                                    4:00
+                                                </option>
+                                                <option value="05:00">
+                                                    5:00
+                                                </option>
+                                                <option value="06:00">
+                                                    6:00
+                                                </option>
+                                                <option value="07:00">
+                                                    7:00
+                                                </option>
+                                                <option value="08:00">
+                                                    8:00
+                                                </option>
+                                                <option value="09:00">
+                                                    9:00
+                                                </option>
+                                                <option value="10:00">
+                                                    10:00
+                                                </option>
+                                                <option value="11:00">
+                                                    11:00
+                                                </option>
+                                                <option value="12:00">
+                                                    12:00
+                                                </option>
+                                                <option value="13:00">
+                                                    13:00
+                                                </option>
+                                                <option value="14:00">
+                                                    14:00
+                                                </option>
+                                                <option value="15:00">
+                                                    15:00
+                                                </option>
+                                                <option value="16:00">
+                                                    16:00
+                                                </option>
+                                                <option value="17:00">
+                                                    17:00
+                                                </option>
+                                                <option value="18:00">
+                                                    18:00
+                                                </option>
+                                                <option value="19:00" selected="">
+                                                    19:00
+                                                </option>
+                                                <option value="20:00">
+                                                    20:00
+                                                </option>
+                                                <option value="21:00">
+                                                    21:00
+                                                </option>
+                                                <option value="22:00">
+                                                    22:00
+                                                </option>
+                                                <option value="23:00">
+                                                    23:00
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="c">
+                                        </div>
+                                    </div>
+                                    <div class="act_l">
+                                        <span class="it_s">
+                                            <input id="actlocation" name="actLocation" type="text" onblur="this.className='it1';if(this.value==''){this.value=this.defaultValue;};"
+                                            onfocus="this.className='it2';if(this.value==this.defaultValue){this.value='';};"
+                                            class="it1" style="width: 200px;" value="什么地方？" maxlength="20">
+                                        </span>
+                                    </div>
+                                    <div class="act_l">
+                                        <div id="supersuggest_container" style="position: relative; ">
+                                            <div class="l" style="position:relative;">
+                                                <div class="it_s" style="width: 208px;">
+                                                    <div class="it1">
+                                                        <div id="supersuggestsuperinput" class="fsg21" style="cursor: text; width: 178px; height: 23px; ">
+                                                            &nbsp;
+                                                        </div>
+                                                        <div class="fsg22">
+                                                            <div id="supersuggestxx_sh" onclick="javascript:void(0);">
+                                                                <img class="cp" alt="选择好友" onmouseout="this.src='http://img1.kaixin001.com.cn/i/xx_xx1.gif';"
+                                                                onmouseover="this.src='http://img1.kaixin001.com.cn/i/xx_xx2.gif';" src="http://img1.kaixin001.com.cn/i/xx_xx1.gif">
+                                                            </div>
+                                                        </div>
+                                                        <div class="c">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="c">
+                                            </div>
+                                            <!--suggestion图层-->
+                                            <div id="supersuggestsug_area" class="sug_area" style="width: 310px; display: none;">
+                                                <div class="sug_box">
+                                                    <div class="sug_nav">
+                                                        <ul id="supersuggestviewpanels" class="snav">
+                                                            <li id="supersuggestviewpanel_all" class="s_on cp" style="position:relative;">
+                                                                <a href="javascript:void(0);" class="sl2" title="全部好友">
+                                                                    <span id="supersuggestviewgroup_name">
+                                                                        全部好友
+                                                                    </span>
+                                                                    &nbsp;
+                                                                    <img id="toogleArrowBtn" src="http://img1.kaixin001.com.cn/i2/xiasanjiao.gif"
+                                                                    align="absmiddle" style="position:absolute;top:9px;right:4px;">
+                                                                </a>
+                                                            </li>
+                                                            <li id="supersuggestviewpanel_frequent" class="s_off">
+                                                                <a href="javascript:void(0);" class="sl2">
+                                                                    常用联系人
+                                                                </a>
+                                                            </li>
+                                                            <li id="supersuggestviewpanel_recent" class="s_off">
+                                                                <a href="javascript:void(0);" class="sl2">
+                                                                    最近联系人
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="close">
+                                                            <a href="javascript:void(0);">
+                                                                <img src="http://img1.kaixin001.com.cn/i2/black_del.gif" title="关闭">
+                                                            </a>
+                                                        </div>
+                                                        <div id="supersuggestviewsug_group" class="sug_group" style="display:none;">
+                                                        </div>
+                                                    </div>
+                                                    <div id="supersuggestviewsug_cont" class="sug_cont">
+                                                    </div>
+                                                    <div class="but_area">
+                                                        <div class="all_slc" style="width:200px;">
+                                                            <div class="l" id="supersuggestviewdiv_select_all" style="display:none;margin-left:4px;*margin-top:2px;padding-left:5px;*margin-right:-8px;">
+                                                                <a href="#" class="sl" id="supersuggestviewselall">
+                                                                    全选
+                                                                </a>
+                                                                <a href="#" class="sl" id="supersuggestviewunselall">
+                                                                    取消
+                                                                </a>
+                                                                <a href="#" class="sl ml5" id="supersuggestviewclear" style="display:none;">
+                                                                    清空
+                                                                </a>
+                                                            </div>
+                                                            <div id="supersuggestviewdiv_frequent_friends_suggestion" class="l ml10"
+                                                            style="position:relative; display:none;">
+                                                                <div style="position: absolute; z-index:10;" id="supersuggestviewinner_friend_suggestion">
+                                                                </div>
+                                                                <div class="flw5">
+                                                                    &nbsp;
+                                                                </div>
+                                                                <div style="position:absolute; left:95px;*left:100px; z-index:1;" class="gbs1">
+                                                                    <input type="button" class="gb3" style="height:23px;line-height:20px;padding:0 3px 3px 3px;"
+                                                                    title="添加" value="添加" id="supersuggestviewbtn_fb">
+                                                                </div>
+                                                                <div class="c">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flw5">
+                                                            &nbsp;
+                                                        </div>
+                                                        <div class="gbs1" id="supersuggestviewdiv_btn_confirm" style="visibility:hidden;float:right;">
+                                                            <input type="button" style="height:23px;line-height:20px;padding:0 3px 3px 3px;"
+                                                            class="gb3" title="确定" value="确定" id="supersuggestviewbtn_qd">
+                                                        </div>
+                                                        <div class="c">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--suggestion图层END-->
+                                        </div>
+                                        <div class="c">
+                                        </div>
+                                    </div>
+                                    <div class="act_last">
+                                        <span class="rbs1">
+                                            <input type="submit" onmouseout="this.className='rb1-12';" onmouseover="this.className='rb2-12';"
+                                            class="rb1-12" title="创建" value="创建" style="width:49px;">
+                                        </span>
+                                        <a class="sl2 add_detail l" href="/!activity/new.php">
+                                            添加详情
+                                        </a>
+                                        <div class="c">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab_calendar_calendar" class="cnt" style="display: none; ">
+                    <div class="city">
+                        <h4 class="c3">
+                            2011年07月01日 星期五
+                        </h4>
+                        <a class="r mr10 sl" href="/!lucky/">
+                            今日运势
+                        </a>
+                        <br>
+                    </div>
+                    <ul id="wnl_ul">
+                        <li>
+                            农历 六月初一
+                            <br>
+                            辛卯年[兔年] 甲午月 丁巳日
+                        </li>
+                        <li>
+                            <span class="c_green">
+                                宜：
+                            </span>
+                            <p class="c_green">
+                                修造 动土 起基 安门 安床 栽种 筑堤 补垣 造畜稠
+                            </p>
+                            <br>
+                            <span class="c_red">
+                                忌：
+                            </span>
+                            <p class="c_red">
+                                嫁娶 掘井 入宅 移徙 出火 出行 行丧 安葬 开光 理发 进人口
+                            </p>
+                            <br>
+                        </li>
+                        <li>
+                            香港回归纪念日 中共诞辰 世界建筑日
+                        </li>
+                    </ul>
+                    <div class="c" style="height:1px;line-height:1px;*margin-top:-6px;">
+                    </div>
+                </div>
+                <div id="loadingActStatic" class="activity_loading" style="text-align: center; display: none; ">
+                    <span id="loadingPic" class="load_i">
+                        <img src="http://img1.kaixin001.com.cn/i/home/dt_loading.gif">
+                    </span>
+                </div>
+                <div class="c">
+                </div>
+            </div>
+            <div class="calendar_b">
+            </div>
+        </div>
+        <div id="console">
+            <div id="consoleContent" class="cnt">
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        K.Resource.setBasePath('http://localhost/');
+        K.Resource.addResourceMap({
+            'jQuery.js': 'core/jQuery.js.gb',
+            'Panel.js': 'core/panel/panel.js.gb',
+            'Mask.js': 'core/panel/panel.js.gb',
+            'Dialog.js': 'core/panel/panel.js.gb',
+            'Window.js': 'core/panel/panel.js.gb',
+            'TabView.js': 'core/switch/TabView.js.gb'
+        });
+
+        K.App('DialogTest', ['TabView', 'jQuery']).define({
+            main: function() {
+                var TabView = this.require('TabView'),
+                $ = this.require('jQuery');
+                var tv = new TabView({
+                    tabs: '.action_b_list li',
+                    contents: '#newsdiv .ct',
+                    TAB_SELECTED_CLASS: 'dt_tab_on',
+                    TAB_UNSELECTED_CLASS: 'dt_tab_off'
+                });
+
+                function log(log) {
+                    $('<div>' + log + '</div>').appendTo($('#console .cnt'));
+                    $('#console .cnt').scrollTop(10000);
+                }
+
+                tv.on('beforeswitch',
+                function(e) {
+                    log('beforeswitch from:' + e.from.tab.text() + ' to:' + e.to.tab.text());
+                });
+                tv.on('afterswitch',
+                function(e) {
+                    log('afterswitch from:' + e.from.tab.text() + ' to:' + e.to.tab.text());
+                });
+
+				 var tv2 = new TabView({
+                    tabs: '#calendarApp .remind_nav a',
+                    contents: '#calendarApp .cnt',
+                    TAB_SELECTED_CLASS: 'curr_remind',
+                    TAB_UNSELECTED_CLASS: '',
+                    //设置触发事件
+                    events: ['mouseover'],
+                    //更换behavior
+                    behavior: TabView.Behavior.FadeIn
+                });
+
+            }
+        });
+        //]]>
+        
+    </script>
+
+</html>
