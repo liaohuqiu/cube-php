@@ -1,5 +1,5 @@
 <?php
 $data = array();
-$data['static_pre_path'] = 'http://s.adc.proxy.taobao.org/static';
-$data['res_pre_path'] = 'http://s.adc.proxy.taobao.org/res';
+$data['static_pre_path'] = 'http://s.test.com/static';
+$data['res_pre_path'] = 'http://s.test.com/res';
 return $data;
