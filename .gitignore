@@ -1,7 +1,8 @@
-# Ignore docs files
-_gh_pages
-_site
-.ruby-version
+writable/log/
+writable/smarty/
+auto-gen*
+app/lock.*
+app/log.*
 
 # Numerous always-ignore extensions
 *.diff
