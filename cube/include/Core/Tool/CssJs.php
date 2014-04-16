@@ -112,7 +112,7 @@ class MCore_Tool_CssJs
 
     public static function getResPrePath()
     {
-        return MCore_Tool_Conf::getDataConfigByEnv('mix', 'res_pre_path');
+        return 'http://' . MCore_Tool_Conf::getDataConfigByEnv('mix', 'static_res_host') . '/res';
     }
 
     public static function getResList()

@@ -21,8 +21,8 @@ K.App('admin/ATableList', ['core/ajax/Request']).define(function(require) {
                     var that = this;
                     request.setData(data).setHandler(function(ret) {
                         a_link.parents('tr').remove();
-                    }}).send();
-                });
+                    }).send();
+                }});
             });
         },
 

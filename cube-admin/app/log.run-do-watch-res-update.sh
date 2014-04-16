@@ -21,3 +21,15 @@ update res info
 [2014-04-16 15:55:39] writeDataConfig: auto-gen-res-info
 [2014-04-16 15:55:39] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
 mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/cube-admin/app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/cube-admin/app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-04-16 17:17:58] writeDataConfig: auto-gen-res-info
+[2014-04-16 17:17:58] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/cube-admin/app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/cube-admin/app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-04-16 17:18:16] writeDataConfig: auto-gen-res-info
+[2014-04-16 17:18:16] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js

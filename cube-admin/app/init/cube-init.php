@@ -64,6 +64,9 @@ class App extends MCore_Cli_ConsoleBase
         $admin = MCore_Tool_Conf::getDataConfigByEnv('engine', 'admin_init_user_name');
         $pwd = MCore_Tool_Conf::getDataConfigByEnv('engine', 'admin_init_user_pwd');
         MAdmin_UserRaw::create($admin, $pwd, array(), 1);
+
+        $msg = "Admin access account: $admin, password is $pwd, please do remember change to password";
+        $this->printInfo($msg);
     }
 }
 $app = new App();
