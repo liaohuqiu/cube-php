@@ -103,6 +103,7 @@ class Cube
     }
 }
 
+// open this if you want
 // register_shutdown_function( "fatal_handler" );
 function fatal_handler()
 {

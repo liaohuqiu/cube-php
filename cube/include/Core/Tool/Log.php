@@ -27,11 +27,11 @@ class MCore_Tool_Log
         $level = 'dev' && isset($argv[2]) && $level = $argv[2];
         $ip = '' && isset($argv[3]) && $ip = $argv[3];
 
-        if(MCore_Tool_Env::isProd() && $level != 'prod')
+        if (MCore_Tool_Env::isProd() && $level != 'prod')
         {
             return;
         }
-        if($ip && self::getIp() != $ip)
+        if ($ip && self::getIp() != $ip)
         {
             return;
         }

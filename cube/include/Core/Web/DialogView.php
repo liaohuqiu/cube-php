@@ -123,7 +123,7 @@ class MCore_Web_DialogView
     public function processException($ex)
     {
         $msg = '<pre>' . $ex->getMessage() .'</pre>';
-        if (MCore_Tool_Env::isTest())
+        if (!MCore_Tool_Env::isProd())
         {
             $msg .= '<pre>' . $ex->getTraceAsString() . '</pre>';
         }

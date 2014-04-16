@@ -64,7 +64,6 @@ class MCore_Data_LocalFile
         fclose($file);
         $strInfo = @unpack("C2chars", $bin);
         $extCode = intval($strInfo['chars1'] . $strInfo['chars2']);
-        MCore_Tool_Log::addDebugLog('localfile', $extCode);
         switch ($extCode)
         {
         case 3533:
@@ -110,7 +109,6 @@ class MCore_Data_LocalFile
             $fileType = 'swf';
             break;
         default:
-            MCore_Tool_Log::addDebugLog('localfile', $extCode);
             $fileType = 'unknown';
         }
         return $fileType;
