@@ -21,7 +21,7 @@ class MApps_Admin_Database_TableDeleteAjax extends MApps_AdminAjaxBase
 
     private function _deleteSetting($kind)
     {
-        $dataOne = MEngine_EngineDB::getEngineDataOne();
+        $dataOne = MEngine_EngineDB::create();
         $dataOne->delete('kind_setting', array('kind' => $kind));
         $dataOne->delete('table_setting', array('kind' => $kind));
     }

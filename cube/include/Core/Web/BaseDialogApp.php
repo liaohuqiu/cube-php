@@ -3,37 +3,28 @@
  *
  * @author      huqiu
  */
-class MCore_Web_App_DialogBase extends MCore_Web_App_AppBase
+abstract class MCore_Web_BaseDialogApp extends MCore_Web_BaseApp
 {
-    protected $dialog;
-    private $_smartyData = array();
-    private $_smartyTemplate;
+    private $dialogView;
 
     protected function init()
     {
-        parent::init();
-        $this->dialog = new MCore_Web_View_Dialog();
+        $this->dialogView = new MCore_Web_DialogView();
     }
 
-    public function setBody($data, $smartyTemplate)
+    protected function output()
     {
-        $data['uniqueId'] = $this->dialog->getId();
-        foreach ($data as $key => $value)
-        {
-            $this->getInnerView()->setPageData($key, $value);
-        }
-        $body = $this->getInnerView()->fetch($smartyTemplate);
-        $this->dialog->setBody($body);
+        $this->dialogView->show();
     }
 
-    protected function outputBody()
+    protected function getDialogView()
     {
-        $this->dialog->show();
+        return $this->dialogView;
     }
 
-    protected function showError($ex)
+    protected function processException($ex)
     {
-        $this->dialog->showError($ex);
+        $this->dialog->processException($ex);
     }
 }
 ?>

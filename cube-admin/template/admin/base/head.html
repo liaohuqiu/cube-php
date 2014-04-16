@@ -43,40 +43,46 @@
                 {{/foreach}}
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                <a href="javascript:void(0)">Srain</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+                <li class="dropdown">
+                <a class='' data-toggle="dropdown" href="javascript:void(0)">{{$header_data.user.email}} <span class="caret"></span></a>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation"><a id="_j_btn_change_pwd" role="menuitem" tabindex="-1" href="javascript:void(0)">Change Pwd</a></li>
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation"><a id="_j_btn_logout" role="menuitem" tabindex="-1" href="javascript:void(0)">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>
 </header>
 {{/if}}
 <div class="container">
-    <div class="row">
-        {{if $header_data.module_info}}
-        <div class="col-md-2">
-            <div class='bs-sidebar'>
-                <ul class="nav bs-sidenav">
+<div class="row">
+    {{if $header_data.module_info}}
+    <div class="col-md-2">
+        <div class='bs-sidebar'>
+            <ul class="nav bs-sidenav">
+                <li>
+                {{foreach $header_data.module_info.units as $unit}}
+                <a class='active'>{{$unit.name}}</a>
+                <ul class='nav'>
+                    {{foreach $unit.list as $item}}
+                    {{if $item.is_current}}
+                    <li class='active'>
+                    {{else}} 
                     <li>
-                    {{foreach $header_data.module_info.units as $unit}}
-                    <a class='active'>{{$unit.name}}</a>
-                    <ul class='nav'>
-                        {{foreach $unit.list as $item}}
-                        {{if $item.is_current}}
-                        <li class='active'>
-                        {{else}} 
-                        <li>
-                        {{/if}}
-                        <a href="{{$item.url}}">{{$item.name}}</a>
-                        </li>
-                        {{/foreach}} 
-                    </ul>
+                    {{/if}}
+                    <a href="{{$item.url}}">{{$item.name}}</a>
                     </li>
                     {{/foreach}} 
                 </ul>
-            </div>
+                </li>
+                {{/foreach}} 
+            </ul>
         </div>
-        <div class="col-md-10">
+    </div>
+    <div class="col-md-10">
         {{else}}
         <div class="col-md-12">
-        {{/if}}
+            {{/if}}

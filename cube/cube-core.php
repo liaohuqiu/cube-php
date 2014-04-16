@@ -54,17 +54,12 @@ class Cube
         {
             throw new Exception('WRITABLE_DIR undifiend');
         }
-        if (!is_writable(WRITABLE_DIR))
-        {
-            throw new Exception('WRITABLE_DIR is not writable: ' . WRITABLE_DIR);
-        }
 
         define('DS', '/');
         define('HYPHEN', '-');
         define('UNDERSCORE', '_');
         define('SYS_CODE', 'SRAIN');
         define('MCACHE_KEY_PRE', APP_NAME);
-        define('LOG_DIR', WRITABLE_DIR . '/log');
 
     }
 

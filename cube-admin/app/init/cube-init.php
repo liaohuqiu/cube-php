@@ -36,7 +36,7 @@ class App extends MCore_Cli_ConsoleBase
         }
 
         // add default server info
-        $dataOne = MEngine_EngineDB::getEngineDataOne();
+        $dataOne = MEngine_EngineDB::create();
         $serverList = $dataOne->select('server_setting', array('*'), array());
 
         $configDBServerGroupKey = $rawServerInfo['server_group_key'];
@@ -63,7 +63,7 @@ class App extends MCore_Cli_ConsoleBase
         // init value
         $admin = MCore_Tool_Conf::getDataConfigByEnv('engine', 'admin_init_user_name');
         $pwd = MCore_Tool_Conf::getDataConfigByEnv('engine', 'admin_init_user_pwd');
-        MAdmin_UserRaw::create($admin, $pwd);
+        MAdmin_UserRaw::create($admin, $pwd, array(), 1);
     }
 }
 $app = new App();

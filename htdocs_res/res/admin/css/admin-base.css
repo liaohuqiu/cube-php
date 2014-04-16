@@ -16,6 +16,37 @@
     text-align: center;
 }
 
+/* Outline button for use within admin */
+.btn-outline {
+  color: #185E37;
+  background-color: transparent;
+  border-color: #185E37;
+}
+.btn-outline:hover,
+.btn-outline:focus,
+.btn-outline:active {
+  color: #fff;
+  background-color: #185E37;
+  border-color: #185E37;
+}
+
+/* Inverted outline button (white on dark) */
+.btn-outline-inverse {
+  color: #fff;
+  background-color: transparent;
+  border-color: #cdbfe3;
+}
+.btn-outline-inverse:hover,
+.btn-outline-inverse:focus,
+.btn-outline-inverse:active {
+  color: #185E37;
+  text-shadow: none;
+  background-color: #fff;
+  border-color: #fff;
+}
+
+
+/* Top Nav bar */
 .bs-docs-nav {
     margin-bottom: 30px;
     border-bottom: 0;
@@ -27,14 +58,29 @@
 .bs-docs-nav .navbar-nav > li > a {
     color: #fff;
     font-weight: 500;
+    margin: 0 1px;
 }
 .bs-docs-nav .navbar-nav > li > a:hover,
+.bs-docs-nav .navbar-nav > li > a:focus {
+    color: #185E37;
+    background-color: rgba(249, 249, 249, 0.8);
+    margin: 0 1px;
+}
 .bs-docs-nav .navbar-nav > .active > a,
 .bs-docs-nav .navbar-nav > .active > a:hover {
     color: #185E37;
-    background-color: #f9f9f9;
+    background-color: rgba(249, 249, 249, 0.95);
 }
 
+.bs-docs-nav .navbar-nav > .open > a:hover,
+.bs-docs-nav .navbar-nav > .open > a {
+    color: #185E37;
+}
+.bs-docs-nav .navbar-nav .dropdown-menu {
+    top: 42px;
+}
+
+/* Sidenav */
 .bs-sidenav {
     padding-top: 10px;
     padding-bottom: 10px;

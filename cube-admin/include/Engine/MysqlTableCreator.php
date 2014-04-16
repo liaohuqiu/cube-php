@@ -9,7 +9,7 @@ class MEngine_MysqlTableCreator
 
     public static function create($serverGroupKey, $dbName, $sqlContent, $onlyThisTable = '')
     {
-        $dataOne = MEngine_EngineDB::getEngineDataOne();
+        $dataOne = MEngine_EngineDB::create();
         $where = array();
         $where['group_key'] = $serverGroupKey;
         $where['master_sid'] = 0;

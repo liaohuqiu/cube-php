@@ -8,7 +8,7 @@ class MAdmin_UserRaw
 {
     private static $_userInfoList = array();
 
-    public static function create($email, $pwd)
+    public static function create($email, $pwd, $authKeys = array(), $isSysAdmin = false)
     {
         if (self::isExist($email))
         {
@@ -22,6 +22,8 @@ class MAdmin_UserRaw
         $info['pwd'] = $pwd;
         $info['salt'] = $salt;
         $info['ctime'] = 'now()';
+        $info['is_sysadmin'] = $isSysAdmin;
+        $info['auth_keys'] = implode(',', $authKeys);
 
         $db = MCore_Dao_DB::create();
         $update = array('pwd', 'salt', 'ctime');
@@ -29,12 +31,22 @@ class MAdmin_UserRaw
         $uid = $ret['insert_id'];
         $info['uid'] = $uid;
 
+        $info = self::formatItem($info);
+        self::$_userInfoList[$uid] = $info;
         return $info;
     }
 
     public static function getTableKind()
     {
         return MCore_Tool_Conf::getDataConfigByEnv('engine', 'admin_user_table');
+    }
+
+    private static function formatItem($item)
+    {
+        $map = self::getStatusMap();
+        $item['status'] = $map[$item['status']];
+        $item['auth_keys'] = array_filter(explode(',', $item['auth_keys']));
+        return new MAdmin_User($item);
     }
 
     public static function getStatusMap()
@@ -73,8 +85,7 @@ class MAdmin_UserRaw
             {
                 return false;
             }
-            $map = self::getStatusMap();
-            $ret['status'] = $map[$ret['status']];
+            $ret = self::formatItem($ret);
             self::$_userInfoList[$uid] = $ret;
         }
         return self::$_userInfoList[$uid];
@@ -93,10 +104,7 @@ class MAdmin_UserRaw
                 return false;
             }
             $uid = $ret['uid'];
-
-            $map = self::getStatusMap();
-            $ret['status'] = $map[$ret['status']];
-            self::$_userInfoList[$uid] = $ret;
+            self::$_userInfoList[$uid] = self::formatItem($ret);
             return $ret;
         }
         else
@@ -105,10 +113,57 @@ class MAdmin_UserRaw
         }
     }
 
-    public static function updateInfo($uid, $info)
+    public static function updateInfo($uid, $info, $authKeys)
     {
         $db = MCore_Dao_DB::create();
         $where = array('uid' => $uid);
+        $info['auth_keys'] = implode(',', $authKeys);
         $ret = $db->update(self::getTableKind(), $info, array(), $where);
+        unset(self::$_userInfoList[$uid]);
+    }
+
+    public static function delete($uid)
+    {
+        MCore_Dao_DB::create()->delete(self::getTableKind(), array('uid' => $uid));
+        unset(self::$_userInfoList[$uid]);
+    }
+
+    public static function checkPwdByEmail($email, $pwd)
+    {
+        $info = self::getInfoByEmail($email);
+        if (!$info)
+        {
+            return false;
+        }
+        return self::checkPwd($info, $pwd);
+    }
+
+    public static function checkPwdById($id, $pwd)
+    {
+        $info = self::getInfo($id);
+        if (!$info)
+        {
+            return false;
+        }
+        return self::checkPwd($info, $pwd);
+    }
+
+    public static function updatePwd($uid, $pwd)
+    {
+        $info = self::getInfo($uid);
+        $pwd = md5($pwd . $info['salt']);
+
+        $update = array('pwd' => $pwd);
+        $where = array('uid' => $uid);
+        $ret = MCore_Dao_DB::create()->update(self::getTableKind(), $update, array(), $where);
+        return true;
+    }
+
+    public static function checkPwd($info, $pwd)
+    {
+        if ($info['pwd'] == md5($pwd . $info['salt']))
+        {
+            return $info;
+        }
     }
 }

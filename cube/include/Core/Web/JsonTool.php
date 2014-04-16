@@ -25,4 +25,10 @@ class MCore_Web_JsonTool
         }
         return $this;
     }
+
+    public static function encode($data)
+    {
+        $data = MCore_Str_JSON::stringify($data);
+        return $data;
+    }
 }

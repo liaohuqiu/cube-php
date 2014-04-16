@@ -1,10 +1,10 @@
 <?php
 /**
- * A common page to opertate the data in split table
+ * A page to operate data in table
  *
  * @author http://www.liaohuqiu.net
  */
-class MAdmin_Views_DataTableEditController extends MAdmin_Views_EditController implements MAdmin_Views_EditDataProvider
+class MAdmin_Views_DataTableEditController extends MAdmin_Views_ItemActionEasyController implements MAdmin_Views_ItemActionDataProvider
 {
     private $tableKind;
     private $primaryKeyList;
@@ -16,8 +16,7 @@ class MAdmin_Views_DataTableEditController extends MAdmin_Views_EditController i
     {
         $this->db = $db;
         $conf = $this->prepareConf($conf);
-        $this->setDataProvider($this);
-        parent::__construct($conf);
+        parent::__construct($conf, $this);
     }
 
     protected function prepareConf($conf)
@@ -71,19 +70,19 @@ class MAdmin_Views_DataTableEditController extends MAdmin_Views_EditController i
         return $ret["data"][0];
     }
 
-    public function submit($setArr, $identityInfo)
+    public function submit($identityInfo, $inputInfo)
     {
         $now = MCore_Util_DateTime::now()->format();
-        if (!isset($setArr["ctime"]) && in_array('ctime', $this->tableFields))
+        if (!isset($inputInfo["ctime"]) && in_array('ctime', $this->tableFields))
         {
-            $setArr["ctime"] = $now;
+            $inputInfo["ctime"] = $now;
         }
-        if (!isset($setArr["mtime"]) && in_array('mtime', $this->tableFields))
+        if (!isset($inputInfo["mtime"]) && in_array('mtime', $this->tableFields))
         {
-            $setArr["mtime"] = $now;
+            $inputInfo["mtime"] = $now;
         }
-        $dbArr = array_merge($setArr,$identityInfo);
-        $this->db->insert($this->tableKind, $dbArr,array_keys($setArr));
+        $dbArr = array_merge($inputInfo,$identityInfo);
+        $this->db->insert($this->tableKind, $dbArr,array_keys($inputInfo));
     }
 
     public function delete($identityInfo)

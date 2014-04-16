@@ -7,6 +7,7 @@
 class MCore_Dao_DB
 {
     private $dbMan;
+
     public function __construct($dbMan = null)
     {
         if($dbMan == null)

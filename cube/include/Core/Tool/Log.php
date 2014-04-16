@@ -6,16 +6,6 @@
  */
 class MCore_Tool_Log
 {
-    public static function logReady()
-    {
-        return defined('LOG_DIR');
-    }
-
-    public static function getLogDir()
-    {
-        return LOG_DIR;
-    }
-
     /**
      * level : dev / test /prod
      */
@@ -64,12 +54,13 @@ class MCore_Tool_Log
 
     public static function addFileLog($filename, $desc, $micro=false)
     {
-        if (!defined('LOG_DIR'))
+        if (!is_writable(WRITABLE_DIR))
         {
-            throw new Exception('LOG_DIR undifiend');
+            throw new Exception('WRITABLE_DIR is not writable: ' . WRITABLE_DIR);
         }
-        $dir = LOG_DIR;
-        if (!is_dir(LOG_DIR))
+
+        $dir = WRITABLE_DIR . '/log';
+        if (!is_dir($dir))
         {
             mkdir($dir, 0777, true);
         }

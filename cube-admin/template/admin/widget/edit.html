@@ -1,23 +1,25 @@
-<form class="form-horizontal" action='{{$pageData.post_url}}' method='post'>
+<form class="col-md-offset-2 form-horizontal" action='{{$page_data.post_url}}' method='post'>
     <input type='hidden' name='edit_action_name' value='submit'>
-    {{foreach $pageData.identity_info as $key => $item_value}}
+    {{foreach $page_data.identity_info as $key => $item_value}}
     <input type='hidden' name='{{$key}}' value='{{$item_value}}'>
     {{/foreach}}
-    {{foreach $pageData.item_list as $item}}
-    <div class="control-group">
-        <label class="control-label" for="{{$item.id}}">{{$item.title}}</label>
-        <div class="controls">
+    {{foreach $page_data.item_list as $item}}
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="{{$item.id}}">{{$item.title}}</label>
+        <div class="col-md-4">
             {{if $item.lock}}
-            <input id="{{$item.id}}" type="text" name="{{$item.name}}" value='{{$item.value}}' disabled>
+            <input class='form-control' id="{{$item.id}}" type="text" name="{{$item.name}}" value='{{$item.value}}' disabled>
             {{else}}
             {{if $item.type == "textarea"}}
-            <textarea id='{{$item.id}}' name='{{$item.name}}' placeholder="{{$item.placeholder}}" style="{{$item.style}}">{{$item.value}}</textarea>
+            <textarea class='form-control' id='{{$item.id}}' name='{{$item.name}}' placeholder="{{$item.placeholder}}" style="{{$item.style}}">{{$item.value}}</textarea>
             {{else if $item.type == "checkbox"}} 
-            <label class="checkbox">
-                <input type='checkbox' id='{{$item.id}}' name='{{$item.name}}' value='1' {{$item.checked}} /> {{$item.check_desc}}
-            </label>
+            <div class='checkbox'>
+                <label>
+                    <input type='checkbox' id='{{$item.id}}' name='{{$item.name}}' value='1' {{$item.checked}} /> {{$item.desc}}
+                </label>
+            </div>
             {{else if $item.type == "select"}}
-            <select name='{{$item.name}}'>
+            <select class='form-control' name='{{$item.name}}'>
                 {{foreach $item.options as $value => $title}} {{if $item.value == $value}}
                 <option value='{{$value}}' selected="true">{{$title}}</option>
                 {{else}}
@@ -26,23 +28,26 @@
                 {{/foreach}}
             </select>
             {{else if $item.type == "radio"}}
+            <div class=''>
                 {{foreach $item.options as $value=>$title}}
-                {{if $item.value == $value}}
-                <input id="{{$item.id}}" type="radio" checked="true" value="{{$value}}" name='{{$item.name}}' />
-                {{else}}
-                <input id="{{$item.id}}" type="radio" value="{{$value}}" name='{{$item.name}}' />
-                {{/if}}
-                {{$title}}
+                <label class='radio-inline'>
+                    {{if $item.value == $value}}
+                    <input id="{{$item.id}}" type="radio" checked="true" value="{{$value}}" name='{{$item.name}}' />
+                    {{else}}
+                    <input id="{{$item.id}}" type="radio" value="{{$value}}" name='{{$item.name}}' />
+                    {{/if}}{{$title}}
+                </label>
                 {{/foreach}} 
+            </div>
             {{else}}
-            <input id="{{$item.id}}" type="{{$item.type}}" name="{{$item.name}}" placeholder="{{$item.placeholder}}" value='{{$item.value}}'>
+            <input class='form-control' id="{{$item.id}}" type="{{$item.type}}" name="{{$item.name}}" placeholder="{{$item.placeholder}}" value='{{$item.value}}'>
             {{/if}}
             {{/if}}
         </div>
     </div>
     {{/foreach}}
-    <div class="control-group">
-        <div class="controls">
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-4">
             <button type="submit" class="btn">Submit</button>
         </div>
     </div>

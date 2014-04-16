@@ -11,9 +11,8 @@ K.App('admin/ATableList', ['core/ajax/Request']).define(function(require) {
             var kind = a_link.data('kind');
             var msg = 'Are you sure to delete this table: ' + kind + ' ?';
             require.async('core/dialog/MsgBox', function(MsgBox) {
-                MsgBox.confirm(msg, function() {
+                MsgBox.confirm(msg, {on_ok: function() {
 
-                    setTimeout(function(){
                     var data = {};
                     data['kind'] = kind;
                     var request = Request.create('table-delete-ajax');
@@ -22,8 +21,7 @@ K.App('admin/ATableList', ['core/ajax/Request']).define(function(require) {
                     var that = this;
                     request.setData(data).setHandler(function(ret) {
                         a_link.parents('tr').remove();
-                    }).send();
-                    }, 3000);
+                    }}).send();
                 });
             });
         },

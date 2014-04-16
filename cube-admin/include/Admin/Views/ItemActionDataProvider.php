@@ -1,5 +1,5 @@
 <?php
-interface MAdmin_Views_EditDataProvider
+interface MAdmin_Views_ItemActionDataProvider
 {
     public function getInfo($identityInfo);
 

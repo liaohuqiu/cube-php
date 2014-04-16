@@ -1,7 +1,7 @@
 <?php
 class MEngine_EngineDB
 {
-    public static function getEngineDataOne()
+    public static function create()
     {
         static $db;
         if (!$db)

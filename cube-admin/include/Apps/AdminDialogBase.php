@@ -1,11 +1,19 @@
 <?php
 /**
- * Basic Page for Admin
+ * Basic Dialog for Admin
  *
  * @author huqiu
  */
-abstract class MApps_AdminAjaxBase extends MCore_Web_BaseAjaxApp
+abstract class MApps_AdminDialogBase extends MCore_Web_BaseDialogApp
 {
+    private $renderView;
+
+    protected function init()
+    {
+        parent::init();
+        $this->renderView = MApps_AdminPageBase::createDisplayView();
+    }
+
     protected function checkAuth()
     {
         $user = MAdmin_UserAuth::getUser();
@@ -20,6 +28,13 @@ abstract class MApps_AdminAjaxBase extends MCore_Web_BaseAjaxApp
         {
             $this->onNoAuth();
         }
+    }
+
+    protected function renderBody($template, $data = array())
+    {
+        $this->renderView->setPageData($data);
+        $body = $this->renderView->render($template);
+        $this->getDialogView()->setBody($body);
     }
 
     private function onNoAuth()

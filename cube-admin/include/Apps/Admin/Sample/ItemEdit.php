@@ -1,6 +1,5 @@
 <?php
-include dirname(dirname(dirname(__FILE__))) . '/init.php';
-class App extends MAdmin_AdminPageBase implements MAdmin_Views_EditDataProvider
+class MApps_Admin_Sample_ItemEdit extends MApps_AdminPageBase implements MAdmin_Views_ItemActionDataProvider
 {
     private $controller;
 
@@ -13,7 +12,7 @@ class App extends MAdmin_AdminPageBase implements MAdmin_Views_EditDataProvider
                 'type' => 'text',
             ),
             'k_lock_input' => array(
-                'title' => 'Lock input',
+                'title' => 'Locked input',
                 'lock' => 1,
                 'value' => 'value can not edit',
             ),
@@ -29,7 +28,7 @@ class App extends MAdmin_AdminPageBase implements MAdmin_Views_EditDataProvider
             'k_check' => array(
                 'title'=> 'Checkbox',
                 'type' => 'checkbox',
-                'check_desc' => 'Checkbox description',
+                'desc' => 'Checkbox description',
                 'value' => 1, // value greater then 0 will be checked
             ),
             'k_select' => array(
@@ -55,21 +54,23 @@ class App extends MAdmin_AdminPageBase implements MAdmin_Views_EditDataProvider
         $conf['identity_keys'] = array();
         $conf['post_url'] = '';
 
-        $this->controller = new MAdmin_Views_EditController($conf);
-        $this->controller->setDataProvider($this);
-        $this->controller->render();
+        $this->controller = new MAdmin_Views_ItemActionEasyController($conf, $this);
+        $this->controller->dispatch();
     }
 
     public function getInfo($identityInfo)
     {
+        // fetch info form database and format the data
     }
 
     public function submit($inputInfo, $identityInfo)
     {
+        // update info
     }
 
     public function delete($identityInfo)
     {
+        // delete info
     }
 
     protected function outputBody()
@@ -77,5 +78,3 @@ class App extends MAdmin_AdminPageBase implements MAdmin_Views_EditDataProvider
         $this->controller->output();
     }
 }
-$app = new App();
-$app->run();

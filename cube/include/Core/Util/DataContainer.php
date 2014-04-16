@@ -8,7 +8,7 @@ class MCore_Util_DataContainer
 {
     private $_data = array();
 
-    function getData()
+    public function getData()
     {
         $argv = func_get_args();
         $argc = func_num_args();
@@ -22,11 +22,15 @@ class MCore_Util_DataContainer
         }
     }
 
-    function setData()
+    public function setData()
     {
-        $argc = func_num_args();
         $argv = func_get_args();
-        if ($argc == 1)
+        return $this->setFuncArgsData($argv);
+    }
+
+    public function setFuncArgsData($argv)
+    {
+        if (count($argv) == 1)
         {
             $this->_data = array_merge($this->_data, $argv[0]);
         }

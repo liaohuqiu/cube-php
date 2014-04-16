@@ -1,5 +1,4 @@
-.kxm-dialog
-{
+.cube-dialog {
     background-color: #fff;
     border: 1px solid #999;
     border: 1px solid rgba(0,0,0,0.3);
@@ -15,15 +14,16 @@
     background-clip: padding-box;
 }
 
-.kxm-dialog .hd
-{
+.cube-dialog .hd {
     min-height: 19px;
 }
-.kxm-dialog .hd h3
-{
+.cube-dialog .hd h3 {
     margin-top: 0px;
 }
-.kxm-dialog .modal-body
-{
+.cube-dialog .modal-body {
     max-height: 500px;
+}
+
+.cube-dialog .alert {
+    margin-bottom: 0px;
 }

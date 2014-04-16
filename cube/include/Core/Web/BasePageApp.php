@@ -51,10 +51,6 @@ abstract class MCore_Web_BasePageApp extends MCore_Web_BaseApp
 
     protected function processException($ex)
     {
-        if (MCore_Tool_Log::logReady())
-        {
-            MCore_Tool_Log::addDebugLog('exception', $ex);
-        }
         $msg = '<pre>' . $ex->getMessage() .'</pre>';
         if (!MCore_Tool_Env::isProd())
         {

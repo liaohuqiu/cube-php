@@ -65,7 +65,7 @@ class MAdmin_Views_ListViewController
             $data['url_create_new'] = $this->_buildCreateNewUrl();
             $data['conf'] = $this->conf;
 
-            $view = MApps_AdminPageBase::createSmartyView();
+            $view = MApps_AdminPageBase::createDisplayView();
             $view->setPageData($data);
             $view->display('admin/widget/list.html');
         }

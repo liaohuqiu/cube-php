@@ -9,7 +9,7 @@ define('core/dialog/Layer', ['core/tool/Browser'], function(require) {
 
     var $ = require('core/jQuery'),
     Browser = require('core/tool/Browser'),
-    layerId = 1,
+    layerId = 0,
     offsetRight = 0,
 
     isIE7 = (function() {
@@ -30,22 +30,13 @@ define('core/dialog/Layer', ['core/tool/Browser'], function(require) {
         this.opacity = 0.8; // panel遮罩层透明度(遮罩层的透明度使用半透明背景图实现，避免Layer上的组件整体是透明的)
         this.background = '#fff'; // 更加高级的控制背景
 
-        this.impl = 'Dialog'; // 实现类型（默认为Dialog）
         this.fixed = true;
 
         K.mix(this, options);
-        this.id = 'layer_' + layerId;
-        this.stacks = [];
-        this.activeStackId = null;
+        this.id = 'layer_' + layerId++;
+        this._contentStatck = [];
         this.overflow = false;
-        this.changeFixed = false; // 记录当前layer的定位是否被更改过，对于下个stack定位有帮助
-        Layer.instances[this.id] = this;
-
-        // 为各种impl建立快速索引
-        if (!Layer[this.impl]) {
-            Layer[this.impl] = [];
-        }
-        Layer[this.impl].push(this.id);
+        this.changeFixed = false;
 
         this.init();
     }
@@ -66,7 +57,7 @@ define('core/dialog/Layer', ['core/tool/Browser'], function(require) {
 
         '_bindEvents': function(e) {
 
-            this._panel.delegate('._j_layer_content', 'click', K.bind(function(ev) {
+            this._layerContainer.delegate('._j_layer_content', 'click', K.bind(function(ev) {
                 var target = $(ev.target);
                 if (target.data('is-container')) {
                     this.fire('mask_clicked');
@@ -103,15 +94,14 @@ define('core/dialog/Layer', ['core/tool/Browser'], function(require) {
                 'z-index': 0
             }, (!isOldIE && this.fixed) ? { 'overflow-x': 'hidden', 'overflow-y': 'hidden'} : { 'overflow': 'visible' });
 
-            this._panel = $('<div id="' + this.id + '" class="_j_layer">\
+            this._layerContainer = $('<div id="' + this.id + '" class="_j_layer">\
                             <div class="_j_layer_mask"></div>\
                             <div class="_j_layer_content" data-is-container="1"></div>\
                             </div>')
                             .css(cssPanel)
                             .appendTo('body');
-                            this._mask = this._panel.children('._j_layer_mask').css(cssMask);
-                            this._content = this._panel.children('._j_layer_content').css(cssContent);
-                            layerId++;
+                            this._mask = this._layerContainer.children('._j_layer_mask').css(cssMask);
+                            this._content = this._layerContainer.children('._j_layer_content').css(cssContent);
         },
 
         'setFixed': function(fixed) {
@@ -120,10 +110,10 @@ define('core/dialog/Layer', ['core/tool/Browser'], function(require) {
                 this.changeFixed = true;
                 this.fixed = fixed;
                 if (!isOldIE && this.fixed) {
-                    this._panel.css('position', 'fixed');
+                    this._layerContainer.css('position', 'fixed');
                     this._content.css({ 'position': 'fixed', 'overflow-x': 'hidden', 'overflow-y': 'hidden' });
                 } else {
-                    this._panel.css('position', 'absolute');
+                    this._layerContainer.css('position', 'absolute');
                     this._content.css({ 'position': 'absolute', 'overflow-x': '', 'overflow-y': '', 'overflow': 'visible' });
                 }
             } else {
@@ -131,30 +121,43 @@ define('core/dialog/Layer', ['core/tool/Browser'], function(require) {
             }
         },
 
+        'addContent': function(content, frozenBackground) {
+            this._content.append(content);
+            this.frozenBackground = frozenBackground;
+        },
+
         /**
-        * 新建Layer上的层叠，返回当前层叠的序号
+        * Push content to statck
         */
-        'newStack': function(panel) {
-            var stack = $(panel).appendTo(this._content);
-            this.stacks.push(stack);
-            return this.stacks.length - 1;
+        'pushToContentStack': function(content) {
+            var current = this.getTopContent();
+            if (undefined != current && current != content) {
+                current.sendToBack();
+            }
+            this._contentStatck.push(content);
         },
 
-        'getStack': function(stackId) {
-            return this.stacks[stackId];
+        /**
+        * get content from the top of stack
+        */
+        'getTopContent': function() {
+            return K.last(this._contentStatck);
         },
 
-        'getActiveStack': function() {
-            return this.stacks[this.activeStackId];
-        },
-
-        'setActiveStack': function(dialog) {
-            this.activeStackId = dialog.stackId;
-            this.frozenBackground = dialog.frozenBackground;
-        },
-
-        'getPanel': function() {
-            return this._panel;
+        /**
+        * Try to pop this content from the stack.
+        */
+        'removeFromContentStack': function(content) {
+            var current = this.getTopContent();
+            if (current != undefined && current == content) {
+                this._contentStatck.pop();
+                current = this.getTopContent();
+                if (undefined != current) {
+                    current.bringToFront();
+                }
+            } else {
+                this._contentStatck.splice(K.indexOf(this._contentStatck, content), 1);
+            }
         },
 
         'getMask': function() {
@@ -163,28 +166,28 @@ define('core/dialog/Layer', ['core/tool/Browser'], function(require) {
 
         'show': function(callback) {
             var me = this;
+            Layer.pushToActvieStatck(this.id);
             if (this.visible) {
                 typeof callback === 'function' && callback();
                 return;
             }
 
-            Layer.activeId = this.id;
             this.visible = true;
 
             if (this.frozenBackground) {
                 $('html').addClass('frosen');
                 $('#head').css("width", $(window).width() - offsetRight);
 
-                this._panel.show();
+                this._layerContainer.show();
                 typeof callback === 'function' && callback();
             }
             else {
                 if (isOldIE) {
                     var height = document.documentElement && document.documentElement.scrollHeight || document.body.scrollHeight;
-                    this._panel.css('height', height);
+                    this._layerContainer.css('height', height);
                     this._mask.css('height', height);
                 }
-                this._panel.fadeIn(200, function() {
+                this._layerContainer.fadeIn(200, function() {
                     typeof callback === 'function' && callback();
                 });
             }
@@ -192,6 +195,7 @@ define('core/dialog/Layer', ['core/tool/Browser'], function(require) {
 
         'hide': function(callback) {
             var me = this;
+            Layer.removeFromActiveStack(this.id);
             if (!this.visible) {
                 typeof callback === 'function' && callback();
                 return;
@@ -200,7 +204,7 @@ define('core/dialog/Layer', ['core/tool/Browser'], function(require) {
             this.visible = false;
 
             if (this.frozenBackground) {
-                this._panel.hide();
+                this._layerContainer.hide();
                 typeof callback === 'function' && callback();
                 me._recoverTopScroller();
                 $('html').removeClass('frosen');
@@ -208,11 +212,11 @@ define('core/dialog/Layer', ['core/tool/Browser'], function(require) {
             }
             else {
                 if (isOldIE) {
-                    this._panel.css('height', '');
+                    this._layerContainer.css('height', '');
                     this._mask.css('height', '');
                 }
 
-                this._panel.fadeOut(200, function() {
+                this._layerContainer.fadeOut(200, function() {
                     typeof callback === 'function' && callback();
                     me._recoverTopScroller();
                 });
@@ -242,7 +246,7 @@ define('core/dialog/Layer', ['core/tool/Browser'], function(require) {
                 $('body').css('overflow', 'hidden');
             } else {
                 $('body').css('overflow-x', 'hidden');
-                this._panel.height($(document).height() + 20);
+                this._layerContainer.height($(document).height() + 20);
             }
         },
 
@@ -260,11 +264,11 @@ define('core/dialog/Layer', ['core/tool/Browser'], function(require) {
         'destroy': function() {
             this.hide($.proxy(function() {
 
-                this._panel && this._panel.undelegate();
-                this._panel && this._panel.remove();
-                this._panel = null;
-                if (K.indexOf(Layer[this.impl], this.id) != -1) {
-                    Layer[this.impl].splice(K.indexOf(Layer[this.impl], this.id), 1);
+                this._layerContainer && this._layerContainer.undelegate();
+                this._layerContainer && this._layerContainer.remove();
+                this._layerContainer = null;
+                if (K.indexOf(Layer.implCache[this.impl], this.id) != -1) {
+                    Layer.implCache[this.impl].splice(K.indexOf(Layer.implCache[this.impl], this.id), 1);
                 }
                 delete Layer.instances[this.id];
             }, this));
@@ -272,8 +276,7 @@ define('core/dialog/Layer', ['core/tool/Browser'], function(require) {
 
         'clear': function() {
             this._content.empty();
-            this.stacks = [];
-            this.activeStackId = null;
+            this._contentStatck = [];
         },
 
         '_insertCss': function() {
@@ -337,40 +340,72 @@ define('core/dialog/Layer', ['core/tool/Browser'], function(require) {
     };
 
     Layer.instances = {};
-    Layer.activeId = null;
+    Layer.implCache = {};
+
+    Layer.activeStack = [];
+
+    Layer.want = function(options, impl, createNew) {
+        var layer;
+        if (createNew) {
+            layer = Layer.createNew(options, impl);
+        } else {
+            layer = Layer.currentOrLast(impl) || Layer.createNew(options, impl);
+        }
+        return layer;
+    },
+
+    Layer.createNew = function(options, impl) {
+        options.impl = impl;
+        var layer = new Layer(options);
+        if (!Layer.implCache[impl]) {
+            Layer.implCache[impl] = [];
+        }
+        Layer.implCache[impl].push(layer.id);
+        Layer.instances[layer.id] = layer;
+        return layer;
+    },
+
     Layer.getInstance = function(id) {
         return Layer.instances[id];
     };
-    Layer.getActive = function(impl) {
-        var active = Layer.getInstance(Layer.activeId);
-        if (impl && active) {
-            active = active.impl === impl ? active : null;
-        }
+
+    Layer.pushToActvieStatck = function(id) {
+        Layer.removeFromActiveStack(id);
+        Layer.activeStack.push(id);
+    },
+
+    Layer.removeFromActiveStack = function(id) {
+        Layer.activeStack.splice(K.indexOf(Layer.activeStack, id), 1);
+    }
+
+    Layer.getActive = function() {
+        var id = K.last(Layer.activeStack);
+        var active = Layer.getInstance(id);
         return active;
     }
-    Layer.getImplInstance = function(impl) {
-        var instance = Layer.getActive(impl);
-        if (!instance && K.isArray(Layer[impl]) && Layer[impl].length) {
-            instance = Layer.getInstance(Layer[impl][Layer[impl].length - 1]);
+
+    Layer.currentOrLast = function(impl) {
+        var instance = Layer.getActive();
+        if (instance && instance.impl == impl) {
+            return instance;
+        }
+        if (K.isArray(Layer.implCache[impl]) && Layer.implCache[impl].length) {
+            instance = Layer.getInstance(Layer.implCache[impl][Layer.implCache[impl].length - 1]);
         }
         return instance;
     };
 
-    Layer.closeActive = function() {
-        var activeLayer = Layer.getActive();
-        if (activeLayer && activeLayer.getActiveStack()) {
-            activeLayer.getActiveStack().trigger('whenESC');
-        }
-    };
-
-    // 退出统一处理
+    // process close for ESC
     $(document).keyup(function(ev) {
         if (ev.keyCode == 27) {
-            Layer.closeActive();
+            var activeLayer = Layer.getActive();
+            if (activeLayer && activeLayer.getTopContent()) {
+                activeLayer.getTopContent().whenESC();
+            }
         }
     });
 
-    // 销毁layer所有对象，防止内存泄露
+    // destroy all layers
     $(document).unload(function() {
         K.forEach(Layer.instances, function() {
             layer.destroy();

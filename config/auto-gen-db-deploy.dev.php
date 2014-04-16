@@ -15,13 +15,13 @@ $data = array (
   ),
   'tables' => 
   array (
-    's_at_admin_user' => 
+    's_cube_admin_user' => 
     array (
       'id_field' => 'uid',
       'table_num' => '1',
-      'table_prefix' => 's_at_admin_user',
+      'table_prefix' => 's_cube_admin_user',
       'app' => NULL,
-      'db_name' => 'at_admin',
+      'db_name' => 'cube_admin',
       'tables' => 
       array (
         0 => 

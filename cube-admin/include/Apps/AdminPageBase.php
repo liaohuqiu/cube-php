@@ -19,9 +19,10 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
             $this->go2('/admin/user-login');
         }
         $this->user = $user;
-        if (!$this->moduleMan->checkAuth($user))
+        $this->moduleMan = new MAdmin_Module($this->request->getPath(), $user);
+        if (!$this->moduleMan->userHasAuth())
         {
-            $this->go2('/admin/user-login');
+            $this->go2('/admin');
         }
     }
 
@@ -32,8 +33,8 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
 
     protected function init()
     {
-        $this->moduleMan = new MAdmin_Module($this->request->getPath());
         $this->getResTool()->addCss('admin/admin-base.css');
+        $this->getResTool()->addFootJs('admin/AAdminGlobal.js');
     }
 
     protected function getTitle()
@@ -45,7 +46,8 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
         }
         return $module['name'];
     }
-    public static function createSmartyView()
+
+    public static function createDisplayView()
     {
         $viewDisplyer = new MCore_Tool_Smarty(CUBE_ADMIN_ROOT_DIR . '/template');
         $view = new MCore_Web_View($viewDisplyer);
@@ -57,7 +59,7 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
 
     protected function createView()
     {
-        return self::createSmartyView();
+        return self::createDisplayView();
     }
 
     protected function output()
@@ -73,11 +75,16 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
         $header_data = array();
         $header_data['css_html'] = $this->getResTool()->getCssHtml();
         $header_data['js_html'] = $this->getResTool()->getHeadJsHtml();
-        $header_data['user'] = $this->user;
-        $header_data['module_list'] = $this->moduleMan->getModuleList();
-        $header_data['module_info'] = $this->moduleMan->getCurrentModuleInfo();
-        $header_data['base_path'] = $this->moduleMan->getBasePath() . DS;
-        $header_data['title'] = $this->getTitle();
+
+        if ($this->user)
+        {
+            $header_data['user'] = $this->user;
+            $header_data['title'] = $this->getTitle();
+
+            $header_data['module_list'] = $this->moduleMan->getModuleList();
+            $header_data['module_info'] = $this->moduleMan->getCurrentModuleInfo();
+            $header_data['base_path'] = $this->moduleMan->getBasePath() . DS;
+        }
 
         $this->getView()->setData('header_data', $header_data);
         $this->getView()->display('admin/base/head.html');
@@ -89,7 +96,6 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
         $tailData['js_html'] = $this->getResTool()->getTailJsHtml();
         $this->getView()->setData('tail_data', $tailData)->display('admin/base/tail.html');
     }
-
 
     protected function outputBody()
     {

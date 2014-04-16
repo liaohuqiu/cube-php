@@ -8,6 +8,7 @@ include $root_dir . '/boot.php';
 Cube::addIncludePath($current_dir . '/include');
 
 define('CUBE_ADMIN_ROOT_DIR', $current_dir);
+
 // for smarty
 define('SMARTY_CLASS_PATH', CUBE_ROOT_DIR . '/vendor/smarty/libs/Smarty.class.php');
 define('SMARTY_WRITALE_DIR', WRITABLE_DIR . '/smarty');

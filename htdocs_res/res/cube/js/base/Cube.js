@@ -1354,7 +1354,7 @@ else{
     var jsPre = /^\/?js\//gi;
 
     // -abced.js | .js
-    var jsPost = /(?:-[A-Za-z0-9]+)?.js?$/gi; 
+    var jsPost = /(?:-[A-Za-z0-9]+)?.js?$/gi;
 
 })(K, K.Resource);
 
@@ -1975,8 +1975,8 @@ else{
                 switch (ajax) {
                     case 'dialog-post':
                         case 'dialog':
-                        K.Module.createRequire().async('core/dialog/Dialog', function(Dialog) {
-                        Dialog.load(href, container);
+                        K.Module.createRequire().async('core/dialog/AsyncDialog', function(Dialog) {
+                        Dialog.open(href, container);
                     });
                     break;
                     case 'request-post':
@@ -2204,7 +2204,7 @@ K.define('core/jQuery',[], function() {
 });
 
 /**
-* 以下是专门为简化开发添加的插件，不属于Haibei框架（添加的插件将释放到全局）
+* 以下是专门为简化开发添加的插件，不属于框架（添加的插件将释放到全局）
 *
 * doT      --- 模板解析
 * Cookie   --- cookie操作

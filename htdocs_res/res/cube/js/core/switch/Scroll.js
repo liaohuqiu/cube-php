@@ -7,7 +7,7 @@
 /**
  * @class Scroll Scroll功能封装
  */
-define('core/panel/Scroll',['core/jQuery'],function( require ){
+define('core/switch/Scroll',['core/jQuery'],function( require ){
     var $ = require('core/jQuery'),
         mix = K.mix,
         CustEvent = K.CustEvent;
@@ -52,7 +52,7 @@ define('core/panel/Scroll',['core/jQuery'],function( require ){
          * @property index 当前所处位置
          */
         this.index = 0;
-        
+
         /**
          * @property events 触发切换的事件
          * @type    {array}
@@ -67,7 +67,7 @@ define('core/panel/Scroll',['core/jQuery'],function( require ){
 
         this.init( options );
     }
-    mix(Scroll.prototype,{      
+    mix(Scroll.prototype,{
         init: function( options ){
             /**
              * @event beforeswitch  切换前
@@ -142,10 +142,10 @@ define('core/panel/Scroll',['core/jQuery'],function( require ){
             if (!(this.contents.length && index < this.contents.length && index >= 0 && !this.inSwitching)) return;
 
             this.dispatchBeforeSwitch( this.index, index );
-            
+
             var prev = this.index;
             this.index = index;
-            
+
             this.inSwitching = true;
             //真正的切换行为交给具体的策略类来处理
             this.behavior.trigger({
@@ -154,10 +154,10 @@ define('core/panel/Scroll',['core/jQuery'],function( require ){
                 context: this
             });
 
-            this.dispatchAfterSwitch( prev, index );    
-            
+            this.dispatchAfterSwitch( prev, index );
+
             this._setBtn();
-            
+
             if( this.index == 0 ){
                 this.dispatchArriveFirst( prev, index );
             }
@@ -179,7 +179,7 @@ define('core/panel/Scroll',['core/jQuery'],function( require ){
             else if( this.index == (this.contents.length - 1) ){
                 this.next.addClass( this.NEXT_DISABLED_CLASS );
             }
-            
+
             if( this.prev.hasClass( this.PREV_DISABLED_CLASS ) && ( this.index > 0 ) ){
                 this.prev.removeClass( this.PREV_DISABLED_CLASS );
             }
@@ -206,7 +206,7 @@ define('core/panel/Scroll',['core/jQuery'],function( require ){
          */
         _dispatch : function (type, from, to) {
             var _e = new CustEvent(this, type);
-            
+
             mix(_e, {
                 from : this.item(from),
                 to : this.item(to),
@@ -235,10 +235,10 @@ define('core/panel/Scroll',['core/jQuery'],function( require ){
          */
         dispatchAfterSwitch : function (from, to) {
             return this._dispatch('afterswitch', from, to);
-        },      
+        },
         dispatchArriveFirst : function (from, to) {
             return this._dispatch('arrivefirst', from, to);
-        },      
+        },
         dispatchArriveLast : function (from, to) {
             return this._dispatch('arrivelast', from, to);
         }
@@ -246,7 +246,7 @@ define('core/panel/Scroll',['core/jQuery'],function( require ){
 
     /*Scroll切换效果的策略类，如果需要扩展切换效果则在策略中增加新的类即可*/
     Scroll.Behavior = {};
-    
+
     var ShowHide = {
         /*
          *  @param {Object} data 数据
@@ -268,7 +268,7 @@ define('core/panel/Scroll',['core/jQuery'],function( require ){
                 disIndex    = to - from,
                 disWidth    = disIndex * width,
                 disHeight   = disIndex * height;
-            if( !ctx.vertical ){                
+            if( !ctx.vertical ){
                 var left = parseInt(host.css('left'));
                 if( isNaN( left ) ) left = 0;
 

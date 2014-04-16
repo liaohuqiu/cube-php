@@ -45,7 +45,8 @@ class MAdmin_Views_ListPageInput extends MCore_Util_ArrayLike
 
     protected function getPageIdentityUrl()
     {
-        $url = $_SERVER['SCRIPT_NAME'];
+        $url = $_SERVER['REQUEST_URI'];
+        $url = parse_url($url, PHP_URL_PATH);
         $url = MCore_Str_Url::buildUrl($this->pageIdentityData, $url);
         return $url;
     }

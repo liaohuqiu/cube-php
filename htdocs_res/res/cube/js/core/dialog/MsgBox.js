@@ -16,6 +16,7 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
         ok_callback: null,
         cancel_callback: null,
         close_callback: null,
+        dismiss_callback: null,
 
         close: function(){
             this.close_callback && this.close_callback();
@@ -23,6 +24,7 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
         },
 
         ___close: function() {
+            this.dismiss_callback && this.dismiss_callback();
             MsgBox.$super.prototype.close.call(this);
         },
 
@@ -44,7 +46,17 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
 
     K.mix(MsgBox, {
 
-        confirm: function(msg, ok, cancel, close, auto_close, auto_close_callback) {
+        success: function(msg, data) {
+            var dialog_body ='<div class="modal-body">' +
+                '<div class="alert alert-success">' + msg + '</div></div>' +
+                '<div class="modal-footer">' +
+                '<button class="btn btn-danger _j_msgbox_btn_ok">Yes</button>' +
+                '</div></div>';
+
+            this.showDialog(dialog_body, data);
+        },
+
+        confirm: function(msg, data) {
 
             var dialog_body ='<div class="modal-body">' +
                 '<div class="alert alert-warning">' + msg + '</div></div>' +
@@ -52,23 +64,20 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
                 '<button class="btn btn-danger _j_msgbox_btn_ok">Yes</button>' +
                 '<button class="btn _j_msgbox_btn_cancel">Cacel</button>' +
                 '</div></div>';
-
-            var options = {};
-            options.width = 500;
-            options.height = 'auto';
-            options.body = dialog_body;
-            var dialog = new MsgBox(options);
-            dialog.show();
-
-            dialog.cancel_callback = cancel;
-            dialog.ok_callback = ok;
-            dialog.close_callback = close;
-
-            if (auto_close)
-                dialog.autoClose(auto_close, auto_close_callback);
+            this.showDialog(dialog_body, data);
         },
 
-        error: function(msg, ok, close, auto_close, auto_close_callback) {
+        /**
+        * on_ok
+        * on_close
+        * auto_close
+        * on_cancel
+        * on_auto_close
+        * on_dismiss
+        * width
+        * height
+        */
+        error: function(msg, data) {
 
             var dialog_body ='<div class="modal-body">' +
                 '<div class="alert alert-danger alert-error">' + msg + '</div></div>' +
@@ -76,19 +85,28 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
                 '<button class="btn btn-primary _j_msgbox_btn_ok">OK</button>' +
                 '</div></div>';
 
+            this.showDialog(dialog_body, data);
+        },
+
+        showDialog: function(body, data) {
+
+            data = data || {};
+
             var options = {};
-            options.width = 500;
-            options.height = 'auto';
-            options.body = dialog_body;
+            options.width = data.width || 500;
+            options.height = data.height ||'auto';
+            options.body = body;
             var dialog = new MsgBox(options);
             dialog.show();
 
-            dialog.ok_callback = ok;
-            dialog.close_callback = close;
+            dialog.cancel_callback = data.on_cancel;
+            dialog.ok_callback = data.on_ok;
+            dialog.close_callback = data.on_close;
+            dialog.dismiss_callback = data.on_dismiss;
 
-            if (auto_close)
-                dialog.autoClose(auto_close, auto_close_callback);
-        },
+            if (data.auto_close)
+                dialog.autoClose(data.auto_close, data.on_auto_close);
+        }
     });
 
     return MsgBox;

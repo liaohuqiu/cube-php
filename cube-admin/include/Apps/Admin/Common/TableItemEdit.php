@@ -1,6 +1,5 @@
 <?php
-include dirname(dirname(dirname(__FILE__))) . '/init.php';
-class App extends MAdmin_AdminPageBase
+class MApps_Admin_Common_TableItemEdit extends MApps_AdminPageBase
 {
     private $controller;
 
@@ -15,5 +14,3 @@ class App extends MAdmin_AdminPageBase
         $this->controller->output();
     }
 }
-$app = new App();
-$app->run();

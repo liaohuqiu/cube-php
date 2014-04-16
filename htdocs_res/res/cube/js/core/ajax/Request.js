@@ -170,27 +170,28 @@ define('core/ajax/Request', ['core/jQuery', 'core/URI'] , function(require) {
 
         dispatchResponse: function(ret) {
 
-            // cache result
+            // TOOD: cache by time
             if (ret.cacheTime) {
                 dataCache[this._uniqueKey] = ret;
             }
 
+            // TODO:
             // dialogInfo
-            // if (ret.data.popDialogInfo) {
+            if (ret.data.popDialogInfo) {
 
-            //     var dialogInfo = ret.data.popDialogInfo;
-            //     var className = dialogInfo.type == "succ" ? 'babyDialogSucceed' : 'babyDialogFail';
-            //     var msg = '<p class="' + className + '"><i></i>' + dialogInfo.content + '</p>';
+                var dialogInfo = ret.data.popDialogInfo;
+                var className = dialogInfo.type == "succ" ? 'babyDialogSucceed' : 'babyDialogFail';
+                var msg = '<p class="' + className + '"><i></i>' + dialogInfo.content + '</p>';
 
-            //     var dialog = MessageBox.alert(msg, dialogInfo.title, dialogInfo.height, dialogInfo.width);
+                var dialog = MessageBox.alert(msg, dialogInfo.title, dialogInfo.height, dialogInfo.width);
 
-            //     // autoclose
-            //     if (dialogInfo.autoClose) {
-            //         setTimeout(function() {
-            //             dialog.hide();
-            //         }, dialogInfo.autoClose);
-            //     }
-            // }
+                // autoclose
+                if (dialogInfo.autoClose) {
+                    setTimeout(function() {
+                        dialog.hide();
+                    }, dialogInfo.autoClose);
+                }
+            }
 
             // unlock
             this.unlockRequest();
@@ -217,7 +218,6 @@ define('core/ajax/Request', ['core/jQuery', 'core/URI'] , function(require) {
             // php exception
             if (ret.errorMsg && ret.error) {
                 msg = ret.errorMsg;
-                msg = "<div style='text-align:left'>" + msg + "</div>";
                 this.showError(msg);
 
             } else {
@@ -232,7 +232,12 @@ define('core/ajax/Request', ['core/jQuery', 'core/URI'] , function(require) {
 
         showError: function(msg) {
             require.async('core/dialog/MsgBox', function(MsgBox) {
-                MsgBox.error(msg);
+
+                var data = {};
+                if (msg.length > 1000) {
+                    data.width = 960;
+                }
+                MsgBox.error(msg, data);
             });
 
         },

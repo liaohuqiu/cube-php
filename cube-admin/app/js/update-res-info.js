@@ -120,7 +120,7 @@ App.define = function(){
 K.App = function(id, list){
     if (typeof(list) == 'function')
         list = [];
-    updater.add(id, list);
+    updater.add_dependence_info(id, list);
     return App;
 };
 

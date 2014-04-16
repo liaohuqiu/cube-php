@@ -3,7 +3,7 @@ class MEngine_MysqlDeploy
 {
     public static function updateDeployInfo()
     {
-        $configDataOne = MEngine_EngineDB::getEngineDataOne();
+        $configDataOne = MEngine_EngineDB::create();
         $serverSettings = $configDataOne->select('server_setting', array('*'), array('active' => 1));
         $tableSetting = $configDataOne->select('table_setting', array('*'), array());
         $kindSetting = $configDataOne->select('kind_setting', array('*'), array());
@@ -59,7 +59,7 @@ class MEngine_MysqlDeploy
     public static function createTable($sids, $dbName, $kind, $idField, $tableNum, $sql)
     {
         $sidLength = count($sids);
-        $configDataOne = MEngine_EngineDB::getEngineDataOne();
+        $configDataOne = MEngine_EngineDB::create();
         $exist = $configDataOne->select('kind_setting', array('*'), array('kind' => $kind));
         if ($exist->count() > 0 )
         {
@@ -132,7 +132,7 @@ class MEngine_MysqlDeploy
      */
     public static function queryTableInfos($kind, $useSlave = false)
     {
-        $configDataOne = MEngine_EngineDB::getEngineDataOne();
+        $configDataOne = MEngine_EngineDB::create();
         $where = array('kind' => $kind);
         $kindInfo = $configDataOne->select('kind_setting', array('*'), $where)->first();
         $tableSettings = $configDataOne->select('table_setting', array('*'), $where);

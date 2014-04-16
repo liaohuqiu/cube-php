@@ -17,7 +17,7 @@
  *
  * @author      huqiu
  */
-class MCore_Web_AjaxTool extents MCore_Web_JsonTool
+class MCore_Web_AjaxTool extends MCore_Web_JsonTool
 {
     private $error = false;
     private $errorMsg = '';

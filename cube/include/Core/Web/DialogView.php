@@ -7,66 +7,75 @@
  */
 class MCore_Web_DialogView
 {
-    private $_id;
-    private $_ajaxTool;
-    private $_title = "";
-    private $_noTitle = false;
-    private $_body = "";
-    private $_width = 350;
-    private $_height = 100;
-    private $_metaDataContainer;
-    private $_handler = "";
+    private $id;
+    private $ajaxTool;
+    private $title = "";
+    private $noTitle = false;
+    private $body = "";
+    private $width = 350;
+    private $height = 100;
+    private $metaDataContainer;
+    private $property;
+    private $handler = "";
 
     public function __construct($title = "")
     {
-        $this->_id = time() . rand(0, 10000);
-        $this->_title = $title;
-        $this->_ajaxTool = new MCore_Web_AjaxTool();
-        $this->_metaDataContainer = new MCore_Util_DataContainer();
+        $this->id = time() . rand(0, 10000);
+        $this->title = $title;
+        $this->ajaxTool = new MCore_Web_AjaxTool();
+        $this->metaDataContainer = new MCore_Util_DataContainer();
+        $this->property = new MCore_Util_DataContainer();
     }
 
     public function getId()
     {
-        return $this->_id;
+        return $this->id;
     }
 
     public function getAjaxTool()
     {
-        return $this->_ajaxTool;
+        return $this->ajaxTool;
     }
 
     public function noTitle($noTitle = true)
     {
-        $this->_noTitle = $noTitle;
+        $this->noTitle = $noTitle;
         return $this;
     }
 
     public function setCache($cacheTime = 86400)
     {
-        $this->_ajaxTool->setCache($cacheTime);
+        $this->ajaxTool->setCache($cacheTime);
+        return $this;
+    }
+
+    public function setProperty()
+    {
+        $this->property->setFuncArgsData(func_get_args());
+        return this;
     }
 
     public function setTitle($title)
     {
-        $this->_title = $title;
+        $this->title = $title;
         return $this;
     }
 
     public function setBody($body)
     {
-        $this->_body = $body;
+        $this->body = $body;
         return $this;
     }
 
     public function setWidth($width)
     {
-        $this->_width = $width;
+        $this->width = $width;
         return $this;
     }
 
     public function setHeight($height)
     {
-        $this->_height = $height;
+        $this->height = $height;
         return $this;
     }
 
@@ -79,7 +88,7 @@ class MCore_Web_DialogView
 
     public function setData($data)
     {
-        $this->_metaDataContainer->setData($data);
+        $this->metaDataContainer->setData($data);
         return $this;
     }
 
@@ -88,36 +97,36 @@ class MCore_Web_DialogView
         $trans = array("js/" => "", ".js" => "");
         $handlerName = strtr($handlerName, $trans);
 
-        $this->_handler = $handlerName;
-        $this->_ajaxTool->addJs("js/" . $handlerName . ".js");
+        $this->handler = $handlerName;
+        $this->ajaxTool->addJs("js/" . $handlerName . ".js");
         return $this;
     }
 
     public function show()
     {
-        $this->_title && $this->_noTitle = false;
+        $this->title && $this->noTitle = false;
 
         $dialog = array();
-        $dialog["title"] = $this->_title;
-        $dialog["noTitle"] = $this->_noTitle;
-        $dialog["body"] = $this->_body;
-        $dialog["width"] = $this->_width;
-        $dialog["height"] = $this->_height;
-        $dialog["handler"] = $this->_handler;
-        $dialog["metaData"] = $this->_metaDataContainer->getData();
+        $dialog["title"] = $this->title;
+        $dialog["noTitle"] = $this->noTitle;
+        $dialog["body"] = $this->body;
+        $dialog["width"] = $this->width;
+        $dialog["height"] = $this->height;
+        $dialog["handler"] = $this->handler;
+        $dialog["metaData"] = $this->metaDataContainer->getData();
+        $dialog["dialogProperty"] = $this->property->getData();
 
-        $this->_ajaxTool->setData("dialog", $dialog);
-        $this->_ajaxTool->output();
+        $this->ajaxTool->setData("dialog", $dialog);
+        $this->ajaxTool->output();
     }
 
-    public function showError($ex)
+    public function processException($ex)
     {
         $msg = '<pre>' . $ex->getMessage() .'</pre>';
         if (MCore_Tool_Env::isTest())
         {
             $msg .= '<pre>' . $ex->getTraceAsString() . '</pre>';
         }
-        $this->_ajaxTool->outputError($msg);
+        $this->ajaxTool->outputError($msg);
     }
 }
-?>

@@ -44,7 +44,7 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
             else
                 this._dialogBody = $('<div class="modal-body"></div>');
 
-            this._dialogContent = $('<div class="kxm-dialog"></div>');
+            this._dialogContent = $('<div class="cube-dialog"></div>');
             this._dialogContent.append(dialogHead);
             this._dialogContent.append(this._dialogBody);
 
@@ -119,17 +119,8 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
                 }
                 me.setRequestDialog(ret, request);
             }).setErrorHandler(function(ret) {
-                me.showError(ret, request);
+                me.close();
             }).send();
-        },
-
-        'showError': function(ret, request) {
-            this.setRect({ width: 850, height: "auto" });
-
-            var msg = ret.errorMsg || ret.responseText;
-            this.setTitle('Oh my God! Something seems not right.');
-            this.setBodyContent( '<pre>' + msg + '</pre>');
-            this.setPosition(null, true);
         },
 
         'setRequestDialog': function(ret, request) {
@@ -145,6 +136,9 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
             }
             if (data.body) {
                 this.replaceBodyContent(data.body);
+            }
+            if (data.dialogProperty) {
+                K.mix(this, data.dialogProperty);
             }
             if (data.width || data.height) {
                 this.setRect({ width: data.width, height: "auto" });

@@ -19,7 +19,6 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
         this.width = '';
         this.height = '';
         this.fixed = true;
-        this.impl = 'Dialog';
         this.closeWhenESC = true;
 
         K.mix(this, options);
@@ -34,55 +33,16 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
 
     K.mix(DialogBase, {
 
-        _dialogStack: [],
-
         _generateID: function() {
             return K.uniqueId("__dialog__");
         },
-
-        pushToStack: function(dialog) {
-            var current = this.getCurrent();
-            if (undefined != current) {
-                current.sendToBack();
-            }
-            this._dialogStack.push(dialog);
-        },
-
-        getCurrent: function() {
-            return K.last(this._dialogStack);
-        },
-
-        closeCurrent: function() {
-            var current = this.getCurrent();
-            if (null != current) {
-                current.close();
-            }
-        },
-
-        popThis: function(dialog) {
-            var current = this.getCurrent();
-            if (current == dialog) {
-                this._dialogStack.pop();
-            }
-            current = this.getCurrent();
-            if (undefined != current) {
-                current.bringToFront();
-            }
-            else {
-                dialog.getLayer().hide();
-            }
-        }
     });
 
     DialogBase.prototype = {
 
         isAtBackground: false,
 
-        frozenBackground: true,
-
         closeWhenMaskClicked: true,
-
-        stackId: null,
 
         _mask: null,
 
@@ -114,7 +74,6 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
             options.background = options.background || "black";
             options.opacity = options.opacity || "0.6";
             options.zIndex = options.zIndex || 40000;
-            options.impl = this.impl;
             options.fixed = this.fixed;
             return options;
         },
@@ -122,14 +81,12 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
         '_addToLayer': function() {
 
             var options = this._getLayerOptions();
-            this._layer = !this.newLayer && Layer.getImplInstance(this.impl) ||
-                new Layer(options);
+            this._layer = Layer.want(options, 'Dialog', this.newLayer);
 
             this._layer.setFixed(this.fixed);
-            this.stackId = this._layer.newStack(this._panel); // 层叠放入基层中
 
-            this._layer.setActiveStack(this);
-            DialogBase.pushToStack(this);
+            this._layer.addContent(this._panel, this.frozenBackground);
+            this._layer.pushToContentStack(this);
         },
 
         '_createDialog': function() {
@@ -178,11 +135,6 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
                 me.close();
                 ev.preventDefault();
             });
-            this._panel.bind('whenESC', function(ev, single) {
-                if (me.closeWhenESC) {
-                    me.close(single);
-                }
-            });
 
             // layer mask点击
             this.maskClickHandler = K.bind(this.onLayerMaskClick, this);
@@ -211,13 +163,6 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
 
         'getPanel': function() {
             return this._panel;
-        },
-
-        /**
-        * 获得所在层
-        */
-        'getLayer': function() {
-            return this._layer;
         },
 
         /**
@@ -331,23 +276,40 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
             }
         },
 
+        /**
+        * Implements Layer content method
+        */
+        'whenESC': function() {
+            if (this.closeWhenESC) {
+                this.close();
+            }
+        },
+
+        /**
+        * Implements Layer content method
+        */
         'sendToBack': function() {
             this.isAtBackground = true;
             this._mask.show();
         },
 
+        /**
+        * Implements Layer content method
+        */
         'bringToFront': function() {
 
             this.isAtBackground = false;
             this._mask.hide();
-
-            this._layer.setActiveStack(this);
         },
 
         'onLayerMaskClick': function() {
 
-            if (this.isAtBackground) return;
-            if (this.closeWhenMaskClicked) this.close();
+            if (this.isAtBackground) {
+                return;
+            }
+            if (this.closeWhenMaskClicked) {
+                this.close();
+            }
         },
 
         /**
@@ -401,9 +363,10 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
                     this._panel = null;
                 }
 
-                DialogBase.popThis(this);
-
-                this._layer = null;
+                this._layer.removeFromContentStack(this);
+                if (this._layer.getTopContent() == null) {
+                    this._layer.hide();
+                }
 
                 typeof callback == 'function' && callback();
                 this.fire('afterdestroy');

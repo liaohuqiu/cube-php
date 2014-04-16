@@ -1,44 +1,55 @@
 <?php
 $data['module_list'] = array(
     'database' => array(
-        'root_path' => '/admin/database',
-        'name' => 'DataBase',
-        'url'  => 'server-list',
-        'role' => 'master',
-        'auth_key' => 'db',
+        'root_path' => '/admin',
+        'name' => 'System',
+        'url'  => '/database/server-list',
+        'auth_key' => 'system',
         'units'=> array(
             array(
-                'name' => '数据库管理',
+                'name' => 'DataBase',
                 'list' => array(
                     array(
-                        'name' => '数据库编号',
-                        'url' => 'server-list',
-                        'auth_key' => 'master',
-                        'role' => 'master',
+                        'name' => 'DB Servers',
+                        'url' => '/database/server-list',
                     ),
                     array(
-                        'name' => '表列表',
-                        'url' => 'table-list',
-                        'auth_key' => 'master',
+                        'name' => 'Table List',
+                        'url' => '/database/table-list',
                     ),
                     array(
-                        'name' => '创建表',
-                        'url' => 'table-new',
-                        'auth_key' => 'master',
+                        'name' => 'Create Table',
+                        'url' => '/database/table-new',
                     ),
                     array(
-                        'name' => '修改表',
-                        'url' => 'table-edit',
-                        'auth_key' => 'master',
+                        'name' => 'Alter Table',
+                        'url' => '/database/table-edit',
                     ),
                     array(
-                        'name' => '查询',
-                        'url' => 'table-query',
-                        'auth_key' => 'master',
+                        'name' => 'Query Table',
+                        'url' => '/database/table-query',
                     ),
                 )
             ),
         )
     ),
+    'user' => array(
+        'root_path' => '/admin/user',
+        'name' => 'User',
+        'url'  => 'user-list',
+        'role' => 'master',
+        'auth_key' => 'user',
+        'units'=> array(
+            array(
+                'name' => 'user',
+                'list' => array(
+                    array(
+                        'name' => 'User List',
+                        'url' => 'user-list',
+                    ),
+                )
+            )
+        ),
+    )
 );
 return $data;
