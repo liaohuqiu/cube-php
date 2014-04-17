@@ -5,5 +5,4 @@ function exe_cmd()
     eval $1
 }
 app_root_dir=`readlink -f ../`
-exe_cmd "python $app_root_dir/app/run.py $app_root_dir/app/js/do-watch-res-update.sh $app_root_dir/res/"
 exe_cmd "python $app_root_dir/app/run.py $app_root_dir/app/engine/start-cube-servant.sh"

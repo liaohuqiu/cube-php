@@ -10,7 +10,7 @@ var app_root = path.dirname(current_dir);
 
 Dispatcher = function() {};
 Dispatcher.prototype = {
-    dispatch: function(cmd, data) {
+    dispatch: function(res, cmd, data) {
         if (cmd == 'update-config') {
             var key = data.key;
             var config = JSON.stringify(data.data);
@@ -18,6 +18,8 @@ Dispatcher.prototype = {
             var cmd = 'php ' + current_dir + '/update-data-config.php -k ' + key + " -d '" + config + "'";
             var child = child_process.exec(cmd, function(error, stdout, stderr){
                 sys.print(stdout);
+                res.writeHead(200, {'Content-Type': 'text/plain'});
+                res.end('ok');
             });
         }
     },
@@ -46,10 +48,11 @@ dispatcher.getDataConfig(function(config){
             });
             request.on('end', function () {
                 var post = qs.parse(body);
-                dispatcher.dispatch(post.cmd, JSON.parse(post.data));
-                res.writeHead(200, {'Content-Type': 'text/plain'});
-                res.end('ok');
+                dispatcher.dispatch(res, post.cmd, JSON.parse(post.data));
             });
+        } else {
+            res.writeHead(200, {'Content-Type': 'text/plain'});
+            res.end('error');
         }
     }).listen(port);
     dispatcher.msg('servant at port: ' + port);

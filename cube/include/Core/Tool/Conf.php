@@ -42,6 +42,7 @@ class MCore_Tool_Conf
 
     private static function _callGetDataConfig($argv, $argc)
     {
+        ADD_DEBUG_LOG('_callGetDataConfig: ' . $argv[0]);
         $throwException = true;
         if (is_bool($argv[$argc - 1]))
         {
@@ -98,11 +99,13 @@ class MCore_Tool_Conf
 
     public static function updateDataConfig($key, $data)
     {
+        ADD_DEBUG_LOG('updateDataConfig: ' . $key);
         return MCore_Mid_Servant::updateDataConfig($key, $data);
     }
 
     public static function writeDataConfig($key, $data)
     {
+        ADD_DEBUG_LOG('writeDataConfig: ' . $key);
         $key = self::_ensureKeyFormat($key);
 
         // update process cache first
@@ -122,10 +125,11 @@ class MCore_Tool_Conf
         }
 
         $tempFilePath = $filePath . '.tmp';
-        ADD_DEBUG_LOG($tempFilePath);
 
         $output = "<?php\n\$data = " . var_export($data, true) . ";\nreturn \$data;\n";
         file_put_contents($tempFilePath, $output);
         rename($tempFilePath, $filePath);
+        ADD_DEBUG_LOG('writeDataConfig: ' . $tempFilePath);
+        ADD_DEBUG_LOG('writeDataConfig: ' . $filePath);
     }
 }

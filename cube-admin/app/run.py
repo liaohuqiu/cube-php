@@ -28,6 +28,7 @@ def msg(msg):
     logfp.flush()
 
 parent_pid = os.getpid()
+parent_pgid = os.getpgid(parent_pid)
 daemon_pid = os.fork()
 current_pid = os.getpid()
 msg('Fork in: %s  parent: %s, daemon: %s' % (current_pid, parent_pid, daemon_pid))
@@ -38,8 +39,8 @@ if daemon_pid != 0:
 child_pid = 0
 
 def sig_handler(sig, frame):
-    msg('Signal(%d) caught, kill process group: %s' % (sig, parent_pid))
-    os.killpg(parent_pid, signal.SIGTERM)
+    msg('Signal(%d) caught, kill process group: %s' % (sig, parent_pgid))
+    os.killpg(parent_pgid, signal.SIGTERM)
     sys.exit(0)
 
 signal.signal(signal.SIGTERM, sig_handler)
