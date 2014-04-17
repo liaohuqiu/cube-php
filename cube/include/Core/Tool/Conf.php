@@ -90,10 +90,15 @@ class MCore_Tool_Conf
         }
     }
 
-    public static function writeDataConfigByEnv($key, $data)
+    public static function updateDataConfigByEnv($key, $data)
     {
         $key = $key . '.' . ENV_TAG;
-        return self::writeDataConfig($key, $data);
+        return self::updateDataConfig($key, $data);
+    }
+
+    public static function updateDataConfig($key, $data)
+    {
+        return MCore_Mid_Servant::updateDataConfig($key, $data);
     }
 
     public static function writeDataConfig($key, $data)
@@ -106,15 +111,21 @@ class MCore_Tool_Conf
         $filePath = self::getDataConfigPath($key);
 
         $dir = dirname($filePath);
+        if (!is_writable($dir))
+        {
+            throw new Exception('this directory is not writable: ' . $dir);
+        }
+
         if (!file_exists($dir))
         {
             mkdir($dir, 0777, true);
         }
+
         $tempFilePath = $filePath . '.tmp';
+        ADD_DEBUG_LOG($tempFilePath);
 
         $output = "<?php\n\$data = " . var_export($data, true) . ";\nreturn \$data;\n";
         file_put_contents($tempFilePath, $output);
         rename($tempFilePath, $filePath);
     }
 }
-?>

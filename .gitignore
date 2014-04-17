@@ -1,6 +1,4 @@
 writable/log/
 writable/smarty/
-auto-gen*
 config/auto-gen*
-*/app/lock.*
-*/app/log.*
+*/app/run-*

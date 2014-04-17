@@ -10,7 +10,7 @@ var tmp_file = __dirname + '/auto-gen-res-list-info.json';
 var fs = require('fs');
 var child_process = require('child_process');
 var core_io = require('./core-io.js');
-child_process.evn = process.env;
+child_process.env = process.env;
 
 UpdateWatcher = function(){};
 UpdateWatcher.prototype = {

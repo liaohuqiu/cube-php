@@ -17,6 +17,7 @@ class MApps_Admin_Database_TableDeleteAjax extends MApps_AdminAjaxBase
             throw $ex;
         }
         $this->setData('kind', $kind);
+        MEngine_MysqlDeploy::updateDeployInfo();
     }
 
     private function _deleteSetting($kind)

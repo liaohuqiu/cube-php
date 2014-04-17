@@ -18,7 +18,6 @@ class MApps_Admin_UserLogin extends MApps_AdminPageBase
         $uid = MAdmin_UserRaw::checkUserThenGetUid($email, $pwd);
         if ($uid)
         {
-            ADD_DEBUG_LOG('setlogin');
             MAdmin_UserAuth::setLogin($uid, $salt, false);
             $this->go2('/admin');
         }

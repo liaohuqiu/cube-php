@@ -6,7 +6,7 @@ class MCore_Min_TableDeployMan
 {
     public static function updateDeployData($data)
     {
-        MCore_Tool_Conf::writeDataConfigByEnv('auto-gen-db-deploy', $data);
+        MCore_Tool_Conf::updateDataConfigByEnv('auto-gen-db-deploy', $data);
     }
 
     public static function getDeployData()

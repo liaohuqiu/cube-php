@@ -6,10 +6,10 @@
  */
 class MCore_Tool_Http
 {
-    public static function buildGetUrl($info,$url = "")
+    public static function buildGetUrl($info, $url = "")
     {
         $list = array();
-        foreach($info as $key=>$val)
+        foreach ($info as $key => $val)
         {
             $list[] ="$key=$val";
         }
@@ -23,7 +23,7 @@ class MCore_Tool_Http
         $pairs = explode("&", $str);
         foreach ($pairs as $pair)
         {
-            if($pair)
+            if ($pair)
             {
                 list($k, $v) = array_map("urldecode", explode("=", $pair));
                 $op[$k] = $v;
@@ -32,7 +32,7 @@ class MCore_Tool_Http
         return $op;
     }
 
-    public static function get($url, $param=array(), $headers=array(),$cookieArr = array(), $referer='', $agent='')
+    public static function get($url, $param = array(), $headers = array(),$cookieArr = array(), $referer = '', $agent = '')
     {
         if(!$agent)
         {
@@ -44,36 +44,33 @@ class MCore_Tool_Http
             $url .= http_build_query($param);
         }
 
-        $curl=curl_init();
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); //
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0); //
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 5);
-        curl_setopt($curl, CURLOPT_POST, false);
-        curl_setopt($curl, CURLOPT_USERAGENT, $agent);
-        curl_setopt($curl, CURLOPT_REFERER, $referer);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_COOKIESESSION,true);
-        curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, false);
+        $ch=curl_init();
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0); //
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); //
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_POST, false);
+        curl_setopt($ch, CURLOPT_USERAGENT, $agent);
+        curl_setopt($ch, CURLOPT_REFERER, $referer);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_COOKIESESSION,true);
+        curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, false);
 
         if(!empty($cookieArr))
         {
-            self::buildCookie($curl,$cookieArr);
+            self::buildCookie($ch,$cookieArr);
         }
-        $content = curl_exec($curl);
-        curl_close($curl);
+        $content = curl_exec($ch);
+        curl_close($ch);
 
         return $content;
     }
 
-    /**
-     * 设置请求的cookie头信息
-     */
-    private static function buildCookie($curl,$cookieArr)
+    private static function buildCookie($ch, $cookieArr)
     {
         if(empty($cookieArr))
         {
@@ -85,44 +82,48 @@ class MCore_Tool_Http
             $contentList[] = "$key=$value";
         }
         $cookieStr = implode("; ",$contentList);
-        curl_setopt($curl, CURLOPT_COOKIE, $cookieStr);
+        curl_setopt($ch, CURLOPT_COOKIE, $cookieStr);
         return true;
     }
 
-    public static function post($url, $param, $referer='', $agent='Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)', $headers=array(), $timeOut = 5)
+    public static function post($url, $param, $referer = '', $agent = '', $headers = array(), $timeOut = 5)
     {
         if (empty($param))
         {
             return false;
         }
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); //
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0); //
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-        curl_setopt($curl, CURLOPT_TIMEOUT, $timeOut);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_USERAGENT, $agent);
-        curl_setopt($curl, CURLOPT_REFERER, $referer);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_COOKIESESSION,true);
-        curl_setopt($curl, CURLOPT_HTTPPROXYTUNNEL, false);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeOut);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, $agent);
+        curl_setopt($ch, CURLOPT_REFERER, $referer);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_COOKIESESSION,true);
+        curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
         if(is_array($param))
         {
-            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($param));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($param));
         }
         else
         {
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $param);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $param);
         }
 
-        $content = curl_exec($curl);
-        curl_close($curl);
+        $content = curl_exec($ch);
+        if(curl_errno($ch))
+        {
+            return curl_error($ch);
+        }
+        curl_close($ch);
 
         return $content;
     }
@@ -199,64 +200,4 @@ class MCore_Tool_Http
         $multipartbody .= $endMPboundary;
         return array($boundary, $multipartbody);
     }
-
-    /**
-     * 用于腾讯微博
-     */
-    public static function http( $url , $params , $method='GET' , $multi = array() , $extheaders = array())
-    {
-        $method = strtoupper($method);
-        $ci = curl_init();
-        curl_setopt($ci, CURLOPT_USERAGENT, 'PHP-SDK OAuth2.0');
-        curl_setopt($ci, CURLOPT_CONNECTTIMEOUT, 3);
-        curl_setopt($ci, CURLOPT_TIMEOUT, 3);
-        curl_setopt($ci, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ci, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ci, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ci, CURLOPT_HEADER, false);
-        $headers = (array)$extheaders;
-        switch ($method)
-        {
-        case 'POST':
-            curl_setopt($ci, CURLOPT_POST, TRUE);
-            if (!empty($params))
-            {
-                if($multi)
-                {
-                    foreach($multi as $key => $file)
-                    {
-                        $params[$key] = '@' . $file;
-                    }
-                    curl_setopt($ci, CURLOPT_POSTFIELDS, $params);
-                    $headers[] = 'Expect: ';
-                }
-                else
-                {
-                    curl_setopt($ci, CURLOPT_POSTFIELDS, http_build_query($params));
-                }
-            }
-            break;
-        case 'DELETE':
-        case 'GET':
-            $method == 'DELETE' && curl_setopt($ci, CURLOPT_CUSTOMREQUEST, 'DELETE');
-            if (!empty($params))
-            {
-                $url = $url . (strpos($url, '?') ? '&' : '?')
-                    . (is_array($params) ? http_build_query($params) : $params);
-            }
-            break;
-        }
-        curl_setopt($ci, CURLINFO_HEADER_OUT, TRUE );
-        curl_setopt($ci, CURLOPT_URL, $url);
-        if($headers)
-        {
-            curl_setopt($ci, CURLOPT_HTTPHEADER, $headers );
-        }
-
-        $response = curl_exec($ci);
-        curl_close ($ci);
-        return $response;
-    }
 }
-
-?>

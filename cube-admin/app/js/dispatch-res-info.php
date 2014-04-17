@@ -56,8 +56,7 @@ class App extends MCore_Cli_ConsoleBase
         $resVersionList['js'][$versionJsId] = $versionJsUrl;
 
         $configKey = 'auto-gen-res-info';
-        $this->printInfo('writeDataConfig: ' . $configKey);
-        MCore_Tool_Conf::writeDataConfig($configKey,  $resVersionList);
+        MCore_Tool_Conf::updateDataConfig($configKey,  $resVersionList);
         $this->_outputJsInfoList($jsInfoList);
         return;
     }

@@ -31,6 +31,22 @@ $data = array (
         ),
       ),
     ),
+    's_user_info' => 
+    array (
+      'id_field' => 'uid',
+      'table_num' => '1',
+      'table_prefix' => 's_user_info',
+      'app' => NULL,
+      'db_name' => 'cube_dev',
+      'tables' => 
+      array (
+        0 => 
+        array (
+          'no' => '0',
+          'sid' => '1',
+        ),
+      ),
+    ),
   ),
 );
 return $data;

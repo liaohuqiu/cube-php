@@ -8,6 +8,11 @@ class MCore_Web_RequestDispatcher
         {
             header('Status: 404 Not Found');
             echo '<h1>404 Not Found</h1>';
+            if (!MCore_Tool_Env::isProd())
+            {
+                echo '<pre>';
+                var_export($request_info);
+            }
             return;
         }
         $app = new $class_name;

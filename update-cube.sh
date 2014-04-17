@@ -22,7 +22,6 @@ function update_dir()
 
 update_dir 'cube'
 update_dir 'cube-admin'
-update_dir 'cube-admin'
 update_dir 'htdocs_res/cube-admin-mix'
 update_dir 'htdocs_res/res/cube'
 update_dir 'htdocs_res/res/admin'
