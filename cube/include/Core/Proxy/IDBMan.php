@@ -2,7 +2,7 @@
 /**
  * DB 中间件抽象
  */
-interface MCore_Mid_IDBMan
+interface MCore_Proxy_IDBMan
 {
     /**
      * 查询一条sql

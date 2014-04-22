@@ -1,5 +1,5 @@
 <?php
-class MCore_Mid_Servant
+class MCore_Proxy_Servant
 {
     public static function cmd($cmd, $data)
     {

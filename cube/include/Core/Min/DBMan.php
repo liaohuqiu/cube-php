@@ -6,7 +6,7 @@
  * @subpackage  min
  * @author      huqiu
  */
-class MCore_Min_DBMan implements MCore_Mid_IDBMan
+class MCore_Min_DBMan implements MCore_Proxy_IDBMan
 {
     public function __construct()
     {

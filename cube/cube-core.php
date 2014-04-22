@@ -7,6 +7,7 @@ class Cube
 {
     private static $is_loaded = false;
     private static $include_dirs = array();
+    private static $class_map = array();
 
     /**
      * Add include path
@@ -14,6 +15,11 @@ class Cube
     public static function addIncludePath($path)
     {
         self::$include_dirs = array_merge(self::$include_dirs, (array) $path);
+    }
+
+    public static function addClassMap($map)
+    {
+        self::$class_map = array_merge(self::$class_map, $map);
     }
 
     public static function boot()
@@ -59,8 +65,11 @@ class Cube
         define('HYPHEN', '-');
         define('UNDERSCORE', '_');
         define('SYS_CODE', 'SRAIN');
-        define('MCACHE_KEY_PRE', APP_NAME);
 
+        if (!defined('MCACHE_KEY_PRE'))
+        {
+            define('MCACHE_KEY_PRE', APP_NAME . '_');
+        }
     }
 
     public static function autoload($class_name)
@@ -98,7 +107,6 @@ class Cube
 
     public static function register()
     {
-        spl_autoload_unregister('__autoload');
         spl_autoload_register(array('Cube', 'autoload'));
     }
 }

@@ -98,7 +98,7 @@ class MCore_Tool_Conf
 
     public static function updateDataConfig($key, $data)
     {
-        return MCore_Mid_Servant::updateDataConfig($key, $data);
+        return MCore_Proxy_Servant::updateDataConfig($key, $data);
     }
 
     public static function writeDataConfig($key, $data)

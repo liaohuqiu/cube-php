@@ -10,9 +10,9 @@ class MCore_Dao_DB
 
     public function __construct($dbMan = null)
     {
-        if($dbMan == null)
+        if ($dbMan == null)
         {
-            $dbMan = MCore_Mid_DBMan::create();
+            $dbMan = MCore_Proxy_DBMan::create();
         }
         $this->dbMan = $dbMan;
     }

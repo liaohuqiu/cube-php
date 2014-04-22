@@ -21,7 +21,7 @@ class MCore_Data_CacheOne
     {
         if ($dbMan == null)
         {
-            $dbMan = new MCore_Mid_DBMan();
+            $dbMan = new MCore_Proxy_DBMan();
         }
         $this->dbman = $dbMan;
     }
@@ -123,7 +123,7 @@ class MCore_Data_CacheOne
 
         foreach($mcKeys as $mcKey => $mcKey)
         {
-            $this->MCore_Mid_MCache->delete($mcKey);
+            $this->MCore_Proxy_MCache->delete($mcKey);
         }
     }
 
@@ -157,7 +157,7 @@ class MCore_Data_CacheOne
 
         if (self::$work)
         {
-            $cache = $this->MCore_Mid_MCache->getObj($mcKey);
+            $cache = $this->MCore_Proxy_MCache->getObj($mcKey);
 
             if (($cacheEmpty && $cache !== false) || !empty($cache))
             {
@@ -170,14 +170,14 @@ class MCore_Data_CacheOne
 
         if (!empty($data))
         {
-            $this->MCore_Mid_MCache->setObj($mcKey, $data, 86400);
+            $this->MCore_Proxy_MCache->setObj($mcKey, $data, 86400);
         }
         else
         {
             $data = array();
             if($cacheEmpty)
             {
-                $this->MCore_Mid_MCache->setObj($mcKey, $data, 600);
+                $this->MCore_Proxy_MCache->setObj($mcKey, $data, 600);
             }
         }
         return $data;
@@ -222,7 +222,7 @@ class MCore_Data_CacheOne
 
         if (self::$work)
         {
-            $caches = $this->MCore_Mid_MCache->getMultiObj($mcKeys);
+            $caches = $this->MCore_Proxy_MCache->getMultiObj($mcKeys);
         }
         else
         {
@@ -257,13 +257,13 @@ class MCore_Data_CacheOne
             {
                 if (!empty($info))
                 {
-                    $this->MCore_Mid_MCache->setObj($mcKey, $info, 86400);
+                    $this->MCore_Proxy_MCache->setObj($mcKey, $info, 86400);
                 }
                 else
                 {
                     if ($cacheEmpty)
                     {
-                        $this->MCore_Mid_MCache->setObj($mcKey, $info, 600);
+                        $this->MCore_Proxy_MCache->setObj($mcKey, $info, 600);
                     }
                 }
                 $result[$mcKey] = $info;

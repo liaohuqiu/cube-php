@@ -35,7 +35,7 @@ class MCore_Min_TableSchema
     {
         if(!$this->_info)
         {
-            !$dbMan && $dbMan = MCore_Mid_DBMan::create();
+            !$dbMan && $dbMan = MCore_Proxy_DBMan::create();
             $kind = $this->kind;
             $ret = $dbMan->sQuery($kind, 1, "desc $kind");
 

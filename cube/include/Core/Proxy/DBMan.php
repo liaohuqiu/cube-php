@@ -5,7 +5,7 @@
  * @author huqiu
  */
 
-class MCore_Mid_DBMan
+class MCore_Proxy_DBMan
 {
     public static function create()
     {
