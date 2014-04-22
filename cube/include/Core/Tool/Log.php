@@ -4,10 +4,16 @@
  *
  * @author huqiu
  */
+if (!is_writable(WRITABLE_DIR))
+{
+    throw new Exception('WRITABLE_DIR is not writable: ' . WRITABLE_DIR);
+}
 class MCore_Tool_Log
 {
     /**
      * level : dev / test /prod
+     * addDebugLog($msg);
+     * addDebugLog($logname, $msg, $level, $ip)
      */
     public static function addDebugLog()
     {
@@ -52,29 +58,38 @@ class MCore_Tool_Log
         self::addFileLog('debug_'.$logName, $desc);
     }
 
+    private static function wantFile($filename)
+    {
+        static $fps;
+        $dir = WRITABLE_DIR . '/log';
+        if (!$fps)
+        {
+            $fps = array();
+            if (!is_dir($dir))
+            {
+                mkdir($dir, 0777, true);
+            }
+        }
+        if (!isset($fps[$filename]))
+        {
+            $fn = $dir . DS . $filename;
+            if (!file_exists($fn))
+            {
+                touch($fn);
+                chmod($fn, 0666);
+            }
+            if (!is_writable($fn))
+            {
+                return;
+            }
+            $fps[$filename] = fopen($fn, 'a');
+        }
+        return $fps[$filename];
+    }
+
     public static function addFileLog($filename, $desc, $micro=false)
     {
-        if (!is_writable(WRITABLE_DIR))
-        {
-            throw new Exception('WRITABLE_DIR is not writable: ' . WRITABLE_DIR);
-        }
-
-        $dir = WRITABLE_DIR . '/log';
-        if (!is_dir($dir))
-        {
-            mkdir($dir, 0777, true);
-        }
-        $fn = $dir . DS . $filename;
-        if (!file_exists($fn))
-        {
-            touch($fn);
-            chmod($fn, 0666);
-        }
-        if (!is_writable($fn))
-        {
-            return;
-        }
-        $fp = fopen($fn, 'a');
+        $fp = self::wantFile($filename);
         if ($fp)
         {
             $time = date('Y-m-d H:i:s');
@@ -88,7 +103,6 @@ class MCore_Tool_Log
             }
             $flog = sprintf("%s\t%s\t%s\t%s\n",$time, self::getIp(), self::getPid(), $desc);
             fwrite($fp, $flog);
-            fclose($fp);
 
             $filesize = filesize($fn);
             if ($filesize >= 1024 * 1024 * 1024)

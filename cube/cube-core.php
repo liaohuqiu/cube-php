@@ -38,15 +38,15 @@ class Cube
     {
         if (!defined('CUBE_ROOT_DIR'))
         {
-            throw new Exception('constant CUBE_ROOT_DIR undifiend');
+            throw new Exception('constant CUBE_ROOT_DIR undefined');
         }
         if (!defined('ENV_TAG'))
         {
-            throw new Exception('constant ENV_TAG! undifiend, should be dev / test / prod');
+            throw new Exception('constant ENV_TAG! undefined, should be dev / test / prod');
         }
         if (!defined('APP_NAME'))
         {
-            throw new Exception('APP_NAME undifiend');
+            throw new Exception('APP_NAME undefined');
         }
         if (empty(self::$include_dirs))
         {
@@ -54,11 +54,11 @@ class Cube
         }
         if (!defined('CONFIG_DATA_DIR'))
         {
-            throw new Exception('CONFIG_DATA_DIR undifiend');
+            throw new Exception('CONFIG_DATA_DIR undefined');
         }
         if (!defined('WRITABLE_DIR'))
         {
-            throw new Exception('WRITABLE_DIR undifiend');
+            throw new Exception('WRITABLE_DIR undefined');
         }
 
         define('DS', '/');
@@ -95,7 +95,6 @@ class Cube
         foreach (self::$include_dirs as $include_path)
         {
             $class_file = $include_path . DS . $file_name;
-            // echo $class_file, '<br>';
             if (file_exists($class_file))
             {
                 require_once($class_file);
@@ -126,4 +125,3 @@ function ADD_DEBUG_LOG($v)
 {
     MCore_Tool_Log::addDebugLog($v);
 }
-?>
