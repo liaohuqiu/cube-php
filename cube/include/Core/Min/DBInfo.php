@@ -42,7 +42,7 @@ class MCore_Min_DBInfo extends MCore_Util_ArrayLike
 
     public function getConnectionStr($pre = 'mysql')
     {
-        $info = $this->_data;
+        $info = $this->data;
         $h = $info['h'];
         $P = $info['P'];
         $u = $info['u'];
@@ -59,8 +59,8 @@ class MCore_Min_DBInfo extends MCore_Util_ArrayLike
 
     public function getHostAndPortStr()
     {
-        $port = $this->_data["P"];
-        $host = $this->_data["h"];
+        $port = $this->data["P"];
+        $host = $this->data["h"];
         if(!empty($port) && strpos($host, ":") === false)
         {
             $host = "$host:$port";
