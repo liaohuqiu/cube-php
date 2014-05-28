@@ -125,3 +125,7 @@ function ADD_DEBUG_LOG($v)
 {
     MCore_Tool_Log::addDebugLog($v);
 }
+function add_error_log($msg)
+{
+    MCore_Tool_Log::addSysLog(APP_NAME . '-error', $msg);
+}
