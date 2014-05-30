@@ -113,14 +113,15 @@ class MCore_Tool_Log
         }
     }
 
-    function addSysLog($tag, $message,$app = APP_NAME, $priority = LOG_NOTICE)
+    public static function addSysLog($ident, $message, $priority = LOG_NOTICE)
     {
         if(!is_string($message))
         {
             $message = var_export($message,true);
         }
-        openlog(strtoupper($app), LOG_PID, LOG_LOCAL6);
-        syslog($priority, $tag . "\t" . $message);
+        $message = strtr($message, array("\n" => '\n'));
+        openlog($ident, LOG_PID, LOG_LOCAL6);
+        syslog($priority, $message);
         closelog();
     }
 

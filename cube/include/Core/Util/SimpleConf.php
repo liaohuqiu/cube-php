@@ -6,17 +6,21 @@
  */
 class MCore_Util_SimpleConf
 {
-    private $_confInfoListByKey;
-    private $_confInfoListByCode;
+    private $_confInfoListByKey = array();
+    private $_confInfoListByCode = array();
     private $_keyCodeMap = array();
 
-    function __construct($confInfoListMayByKey, $keyFieldName = "", $codeFieldName = "code")
+    function __construct($confInfoListMayByKey, $keyFieldName = '', $codeFieldName = 'code')
     {
         foreach($confInfoListMayByKey as $key => $info)
         {
             if($keyFieldName)
             {
                 $key = $info[$keyFieldName];
+            }
+            if (!is_array($info))
+            {
+                $info = array('code' => $info);
             }
             $code = $info[$codeFieldName];
             $this->_confInfoListByKey[$key] = $info;
@@ -52,14 +56,19 @@ class MCore_Util_SimpleConf
 
     function getKey($code)
     {
-        return array_search($code,$this->_keyCodeMap);
+        $ret = array_search($code,$this->_keyCodeMap);
+        if ($ret === false)
+        {
+            throw new Exception('code not found: ' . $code);
+        }
+        return $ret;
     }
 
     function getCode($key)
     {
-        if(!isset($this->_keyCodeMap[$key]))
+        if (!isset($this->_keyCodeMap[$key]))
         {
-            return false;
+            throw new Exception('key not found: ' . $key);
         }
         return $this->_keyCodeMap[$key];
     }
@@ -116,4 +125,3 @@ class MCore_Util_SimpleConf
         return array_flip($this->getCodeMapTo($fieldName));
     }
 }
-?>
