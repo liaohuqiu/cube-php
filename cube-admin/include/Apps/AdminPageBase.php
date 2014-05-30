@@ -49,7 +49,8 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
 
     public static function createDisplayView()
     {
-        $viewDisplyer = new MCore_Tool_Smarty(CUBE_ADMIN_ROOT_DIR . '/template');
+        // $viewDisplyer = new MCore_Tool_Smarty(CUBE_ADMIN_ROOT_DIR . '/template');
+        $viewDisplyer = new MCore_Web_SimpleView(CUBE_ADMIN_ROOT_DIR . '/template');
         $view = new MCore_Web_View($viewDisplyer);
         $baseData = array();
         $baseData['static_pre_path'] = 'http://' . MCore_Tool_Conf::getDataConfigByEnv('mix', 'static_res_host') . '/cube-admin-mix';
@@ -78,7 +79,7 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
 
         if ($this->user)
         {
-            $header_data['user'] = $this->user;
+            $header_data['user'] = $this->user->toArray();
             $header_data['title'] = $this->getTitle();
 
             $header_data['module_list'] = $this->moduleMan->getModuleList();

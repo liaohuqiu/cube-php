@@ -1,9 +1,0 @@
-<div class='ui_page'>
-    {{if $pageData.pagination.prevPageUrl}} <a href="{{$pageData.pagination.prevPageUrl}}">prev</a> {{else}}<a>prev</a>
-    {{/if}}| {{if $pageData.pagination.nextPageUrl}} <a href="{{$pageData.pagination.nextPageUrl}}">next</a>
-    {{else}}<a>next</a>{{/if}} <span>page: {{$pageData.pagination.currentPage}}
-        <select class="__j_pageinfo_num_perpage span1">
-            {{$pageData.pagination.numPerPageOptions nofilter}}
-        </select>items per page;
-        total pages: {{$pageData.pagination.totalPage}}; total items:{{$pageData.pagination.total}}</span>
-</div>

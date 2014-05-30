@@ -84,7 +84,6 @@ class MCore_Util_QMail
         $mailInfo['bodyList'] = $this->_getBodyList();
         $mailInfo['attachmentList'] = $this->_getAttachmentList();
 
-        //邮件数据
         $path = KXM_ROOT_DIR . '/data/template';
         $smarty = new MCore_Tool_Smarty($path);
         $smarty->assignRaw('mailInfo',$mailInfo);
@@ -144,7 +143,6 @@ class MCore_Util_QMail
 
     private function _checkPara()
     {
-        //检查收件人列表和抄送列表
         !is_array($this->_receiver) && $this->_receiver = array($this->_receiver);
         !$this->_receiver && $this->_error('receiver is empty');
         !is_array($this->_cc) && $this->_cc = array($this->_cc);
@@ -167,4 +165,3 @@ class MCore_Util_QMail
         throw new Exception($msg);
     }
 }
-?>

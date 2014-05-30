@@ -1,6 +1,6 @@
 <form class="form-horizontal" action="table-detail" method="post" name="add_form" onsubmit="return onSubmitForm();">
     <div class="col-md-4">
-        <input class='form-control' name="kind" type="text" value='{{$kind}}' placeholder='table kind'>
+        <input class='form-control' name="kind" type="text" value='<?php $kind ?>' placeholder='table kind'>
     </div>
     <div class="col-md-4">
         <button type="submit" class="btn btn-primary">query table information</button>
@@ -8,17 +8,16 @@
 </form>
 <hr/>
 <div class='col-md-10'>
-    <p>{{$kind}}: {{$list|count}} table(s).</p>
+    <p><?php echo $kind; ?>: <?php echo count($list); ?> table(s).</p>
 
-    {{foreach $list as $item}}
+    <?php foreach ($list as $item): ?>
     <p>
-    {{$item.tableName}}
-    In  {{$item['host']}},  sid(server id) is {{$item['sid']}}</p>
-    <p>Mysql Connection String(Maste):  {{$item.connectionStr}} -A</p>
-    {{/foreach}}
-
+    <?php $item->o('tableName'); ?>
+    In  <?php $item->o('host'); ?>,  sid(server id) is <?php $item->o('sid'); ?></p>
+    <p>Mysql Connection String(Maste):  <?php $item->o('connectionStr'); ?> -A</p>
+    <?php endforeach; ?>
     <pre>
-{{$sql nofilter}}
+<?php echo $sql; ?>
     </pre>
 
 </div>

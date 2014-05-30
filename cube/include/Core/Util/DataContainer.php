@@ -30,14 +30,20 @@ class MCore_Util_DataContainer
 
     public function setFuncArgsData($argv)
     {
+        $this->_data = self::mergeFuncArgsData($argv, $this->_data);
+        return $this;
+    }
+
+    public static function mergeFuncArgsData($argv, $data)
+    {
         if (count($argv) == 1)
         {
-            $this->_data = array_merge($this->_data, $argv[0]);
+            $data = array_merge($data, $argv[0]);
         }
         else
         {
-            $this->_data[$argv[0]] = $argv[1];
+            $data[$argv[0]] = $argv[1];
         }
-        return $this;
+        return $data;
     }
 }

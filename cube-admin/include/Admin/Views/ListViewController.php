@@ -32,15 +32,23 @@ class MAdmin_Views_ListViewController
 
     public function __construct($conf, $dataOne)
     {
-        $this->conf = $conf;
         $this->listHeader = new MAdmin_Views_ListHeader($conf['header']);
         $this->dataTable = new MAdmin_Views_ListDataTable($conf['table'], $dataOne);
 
         $this->pageQuickQuery = new MAdmin_Views_ListQuickQuery($conf['quickQuery']);
         $this->pageQuickQuery->addSearchInfo($conf['table']['search']);
 
-        $this->formatDataItem = $conf['format_data_item'];
-        $this->formatDisplayDataItem = $conf['format_display_data_item'];
+        if (isset($conf['format_data_item']))
+        {
+            $this->formatDataItem = $conf['format_data_item'];
+            unset($conf['format_data_item']);
+        }
+        if (isset($conf['format_display_data_item']))
+        {
+            $this->formatDisplayDataItem = $conf['format_display_data_item'];
+            unset($conf['format_display_data_item']);
+        }
+        $this->conf = $conf;
     }
 
     public function render()

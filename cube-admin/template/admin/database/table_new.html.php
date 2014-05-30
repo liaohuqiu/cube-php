@@ -3,7 +3,7 @@
         <label class="col-sm-2 control-label" for="_j_input_server_group_key">server_group_key</label>
         <div class="col-sm-4">
             <select class='form-control' name='server_group_key' id='_j_input_server_group_key'>
-                {{$page_data.serverGroupOptions nofilter}}
+                <?php $page_data->o('serverGroupOptions', false); ?>
             </select>
         </div>
     </div>

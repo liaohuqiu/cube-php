@@ -4,32 +4,33 @@
     <div class="form-group">
         <label class="col-md-4 control-label" for="uid">uid</label>
         <div class="col-md-4">
-            <input class='form-control' id="uid" type="text" name="uid" value='{{$page_data.uid}}' disabled>
+            <input class='form-control' id="uid" type="text" name="uid" value='<?php $page_data->o('uid'); ?>' disabled>
         </div>
     </div>
 
     <div class="form-group">
         <label class="col-md-4 control-label" for="user_name">Account</label>
         <div class="col-md-4">
-            <input class='form-control' id="user_name" type="text" name="email" value='{{$page_data.email}}' {{if $page_data.uid}}disabled{{/if}}>
+            <input class='form-control' id="user_name" type="text" name="email" value='<?php $page_data->o('email'); ?>'
+            <?php if ($page_data['uid']): ?>disabled<?php endif; ?>>
         </div>
     </div>
 
-    {{if !$page_data.uid}}
+    <?php if (!$page_data['uid']): ?>
     <div class="form-group">
         <label class="col-md-4 control-label" for="pwd">Password</label>
         <div class="col-md-4">
             <input class='form-control' id="pwd" type="text" name="pwd" value=''>
         </div>
     </div>
-    {{/if}}
+    <?php endif; ?>
 
     <div class="form-group">
         <label class="col-md-4 control-label" for="is_sysadmin">Is System Admin</label>
         <div class="col-md-4">
             <div class='checkbox'>
                 <label>
-                <input type='checkbox' id='is_sysadmin' name='is_sysadmin' value='1' {{$page_data.is_sysadmin_checked}} />
+                <input type='checkbox' id='is_sysadmin' name='is_sysadmin' value='1' <?php $page_data->o('is_sysadmin_checked'); ?> />
                 Check to set to System Admin
             </label>
             </div>
@@ -37,13 +38,13 @@
     </div>
 
     <div class="form-group">
-        <label class="col-md-4 control-label" for="{{$item.id}}">Authorization Keywords</label>
+        <label class="col-md-4 control-label" for="<?php $item->o('id'); ?>">Authorization Keywords</label>
         <div class="col-md-4">
-            {{foreach $page_data.auth_infos as $key => $item}}
+            <?php foreach ($page_data['auth_infos'] as $key => $item): ?>
             <label class='checkbox-inline'>
-                <input type="checkbox" {{$item.checked}} value="1" name='{{$item.name}}' />{{$key}}
+                <input type="checkbox" <?php $item->o('checked'); ?> value="1" name='<?php $item->o('name'); ?>' /><?php $key ?>
             </label>
-            {{/foreach}}
+            <?php endforeach; ?>
         </div>
     </div>
     <div class="form-group">

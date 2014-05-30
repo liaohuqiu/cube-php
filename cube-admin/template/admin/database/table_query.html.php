@@ -1,4 +1,4 @@
-<div class="form-horizontal" action='{{$pageData.post_url}}' method='post'>
+<div class="form-horizontal">
     <div class="form-group">
         <label class="col-sm-2 control-label" for="_j_id_input_kind">table kind</label>
         <div class="col-sm-4">
