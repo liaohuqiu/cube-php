@@ -64,7 +64,10 @@ class MCore_Min_DBConection
     public function selectDB($dbName = '')
     {
         !$dbName && $dbName = $this->_dbConfInfo['db'];
-        MCore_Tool_Log::addDebugLog('query_min', $this->_dbConfInfo['key'] . ' selectDB: ' . $dbName);
+        if (!\MCore_Tool_Env::isProd())
+        {
+            MCore_Tool_Log::addDebugLog('query', $this->_dbConfInfo['key'] . ' selectDB: ' . $dbName);
+        }
         if (!$dbName)
         {
             return false;
@@ -98,7 +101,11 @@ class MCore_Min_DBConection
     public function query($sql)
     {
         $this->_activate();
-        MCore_Tool_Log::addDebugLog("query_min", $this->_dbConfInfo['key'] . ' ' . $sql);
+
+        if (!\MCore_Tool_Env::isProd())
+        {
+            MCore_Tool_Log::addDebugLog("query", $this->_dbConfInfo['key'] . ' ' . $sql);
+        }
         $sResult = mysql_query($sql, $this->_connection);
         if(false === $sResult)
         {

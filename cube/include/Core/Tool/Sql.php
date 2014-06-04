@@ -108,15 +108,20 @@ class MCore_Tool_Sql
     public static function delete($table, $whereField)
     {
         $where = '';
+        $list = array();
         foreach ($whereField as $k=>$v)
         {
-            if(0 != strlen($where))
+            if (is_numeric($v))
             {
-                $where .= " and ";
+                $list[] = $k . ' = ' . $v;
             }
-            $where .= $k . " = '" . self::escape_string($v) . "'";
+            else
+            {
+                $list[] = $k . " = '" . self::escape_string($v) . "'";
+            }
         }
-        $sql = self::deleteRawWhere($table,$where);
+        $where = implode(' and ', $list);
+        $sql = self::deleteRawWhere($table, $where);
         return $sql;
     }
 
@@ -215,39 +220,53 @@ class MCore_Tool_Sql
         return $sql;
     }
 
-    public static function where($whereField)
+    public static function where($whereField, $where = '')
     {
-        $where = '';
-        if($whereField)
+        if ($whereField)
         {
-            foreach ($whereField as $k => $v)
+            $list = array();
+            if (!empty($where))
             {
-                if(is_array($v) && empty($v))
+                $list[] = $where;
+            }
+            foreach ($whereField as $k=>$v)
+            {
+                if (is_array($v) && empty($v))
                 {
                     continue;
                 }
-                if(0 != strlen($where))
-                {
-                    $where .= " and ";
-                }
-                if(is_array($v))
+                if (is_array($v))
                 {
                     $v = array_unique($v);
-                    if(count($v) == 1)
+                    if (count($v) == 1)
                     {
-                        $where .= $k . " = '" . self::escape_string(current($v)) . "'";
+                        $v = current($v);
                     }
                     else
                     {
-                        $str = implode("','",array_map('self::escape_string',$v));
-                        $where .= $k . " in ('$str')";
+                        if (is_numeric(current($v)))
+                        {
+                            $str = implode(',', $v);
+                            $list[] = $k . " in ($str)";
+                        }
+                        else
+                        {
+                            $str = implode("','", array_map('self::escape_string',$v));
+                            $list[] = $k . " in ('$str')";
+                        }
+                        continue;
                     }
+                }
+                if (is_numeric($v))
+                {
+                    $list[] = $k . ' = ' . $v;
                 }
                 else
                 {
-                    $where .= $k . " = '" . self::escape_string($v) . "'";
+                    $list[] = $k . " = '" . self::escape_string($v) . "'";
                 }
             }
+            $where = implode(' and ', $list);
         }
         return $where;
     }
@@ -287,11 +306,11 @@ class MCore_Tool_Sql
     public static function select($table, $selectField, $whereField, $order, $start, $num, $foundRows = false)
     {
         $selectField = (array) $selectField;
-        $select = implode(",",$selectField);
+        $select = implode(",", $selectField);
 
         $where = self::where($whereField);
 
-        if($foundRows)
+        if ($foundRows)
         {
             $sql = "select SQL_CALC_FOUND_ROWS " . $select . " from " . $table;
         }

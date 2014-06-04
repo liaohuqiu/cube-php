@@ -6,7 +6,7 @@
  */
 class MCore_Min_DBInfo extends MCore_Util_ArrayLike
 {
-    private static $_KEYS = array('h', 'p', 'u', 'P', 'db');
+    private static $_KEYS = array('h', 'P', 'db');
     public function __construct($h, $u, $p, $P, $db, $key)
     {
         if (!$h || !$u)
