@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS server_setting (
+CREATE TABLE IF NOT EXISTS sys_sever_setting (
     sid int(11) NOT NULL auto_increment,
     group_key varchar(50) NOT NULL default '',
     master_sid int(11) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS server_setting (
     KEY group_key (group_key)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS kind_setting (
+CREATE TABLE IF NOT EXISTS sys_kind_setting (
     kind varchar(64) NOT NULL,
     table_prefix varchar(64) NOT NULL,
     table_num int(11) NOT NULL,
@@ -27,16 +27,9 @@ CREATE TABLE IF NOT EXISTS kind_setting (
     UNIQUE KEY table_prefix (table_prefix)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS table_setting (
+CREATE TABLE IF NOT EXISTS sys_table_setting (
     kind varchar(64) NOT NULL,
     no int(11) NOT NULL,
     sid int(11) NOT NULL,
     UNIQUE KEY kind (kind,no)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-CREATE TABLE IF NOT EXISTS variable_setting (
-    name varchar(256) NOT NULL,
-    value varchar(256) NOT NULL,
-    mtime timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-    PRIMARY KEY  (name)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1

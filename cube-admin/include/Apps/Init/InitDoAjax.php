@@ -2,7 +2,6 @@
 class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
 {
     private $dbInfo;
-    private $dbList;
     private $connection;
     private $input;
 
@@ -34,10 +33,7 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
         }
         else if ($cmd == 'get-config')
         {
-            if ($this->checkDB())
-            {
-                $this->getConfigInfo();
-            }
+            $this->getConfigInfo();
         }
         else if ($cmd == 'reset')
         {
@@ -51,35 +47,17 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
         $sysDBName = $dbInfo['db'];
         $userDBName = $this->input['user_db'];
         $userPwd = $this->input['user_pwd'];
-        $adminTableDBName = $this->input['user_db'];
+        $adminUserDB = $this->input['user_db'];
         $adminUserTable = $this->input['user_table'];
         $sysDBKey = $this->input['db_key'];
 
         // check input
-        $existent = $this->checkHasDB($sysDBName);
-        if ($existent)
-        {
-            $this->setData('error_keys', array('db_name'));
-            $this->setError('This database has been existent: ' . $sysDBName);
-            return;
-        }
-        $existent = $this->checkHasDB($userDBName);
-        if ($existent)
-        {
-            $this->setData('error_keys', array('user_db'));
-            $this->setError('This database has been existent: ' . $userDBName);
-            return;
-        }
         if (!$userPwd)
         {
             $this->setData('error_keys', array('user_pwd'));
             $this->setError('System admin user password is emtpy');
             return;
         }
-
-        // create databases
-        MEngine_EngineDB::createDB($this->connection, $sysDBName);
-        MEngine_EngineDB::createDB($this->connection, $userDBName);
 
         // create system tables
         $this->connection->selectDB($sysDBName);
@@ -96,7 +74,7 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
             $ret = $this->connection->query($sql);
         }
 
-        // add system config db to `server_setting`
+        // add system config db to `sys_sever_setting`
         $db = MEngine_EngineDB::fromDBInfo($dbInfo);
 
         $info = array();
@@ -105,14 +83,14 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
         $info['group_key'] = $sysDBKey;
         $info['user'] = $dbInfo['u'];
         $info['passwd'] = $dbInfo['p'];
-        $ret = $db->insert('server_setting', $info, array());
+        $ret = $db->insert('sys_sever_setting', $info, array());
 
         // create table
         $sqlContent = file_get_contents(CUBE_DEV_ROOT_DIR . '/data/admin.sql');
         $sqlContent = str_replace('{admin_user_table}', $adminUserTable, $sqlContent);
 
         $creator = new MEngine_MysqlTableCreator($db);
-        $creator->createTable($sysDBKey, $adminTableDBName, $sqlContent);
+        $creator->createTable($sysDBKey, $adminUserDB, $sqlContent);
 
         // set data to dataconfig so that Min DBMan will work.
         MEngine_SysConfig::updateSysConfig($this->buildSysConfig());
@@ -157,44 +135,21 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
     private function clearSetting()
     {
         $sysDBName = $this->dbInfo['db'];
-        $existent = $this->checkHasDB($sysDBName);
-        if ($existent)
+        $this->connection->selectDB($sysDBName);
+        $list = array('sys_sever_setting', 'sys_table_setting', 'sys_kind_setting');
+        foreach ($list as $table)
         {
-            $sql = 'drop database ' . $sysDBName;
+            $sql = 'drop table if exists ' . $table;
             $this->connection->query($sql);
         }
 
         $userDBName = $this->input['user_db'];
-        $existent = $this->checkHasDB($userDBName);
-        if ($existent)
-        {
-            $sql = 'drop database ' . $userDBName;
-            $this->connection->query($sql);
-        }
+        $adminUserTable = $this->input['user_table'];
+        $this->connection->selectDB($userDBName);
+        $sql = 'drop table if exists ' . $adminUserTable;
+        $this->connection->query($sql);
 
         $this->popDialog('succ', 'Done');
-    }
-
-    private function checkDB()
-    {
-        $sysDBName = $this->dbInfo['db'];
-        $existent = $this->checkHasDB($sysDBName);
-        if (!$existent)
-        {
-            $this->setData('error_keys', array('db_name'));
-            $this->setError('This database is not existent: ' . $sysDBName);
-            return false;
-        }
-
-        $userDBName = $this->input['user_db'];
-        $existent = $this->checkHasDB($userDBName);
-        if (!$existent)
-        {
-            $this->setData('error_keys', array('user_db'));
-            $this->setError('This database is not existent: ' . $userDBName);
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -207,7 +162,7 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
             $dbInfo = $this->dbInfo;
             $dbInfo['db'] = '';
             $this->connection = MCore_Min_DBConection::get($dbInfo);
-            $this->dbList = $this->connection->query('show databases');
+            $dbList = $this->connection->query('show databases');
         }
         catch (MCore_Min_DBException $ex)
         {
@@ -216,22 +171,23 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
             $this->setError('Can not connect to this database server.');
             return false;
         }
-        return true;
-    }
 
-    /**
-     * check is the database by given name is in the database server
-     */
-    private function checkHasDB($dbName)
-    {
-        if ($this->dbList->where(array('Database' => $dbName))->count() == 0)
+        $sysDBName = $this->dbInfo['db'];
+        if ($dbList->where(array('Database' => $sysDBName))->count() == 0)
         {
+            $this->setData('error_keys', array('db_name'));
+            $this->setError('This database is not existent: ' . $sysDBName);
             return false;
         }
-        else
+
+        $userDBName = $this->input['user_db'];
+        if ($dbList->where(array('Database' => $userDBName))->count() == 0)
         {
-            return true;
+            $this->setData('error_keys', array('user_db'));
+            $this->setError('This database is not existent: ' . $userDBName);
+            return false;
         }
+        return true;
     }
 
     private function formatDBInfo($data)

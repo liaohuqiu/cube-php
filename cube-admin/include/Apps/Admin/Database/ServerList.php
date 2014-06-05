@@ -8,7 +8,7 @@ class MApps_Admin_Database_ServerList extends MApps_AdminPageBase
     protected function outputBody()
     {
         $table = array(
-            'kind' => 'server_setting',
+            'kind' => 'sys_sever_setting',
             'default_order' => 'order by sid asc',
         );
 

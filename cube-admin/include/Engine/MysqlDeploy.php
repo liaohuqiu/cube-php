@@ -3,9 +3,9 @@ class MEngine_MysqlDeploy
 {
     public static function getDeployData($configDataOne)
     {
-        $serverSettings = $configDataOne->select('server_setting', array('*'), array('active' => 1));
-        $tableSetting = $configDataOne->select('table_setting', array('*'), array());
-        $kindSetting = $configDataOne->select('kind_setting', array('*'), array());
+        $serverSettings = $configDataOne->select('sys_sever_setting', array('*'), array('active' => 1));
+        $tableSetting = $configDataOne->select('sys_table_setting', array('*'), array());
+        $kindSetting = $configDataOne->select('sys_kind_setting', array('*'), array());
 
         $serverList = array();
         foreach ($serverSettings as $item)
@@ -53,12 +53,12 @@ class MEngine_MysqlDeploy
     public static function createTable($configDataOne, $sids, $dbName, $kind, $idField, $tableNum, $sql)
     {
         $sidLength = count($sids);
-        $exist = $configDataOne->select('kind_setting', array('*'), array('kind' => $kind));
+        $exist = $configDataOne->select('sys_kind_setting', array('*'), array('kind' => $kind));
         if ($exist->count() > 0 )
         {
             return false;
         }
-        $exist = $configDataOne->select('table_setting', array('*'), array('kind' => $kind));
+        $exist = $configDataOne->select('sys_table_setting', array('*'), array('kind' => $kind));
         if ($exist->count() > 0 )
         {
             return false;
@@ -72,10 +72,10 @@ class MEngine_MysqlDeploy
         $info['app_name'] = $dbName;
 
         // add kind setting info
-        $ret = $configDataOne->insert('kind_setting', $info);
+        $ret = $configDataOne->insert('sys_kind_setting', $info);
         if (!$ret['affected_rows'])
         {
-            throw new Exception('Fail to add kind_setting for: ' . $kind .  ' error: ' . var_export($ret, true));
+            throw new Exception('Fail to add sys_kind_setting for: ' . $kind .  ' error: ' . var_export($ret, true));
         }
 
         // add table setting info(s)
@@ -89,10 +89,10 @@ class MEngine_MysqlDeploy
             $serverIndex = $i % $sidLength;
             $itemInfo['sid'] = $sids[$serverIndex];
 
-            $ret = $configDataOne->insert('table_setting', $itemInfo);
+            $ret = $configDataOne->insert('sys_table_setting', $itemInfo);
             if (!$ret['affected_rows'])
             {
-                $msg = sprintf('Failt to add table_setting: %s $s %s', $kind, $i, $ret['error']);
+                $msg = sprintf('Failt to add sys_table_setting: %s $s %s', $kind, $i, $ret['error']);
                 throw new Exception($msg);
             }
         }
@@ -106,8 +106,8 @@ class MEngine_MysqlDeploy
         }
         catch (Exception $ex)
         {
-            $configDataOne->delete('kind_setting', array('kind' => $kind));
-            $configDataOne->delete('table_setting', array('kind' => $kind));
+            $configDataOne->delete('sys_kind_setting', array('kind' => $kind));
+            $configDataOne->delete('sys_table_setting', array('kind' => $kind));
             throw $ex;
         }
 

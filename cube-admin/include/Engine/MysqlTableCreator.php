@@ -23,7 +23,7 @@ class MEngine_MysqlTableCreator
         $where = array();
         $where['group_key'] = $serverGroupKey;
         $where['master_sid'] = 0;
-        $serverList = $this->db->select('server_setting', array('*'), $where);
+        $serverList = $this->db->select('sys_sever_setting', array('*'), $where);
         $sids = array();
 
         // ensure every database for tables is ready.
