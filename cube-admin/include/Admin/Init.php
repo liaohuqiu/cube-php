@@ -8,11 +8,13 @@ class MAdmin_Init
 {
     public static function checkInit()
     {
-        $sys_config_path = MEngine_EngineDB::getSysConfigPath();
+        return true;
+        $sys_config_path = MEngine_SysConfig::getSysConfigPath();
         $deploy_data_path = MCore_Min_TableConfig::getConfigPath();
 
         if (!file_exists($sys_config_path) || !file_exists($deploy_data_path))
         {
+            return false;
         }
         $sysConfig = MEngine_SysConfig::getSysConfig();
     }
