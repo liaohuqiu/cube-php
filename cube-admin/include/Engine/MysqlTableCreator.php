@@ -18,7 +18,7 @@ class MEngine_MysqlTableCreator
         return $this->create($serverGroupKey, $dbName, $sqlContent, $onlyThisTable);
     }
 
-    public function createTable($serverGroupKey, $dbName, $sqlContent, $onlyThisTable = '', $onlyScheme)
+    public function createTable($serverGroupKey, $dbName, $sqlContent, $onlyThisTable = '', $onlyScheme = false)
     {
         $where = array();
         $where['group_key'] = $serverGroupKey;
