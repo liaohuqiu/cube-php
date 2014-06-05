@@ -14,8 +14,6 @@ class MCore_Tool_Conf
         {
             $key = $key . '.' . ENV_TAG;
         }
-        add_debug_log($key);
-        add_debug_log($data);
         self::$_includeConfFileCache[$key] = $data;
     }
 
@@ -36,28 +34,44 @@ class MCore_Tool_Conf
         return $key;
     }
 
-    public static function getDataConfigByEnv($key, $throwException = true)
+    /**
+     *  flatten it first, for he parent function my call this method in this way:
+     *
+     *      function getSysConfig()
+     *      {
+     *          return MCore_Tool_Conf::getDataConfig(func_get_args());
+     *      }
+     *
+     *      or
+     *
+     *      function getSysConfig()
+     *      {
+     *          return MCore_Tool_Conf::getDataConfig('sys-config', func_get_args());
+     *      }
+     */
+    public static function getDataConfig()
     {
-        $argv = func_get_args();
-        $argv[0] = $key . '.' . ENV_TAG;
-        $argc = func_num_args();
-        return self::_callGetDataConfig($argv, $argc);
+        $argv = MCore_Tool_Array::flatten(func_get_args());
+        return self::_callGetDataConfig($argv);
+    }
+
+    public static function getDataConfigByEnv()
+    {
+        $argv = MCore_Tool_Array::flatten(func_get_args());
+        $argv[0] .= '.' . ENV_TAG;
+        return self::_callGetDataConfig($argv);
     }
 
     /**
      *  ($key, ..., $throwException);
+     *
      *  first key is the file base name in data-config directory.
      *  the other keys are the key of the config in nested array.
+     *
      */
-    public static function getDataConfig()
+    private static function _callGetDataConfig($argv)
     {
-        $argv = func_get_args();
-        $argc = func_num_args();
-        return self::_callGetDataConfig($argv, $argc);
-    }
-
-    private static function _callGetDataConfig($argv, $argc)
-    {
+        $argc = count($argv);
         $throwException = true;
         if (is_bool($argv[$argc - 1]))
         {
@@ -132,6 +146,7 @@ class MCore_Tool_Conf
         file_put_contents($tempFilePath, $output);
         rename($tempFilePath, $filePath);
     }
+
     public static function formatConfigData($data)
     {
         return "<?php\n\$data = " . var_export($data, true) . ";\nreturn \$data;\n";

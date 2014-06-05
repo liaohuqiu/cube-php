@@ -8,6 +8,7 @@ K.App('admin/AInit', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'core/aja
         events: {
             'click #j_btn_reset': 'clickReset',
             'click #j_btn_deploy': 'clickDeploy',
+            'click #j_btn_check_deploy': 'clickCheckDeploy',
             'click #j_btn_get_config_info': 'clickGetConfigInfo',
             'click #j_btn_check_config': 'clickCheckConfigFile',
         },
@@ -34,7 +35,7 @@ K.App('admin/AInit', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'core/aja
         },
 
         clickReset: function() {
-            var msg = 'Are you sure?';
+            var msg = 'Are you sure to clear all setting?';
             var data = this.getInputData('reset');
             if (!data)
                 return;
@@ -49,8 +50,8 @@ K.App('admin/AInit', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'core/aja
                         that.showErrorInput(ret.data.error_keys);
                 }).send();
             };
-            reset();
-            // MsgBox.confirm(msg, {on_ok: reset});
+            // reset();
+            MsgBox.confirm(msg, {on_ok: reset});
         },
 
         clickGetConfigInfo: function() {
@@ -74,6 +75,14 @@ K.App('admin/AInit', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'core/aja
             }).setErrorHandler(function(ret){
                 if (ret && ret.data)
                     that.showErrorInput(ret.data.error_keys);
+            }).send();
+        },
+
+        clickCheckDeploy: function() {
+            var data = this.getInputData('check-deploy');
+            var request = Request.create('/init/init-do-ajax');
+            request.setData(data).setHandler(function(ret){
+            }).setErrorHandler(function(ret){
             }).send();
         },
 

@@ -16,6 +16,14 @@ class MEngine_SysConfig
 
     public static function getSysConfig()
     {
-        return MCore_Tool_Conf::getDataConfigByEnv('sys-config', 'sys_config_db');
+        return MCore_Tool_Conf::getDataConfigByEnv('sys-config', func_get_args());
+    }
+
+    public static function buildSysConfig($dbInfo, $userTableName)
+    {
+        $sysConfig = array();
+        $sysConfig['sys_config_db'] = $dbInfo;
+        $sysConfig['admin_user_table'] = $userTableName;
+        return $sysConfig;
     }
 }

@@ -120,7 +120,7 @@ class MCore_Tool_CssJs
         static $info;
         if (!$info)
         {
-            $info = MCore_Tool_Conf::getDataConfig('auto-gen-res-info');
+            $info = MCore_Tool_Conf::getDataConfig('res-info');
         }
         return $info;
     }

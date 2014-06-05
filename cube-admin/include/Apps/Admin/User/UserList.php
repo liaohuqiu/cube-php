@@ -7,7 +7,7 @@ class MApps_Admin_User_UserList extends MApps_AdminPageBase
 
     protected function outputBody()
     {
-        $table_kind_name = MCore_Tool_Conf::getDataConfigByEnv('sys-config', 'admin_user_table');
+        $table_kind_name = MEngine_SysConfig::getSysConfig('admin_user_table');
         $table = array(
             'kind' => $table_kind_name,
             'default_order' => 'order by sid asc',

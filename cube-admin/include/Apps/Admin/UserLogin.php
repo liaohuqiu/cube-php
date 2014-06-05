@@ -3,6 +3,10 @@ class MApps_Admin_UserLogin extends MApps_AdminPageBase
 {
     protected function checkAuth()
     {
+        if (!MAdmin_Init::checkInit())
+        {
+            $this->go2('/init');
+        }
     }
 
     protected function main()

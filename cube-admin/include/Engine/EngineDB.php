@@ -6,7 +6,7 @@ class MEngine_EngineDB
         static $db;
         if (!$db)
         {
-            $rawDbInfo = MEngine_SysConfig::getSysConfig();
+            $rawDbInfo = MEngine_SysConfig::getSysConfig('sys_config_db');
             $db = self::fromDBInfo($rawDbInfo);
         }
         return $db;

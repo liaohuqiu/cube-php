@@ -1,6 +1,6 @@
-<div class='mt-10'>
+<div class='col-sm-offset-2 col-sm-8 mt-10'>
     <?php if (!$page_data['error_msg'] && !$page_data['warning_msg']): ?>
-    <div class="alert alert-success">Every thing is ready.</div>
+    <div class="alert alert-success"><?php $page_data->o('ok_msg', false); ?></div>
     <?php else:?>
     <?php if ($page_data['error_msg']): ?>
     <div class="alert alert-danger"><?php $page_data->o('error_msg', false); ?></div>
@@ -10,6 +10,7 @@
     <?php endif;?>
     <?php endif;?>
 </div>
+<?php if (!$page_data['has_init']): ?>
 <div class='row'>
     <div class="form-horizontal col-md-6" role="form">
         <h4>Database for System Config</h2>
@@ -88,6 +89,7 @@
         <button type="button" class="btn btn-danger mr-10" id='j_btn_reset'>Clear All Config</button>
         <button type="button" class="btn btn-outline mr-10" id='j_btn_deploy'>Do Deploy</button>
         <button type="button" class="btn btn-outline mr-10" id='j_btn_get_config_info'>Get Config Information</button>
+        <button type="button" class="btn btn-outline mr-10" id='j_btn_check_deploy'>Check Deploy</button>
     </div>
 </div>
 <div class='row' id='j_id_step2'>
@@ -105,3 +107,4 @@
     </div>
 </div>
 <hr class='mb-50'>
+<?php endif;?>

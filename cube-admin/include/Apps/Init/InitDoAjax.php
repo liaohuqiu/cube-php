@@ -15,6 +15,12 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
         $data = $this->request->getData('data', 'r', 'json');
         $cmd = $this->request->getData('cmd');
 
+        if ($cmd == 'check-deploy')
+        {
+            $this->checkDeploy();
+            return;
+        }
+
         $this->dbInfo = $this->formatDBInfo($data);
         $this->input = $data;
         if (!$this->checkConnection())
@@ -109,11 +115,23 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
         $creator->createTable($sysDBKey, $adminTableDBName, $sqlContent);
 
         // set data to dataconfig so that Min DBMan will work.
-        MEngine_SysConfig::updateSysConfig($this->getSysConfig());
+        MEngine_SysConfig::updateSysConfig($this->buildSysConfig());
         MCore_Min_TableConfig::setDeployData($this->getDeployData());
 
         MAdmin_UserRaw::create($this->input['user_account'], $userPwd, array(), 1);
+
         $this->getConfigInfo();
+        $this->popDialog('succ', 'Deployment has been done. Copy the configuration to the destination file.');
+    }
+
+    private function checkDeploy()
+    {
+        $ret = MAdmin_Init::checkInit();
+
+        if ($ret)
+        {
+            $this->popDialog('succ', 'Deployment has been done. Click <a href="/">HERE</a> to login.');
+        }
     }
 
     private function getDeployData()
@@ -123,18 +141,15 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
         return $deployData;
     }
 
-    private function getSysConfig()
+    private function buildSysConfig()
     {
-        $sysConfig = array();
-        $sysConfig['sys_config_db'] = $this->dbInfo;
-        $sysConfig['admin_user_table'] = $this->input['user_table'];
-        return $sysConfig;
+        return MEngine_SysConfig::buildSysConfig($this->dbInfo, $this->input['user_table']);
     }
 
     private function getConfigInfo()
     {
         $data = array();
-        $data['sys_config_str'] = MCore_Tool_Conf::formatConfigData($this->getSysConfig());
+        $data['sys_config_str'] = MCore_Tool_Conf::formatConfigData($this->buildSysConfig());
         $data['deploy_data_str'] = MCore_Tool_Conf::formatConfigData($this->getDeployData());
         $this->setData($data);
     }

@@ -36,7 +36,7 @@ class MCore_Tool_Array
 
     public static function list2Map($list, $key, $value_key = null)
     {
-        if(empty($list) || (!is_array($list) && ($list instanceof MCore_Util_ArrayLike)))
+        if(empty($list) || (!is_array($list)))
         {
             return array();
         }
@@ -303,16 +303,20 @@ class MCore_Tool_Array
         return $ret;
     }
 
-    public static function toArray($itemOrArray)
+    public static function flatten($array)
     {
-        if (is_array($itemOrArray))
+        $return = array();
+        foreach ($array as $key => $value)
         {
-            return $itemOrArray;
+            if (is_array($value))
+            {
+                $return = array_merge($return, self::flatten($value));
+            }
+            else
+            {
+                $return[$key] = $value;
+            }
         }
-        else
-        {
-            return array($itemOrArray);
-        }
+        return $return;
     }
 }
-?>
