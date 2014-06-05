@@ -8,7 +8,7 @@ class MApps_Init_InitIndex extends MApps_AdminPageBase
     protected function main()
     {
         $data = array();
-        $hasInit = MAdmin_Init::checkInit();
+        // $hasInit = MAdmin_Init::checkInit();
         $data['has_init'] = $hasInit;
         if ($hasInit)
         {

@@ -125,7 +125,7 @@ class MAdmin_Module
 
     public function userHasAuth()
     {
-        if ($this->user->isSystemAdmin())
+        if ($this->user['is_sysadmin'])
         {
             return true;
         }

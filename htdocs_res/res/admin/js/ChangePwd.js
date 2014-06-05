@@ -22,7 +22,7 @@ define('admin/ChangePwd', ['core/ajax/Request', 'core/dialog/MsgBox'], function(
                 new_pwd1: new_pwd1,
                 new_pwd2: new_pwd2,
             };
-            var request = Request.create('/admin/user-change-pwd-ajax');
+            var request = Request.create('/admin/user/change-pwd-ajax');
             if (!request)
                 return;
             var me = this;

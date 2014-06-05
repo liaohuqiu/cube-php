@@ -10,13 +10,13 @@ K.App('admin/AAdminGlobal', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'c
         },
 
         clickChangePwd: function() {
-            AsyncDialog.open('/admin/user-change-pwd-dialog');
+            AsyncDialog.open('/admin/user/change-pwd-dialog');
         },
 
         clickLogout: function() {
             var msg = 'Are you sure to logout?';
             MsgBox.confirm(msg, {on_ok: function() {
-                var request = Request.create('/admin/user-logout-ajax');
+                var request = Request.create('/admin/user/logout-ajax');
                 if (!request)
                     return;
                 var that = this;

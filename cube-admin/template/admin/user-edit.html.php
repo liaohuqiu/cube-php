@@ -12,7 +12,7 @@
         <label class="col-md-4 control-label" for="user_name">Account</label>
         <div class="col-md-4">
             <input class='form-control' id="user_name" type="text" name="email" value='<?php $page_data->o('email'); ?>'
-            <?php if ($page_data['uid']): ?>disabled<?php endif; ?>>
+            <?php if ($page_data['uid']): ?>disabled<?php endif; ?>/>
         </div>
     </div>
 
@@ -30,19 +30,19 @@
         <div class="col-md-4">
             <div class='checkbox'>
                 <label>
-                <input type='checkbox' id='is_sysadmin' name='is_sysadmin' value='1' <?php $page_data->o('is_sysadmin_checked'); ?> />
-                Check to set to System Admin
-            </label>
+                    <input type='checkbox' id='is_sysadmin' name='is_sysadmin' value='1' <?php $page_data->o('is_sysadmin_checked'); ?> />
+                    Check to set to System Admin
+                </label>
             </div>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-md-4 control-label" for="<?php $item->o('id'); ?>">Authorization Keywords</label>
+        <label class="col-md-4 control-label" for="">Authorization Keywords</label>
         <div class="col-md-4">
             <?php foreach ($page_data['auth_infos'] as $key => $item): ?>
             <label class='checkbox-inline'>
-                <input type="checkbox" <?php $item->o('checked'); ?> value="1" name='<?php $item->o('name'); ?>' /><?php $key ?>
+                <input type="checkbox" <?php $item->o('checked'); ?> value="1" name='<?php $item->o('name'); ?>' /><?php echo $key; ?>
             </label>
             <?php endforeach; ?>
         </div>

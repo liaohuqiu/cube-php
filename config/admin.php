@@ -10,6 +10,10 @@ $data['module_list'] = array(
                 'name' => 'DataBase',
                 'list' => array(
                     array(
+                        'name' => 'Table Config',
+                        'url' => '/database/table-config',
+                    ),
+                    array(
                         'name' => 'DB Servers',
                         'url' => '/database/server-list',
                     ),
@@ -22,7 +26,7 @@ $data['module_list'] = array(
                         'url' => '/database/table-new',
                     ),
                     array(
-                        'name' => 'Alter Table',
+                        'name' => 'Edit Table',
                         'url' => '/database/table-edit',
                     ),
                     array(

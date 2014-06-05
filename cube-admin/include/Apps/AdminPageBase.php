@@ -6,7 +6,7 @@
  */
 abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
 {
-    protected $user;
+    protected $userData;
 
     protected $host;
     protected $moduleMan;
@@ -17,13 +17,13 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
         {
             $this->go2('/init');
         }
-        $user = MAdmin_UserAuth::getUser();
-        if (!$user)
+        $userData = MAdmin_UserAuth::getUser();
+        if (!$userData)
         {
-            $this->go2('/admin/user-login');
+            $this->go2('/admin/user/login');
         }
-        $this->user = $user;
-        $this->moduleMan = new MAdmin_Module($this->request->getPath(), $user);
+        $this->userData = $userData;
+        $this->moduleMan = new MAdmin_Module($this->request->getPath(), $userData);
         if (!$this->moduleMan->userHasAuth())
         {
             $this->go2('/admin');
@@ -80,9 +80,9 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
         $header_data['css_html'] = $this->getResTool()->getCssHtml();
         $header_data['js_html'] = $this->getResTool()->getHeadJsHtml();
 
-        if ($this->user)
+        if ($this->userData)
         {
-            $header_data['user'] = $this->user->toArray();
+            $header_data['user'] = $this->userData->getData();
             $header_data['title'] = $this->getTitle();
 
             $header_data['module_list'] = $this->moduleMan->getModuleList();

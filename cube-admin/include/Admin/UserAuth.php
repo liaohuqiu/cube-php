@@ -6,6 +6,22 @@
  */
 class MAdmin_UserAuth
 {
+    private static $proxy;
+
+    public static function checkLoginByProxy()
+    {
+        if (self::$proxy)
+        {
+            return false;
+        }
+        return self::$proxy->checkLoginByProxy();
+    }
+
+    public static function hasAuthProxy()
+    {
+        return self::$proxy;
+    }
+
     public static function setLogin($uid, $remember = false)
     {
         $info = MAdmin_UserRaw::getInfo($uid);
@@ -23,6 +39,10 @@ class MAdmin_UserAuth
 
     public static function getUser()
     {
+        if (self::$proxy)
+        {
+            return self::$proxy->getUser();
+        }
         $token = MCore_Tool_Input::clean('c', self::_getSessionKey(), 'str');
         list($time, $hashStr, $uid) = explode('_', $token);
 
@@ -40,11 +60,20 @@ class MAdmin_UserAuth
         {
             return false;
         }
-        return $info;
+
+        $data = array();
+        $data['is_sysadmin'] = $info['is_sysadmin'];
+        $data['name'] = $info['email'];
+        $data['auth_keys'] = $info['auth_keys'];
+        return new MAdmin_UserData($data);
     }
 
     public static function logout()
     {
+        if (self::$proxy)
+        {
+            return self::$proxy->logout();
+        }
         // just clean the cookie
         $host = $_SERVER['HTTP_HOST'];
         setcookie(self::_getSessionKey(), '', time() - 86400, '/', $host);

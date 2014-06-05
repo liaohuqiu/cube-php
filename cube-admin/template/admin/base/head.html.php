@@ -44,7 +44,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                <a class='' data-toggle="dropdown" href="javascript:void(0)"><?php $header_data['user']->o('email'); ?> <span class="caret"></span></a>
+                <a class='' data-toggle="dropdown" href="javascript:void(0)"><?php $header_data['user']->o('name'); ?> <span class="caret"></span></a>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                     <li role="presentation"><a id="_j_btn_change_pwd" role="menuitem" tabindex="-1" href="javascript:void(0)">Change Pwd</a></li>

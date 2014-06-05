@@ -1,8 +1,12 @@
 <?php
 class MEngine_MysqlDeploy
 {
-    public static function getDeployData($configDataOne)
+    public static function getDeployData($configDataOne = null)
     {
+        if ($configDataOne == null)
+        {
+            $configDataOne = MEngine_EngineDB::fromConfig();
+        }
         $serverSettings = $configDataOne->select('sys_sever_setting', array('*'), array('active' => 1));
         $tableSetting = $configDataOne->select('sys_table_setting', array('*'), array());
         $kindSetting = $configDataOne->select('sys_kind_setting', array('*'), array());

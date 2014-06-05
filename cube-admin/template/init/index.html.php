@@ -92,7 +92,7 @@
         <button type="button" class="btn btn-outline mr-10" id='j_btn_check_deploy'>Check Deploy</button>
     </div>
 </div>
-<div class='row' id='j_id_step2'>
+<div class='row'>
     <h3>Copy config</h3>
     <hr>
     <div class='col-md-5'>

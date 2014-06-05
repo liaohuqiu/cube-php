@@ -46,7 +46,7 @@ class MAdmin_UserRaw
         $map = self::getStatusMap();
         $item['status'] = $map[$item['status']];
         $item['auth_keys'] = array_filter(explode(',', $item['auth_keys']));
-        return new MAdmin_User($item);
+        return $item;
     }
 
     public static function getStatusMap()

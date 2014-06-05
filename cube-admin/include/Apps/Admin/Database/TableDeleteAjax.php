@@ -11,7 +11,7 @@ class MApps_Admin_Database_TableDeleteAjax extends MApps_AdminAjaxBase
             $iterator->query($sql, null, false, false);
             $this->_deleteSetting($kind);
         }
-        catch(Exception $ex)
+        catch (Exception $ex)
         {
             $this->_deleteSetting($kind);
             throw $ex;
