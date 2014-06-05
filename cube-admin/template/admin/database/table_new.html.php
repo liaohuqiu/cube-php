@@ -13,6 +13,18 @@
             <input class='form-control' type="text" name="db_name" id="_j_input_db_name" placeholder="">
         </div>
     </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="only_schema">Is System Admin</label>
+        <div class="col-md-4">
+            <div class='checkbox'>
+                <label>
+                    <input type='checkbox' id='only_schema' name='only_schema' value='1' />
+                    Check to only create schme information
+                </label>
+            </div>
+        </div>
+    </div>
     <div class="form-group">
         <label class="col-sm-2 control-label" for="_j_input_sql">sql</label>
         <div class="col-sm-6">

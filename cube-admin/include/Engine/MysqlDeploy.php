@@ -54,7 +54,7 @@ class MEngine_MysqlDeploy
         return $data;
     }
 
-    public static function createTable($configDataOne, $sids, $dbName, $kind, $idField, $tableNum, $sql)
+    public static function createTable($configDataOne, $sids, $dbName, $kind, $idField, $tableNum, $sql, $onlyScheme = false)
     {
         $sidLength = count($sids);
         $exist = $configDataOne->select('sys_kind_setting', array('*'), array('kind' => $kind));
@@ -102,17 +102,20 @@ class MEngine_MysqlDeploy
         }
 
         // create table(s)
-        $iterator = new MEngine_MysqlIterator($kind, $configDataOne);
-        $sql = str_replace($kind . '_0', $kind, $sql);
-        try
+        if (!$onlyScheme)
         {
-            $iterator->query($sql, null, false, false);
-        }
-        catch (Exception $ex)
-        {
-            $configDataOne->delete('sys_kind_setting', array('kind' => $kind));
-            $configDataOne->delete('sys_table_setting', array('kind' => $kind));
-            throw $ex;
+            $iterator = new MEngine_MysqlIterator($kind, $configDataOne);
+            $sql = str_replace($kind . '_0', $kind, $sql);
+            try
+            {
+                $iterator->query($sql, null, false, false);
+            }
+            catch (Exception $ex)
+            {
+                $configDataOne->delete('sys_kind_setting', array('kind' => $kind));
+                $configDataOne->delete('sys_table_setting', array('kind' => $kind));
+                throw $ex;
+            }
         }
 
         return true;

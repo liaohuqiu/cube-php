@@ -18,7 +18,7 @@ class MEngine_MysqlTableCreator
         return $this->create($serverGroupKey, $dbName, $sqlContent, $onlyThisTable);
     }
 
-    public function createTable($serverGroupKey, $dbName, $sqlContent, $onlyThisTable = '')
+    public function createTable($serverGroupKey, $dbName, $sqlContent, $onlyThisTable = '', $onlyScheme)
     {
         $where = array();
         $where['group_key'] = $serverGroupKey;
@@ -55,7 +55,7 @@ class MEngine_MysqlTableCreator
 
             try
             {
-                $ret =  MEngine_MysqlDeploy::createTable($this->db, $sids, $dbName, $kind, $splitId, $tableNum, $sql);
+                $ret =  MEngine_MysqlDeploy::createTable($this->db, $sids, $dbName, $kind, $splitId, $tableNum, $sql, $onlyScheme);
                 if ($ret)
                 {
                     $succSqlList[$kind] = $sql;
