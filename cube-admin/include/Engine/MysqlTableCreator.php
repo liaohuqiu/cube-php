@@ -41,7 +41,7 @@ class MEngine_MysqlTableCreator
         {
             if (!isset($item['kind']) || ! isset($item['split_id']) || !isset($item['table_num']) || !isset($item['sql']))
             {
-                throw new MEngine_Exception('The format of the input sql is not right');
+                throw new Exception('The format of the input sql is not right');
             }
 
             $kind = $item['kind'];
@@ -108,7 +108,7 @@ class MEngine_MysqlTableCreator
                 $sqlLines[] = $item;
             }
         }
-        $info['sql'] = implode("\n", $sqlLines);
+        $info['sql'] = $sqlRaw;
         return $info;
     }
 }
