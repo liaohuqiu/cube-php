@@ -12,12 +12,12 @@ class MAdmin_Module
     private $current;
     private $module_auth_keys;
     private $user_auth_keys;
-    private $user;
+    private $userData;
 
-    public function __construct($path, $user)
+    public function __construct($path, $userData)
     {
-        $this->user = $user;
-        $this->user_auth_keys = $user['auth_keys'];
+        $this->userData = $userData;
+        $this->user_auth_keys = $userData['auth_keys'];
         $this->path = $this->tidyUrl($path);
         $base_path = MCore_Tool_Conf::getDataConfig('admin', 'base_path', false);
         if ($base_path)
@@ -64,7 +64,13 @@ class MAdmin_Module
         {
             throw Exception('This module in config has no auth_key');
         }
+
         $auth_key = $module['auth_key'];
+        // skip user
+        if ($auth_key == 'user' && MAdmin_UserAuth::hasAuthProxy())
+        {
+            return false;
+        }
         $module['user_has_auth'] = in_array($auth_key, $this->user_auth_keys) ? 1 : 0;
         $this->module_auth_keys[] = $auth_key;
         return $module;
@@ -87,6 +93,10 @@ class MAdmin_Module
             !$module['des'] && $module['des'] = $key;
 
             $module = $this->checkUserHasAuth($module);
+            if (!$module)
+            {
+                continue;
+            }
 
             foreach ($module['units'] as $index => $unit)
             {
@@ -110,7 +120,7 @@ class MAdmin_Module
 
     public function getModuleList()
     {
-        if ($this->user->isSystemAdmin())
+        if ($this->userData->isSystemAdmin())
         {
             return $this->list;
         }
@@ -125,7 +135,7 @@ class MAdmin_Module
 
     public function userHasAuth()
     {
-        if ($this->user['is_sysadmin'])
+        if ($this->userData->isSystemAdmin())
         {
             return true;
         }

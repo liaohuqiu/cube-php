@@ -82,7 +82,9 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
 
         if ($this->userData)
         {
-            $header_data['user'] = $this->userData->getData();
+            $header_data['proxy_auth'] = MAdmin_UserAuth::hasAuthProxy();
+            $header_data['right_links'] = MAdmin_UserAuth::getRightLinks();
+            $header_data['user_data'] = $this->userData->getData();
             $header_data['title'] = $this->getTitle();
 
             $header_data['module_list'] = $this->moduleMan->getModuleList();

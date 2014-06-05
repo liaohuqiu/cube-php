@@ -14,7 +14,16 @@ class MAdmin_UserAuth
         {
             return false;
         }
-        return self::$proxy->checkLoginByProxy();
+        return self::$proxy->checkLogin();
+    }
+
+    public static function getRightLinks()
+    {
+        if (self::$proxy)
+        {
+            return self::$proxy->getRightLinks();
+        }
+        return array();
     }
 
     public static function hasAuthProxy()

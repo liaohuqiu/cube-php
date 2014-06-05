@@ -26,7 +26,7 @@
 <?php $header_data->o('js_html', false); ?>
 </head>
 <body>
-<?php if ($header_data['user']): ?>
+<?php if ($header_data['user_data']): ?>
 <header class="navbar-static-top bs-docs-nav" role="banner">
     <div class="container">
         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
@@ -44,11 +44,17 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                <a class='' data-toggle="dropdown" href="javascript:void(0)"><?php $header_data['user']->o('name'); ?> <span class="caret"></span></a>
+                <a class='' data-toggle="dropdown" href="javascript:void(0)"><?php $header_data['user_data']->o('name'); ?> <span class="caret"></span></a>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <?php if (!$header_data['proxy_auth']): ?>
                     <li role="presentation"><a id="_j_btn_change_pwd" role="menuitem" tabindex="-1" href="javascript:void(0)">Change Pwd</a></li>
                     <li role="presentation" class="divider"></li>
+                    <?php endif; ?>
+                    <?php foreach ($header_data['right_links'] as $link): ?>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php $link->o('href');?>"><?php $link->o('name'); ?></a></li>
+                    <li role="presentation" class="divider"></li>
+                    <?php endforeach; ?>
                     <li role="presentation"><a id="_j_btn_logout" role="menuitem" tabindex="-1" href="javascript:void(0)">Logout</a></li>
                 </ul>
             </li>
