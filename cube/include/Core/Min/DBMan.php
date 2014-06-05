@@ -36,14 +36,14 @@ class MCore_Min_DBMan implements MCore_Proxy_IDBMan
     protected function _getConnection($kind, $hintId, $cacheTime)
     {
         $slave = $cacheTime >= 0;
-        $dbInfo = MCore_Min_TableDeployMan::getDBInfo($kind, $hintId, $slave);
+        $dbInfo = MCore_Min_TableConfig::getDBInfo($kind, $hintId, $slave);
         $cnt = MCore_Min_DBConection::get($dbInfo);
         return $cnt;
     }
 
     protected function _translateSql($kind, $hintId, $sql)
     {
-        $tableNum = MCore_Min_TableDeployMan::getTableNum($kind);
+        $tableNum = MCore_Min_TableConfig::getTableNum($kind);
         if ($tableNum <= 1)
         {
             return $sql;
@@ -54,7 +54,7 @@ class MCore_Min_DBMan implements MCore_Proxy_IDBMan
 
     public function checkInputAndGetSplitId($kind, $input)
     {
-        $data = MCore_Min_TableDeployMan::getDeployData();
+        $data = MCore_Min_TableConfig::getDeployData();
         if (!isset($data['tables'][$kind]))
         {
             throw new MCore_Min_DBException('Not such a table in config: ' . $kind);
@@ -77,11 +77,11 @@ class MCore_Min_DBMan implements MCore_Proxy_IDBMan
 
     public function getTableNum($kind)
     {
-        return MCore_Min_TableDeployMan::getTableNum($kind);
+        return MCore_Min_TableConfig::getTableNum($kind);
     }
 
     public function getSplitField($kind)
     {
-        return MCore_Min_TableDeployMan::getIdField($kind);
+        return MCore_Min_TableConfig::getIdField($kind);
     }
 }

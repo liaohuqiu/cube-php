@@ -3,7 +3,7 @@ class MApps_Admin_Database_TableNew extends MApps_AdminPageBase
 {
     protected function main()
     {
-        $keys = MEngine_EngineDB::create()->select('server_setting', array('group_key'))->getFields('group_key');
+        $keys = MEngine_EngineDB::fromConfig()->select('server_setting', array('group_key'))->getFields('group_key');
         $keys = array_combine($keys, $keys);
 
         $data = array();

@@ -27,5 +27,3 @@ class MApps_Admin_UserChangePwdAjax extends MApps_AdminAjaxBase
         $this->setData('redirect', '/admin/user-login');
     }
 }
-
-

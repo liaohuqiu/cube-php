@@ -1,9 +1,8 @@
 <?php
 class MEngine_MysqlDeploy
 {
-    public static function updateDeployInfo()
+    public static function getDeployData($configDataOne)
     {
-        $configDataOne = MEngine_EngineDB::create();
         $serverSettings = $configDataOne->select('server_setting', array('*'), array('active' => 1));
         $tableSetting = $configDataOne->select('table_setting', array('*'), array());
         $kindSetting = $configDataOne->select('kind_setting', array('*'), array());
@@ -13,7 +12,7 @@ class MEngine_MysqlDeploy
         {
             $sid = $item['sid'];
             $master_id = $item['master_id'];
-            $info = MCore_Min_TableDeployMan::convertServerInfoForDBResult($item);
+            $info = MCore_Min_TableConfig::convertServerInfoForDBResult($item);
             if ($master_id)
             {
                 $serverList[$master_id]['slaves'][$sid] = $info;
@@ -42,24 +41,18 @@ class MEngine_MysqlDeploy
         {
             $kind = $item['kind'];
             $tableIndex = $item['no'];
-
-            $info = array();
-            $info['no'] = $item['no'];
-            $info['sid'] = $item['sid'];
-            $tableInfos[$kind]['tables'][$tableIndex] = $info;
+            $tableInfos[$kind]['servers'][$tableIndex] = $item['sid'];
         }
 
         $data = array();
         $data['servers'] = $serverList;
         $data['tables'] = $tableInfos;
-        MCore_Min_TableDeployMan::updateDeployData($data);
         return $data;
     }
 
-    public static function createTable($sids, $dbName, $kind, $idField, $tableNum, $sql)
+    public static function createTable($configDataOne, $sids, $dbName, $kind, $idField, $tableNum, $sql)
     {
         $sidLength = count($sids);
-        $configDataOne = MEngine_EngineDB::create();
         $exist = $configDataOne->select('kind_setting', array('*'), array('kind' => $kind));
         if ($exist->count() > 0 )
         {
@@ -118,52 +111,6 @@ class MEngine_MysqlDeploy
             throw $ex;
         }
 
-        // reload server
-        $info = array(
-            'name' => 'revision',
-            'value' => 'now()',
-        );
-            $configDataOne->insert('variable_setting', $info, array('value'), array(), array('value'));
         return true;
-    }
-
-    /**
-     * getTable info from config table
-     */
-    public static function queryTableInfos($kind, $useSlave = false)
-    {
-        $configDataOne = MEngine_EngineDB::create();
-        $where = array('kind' => $kind);
-        $kindInfo = $configDataOne->select('kind_setting', array('*'), $where)->first();
-        $tableSettings = $configDataOne->select('table_setting', array('*'), $where);
-        if (!$kindInfo || !$tableSettings)
-        {
-            throw new Exception('There is no config info for this: ' . $kind);
-        }
-        $kindInfo['tables'] = $tableSettings->toArray();
-
-        $serverIds = MCore_Tool_Array::getFields($tableSettings['data'], 'sid');
-        $serverIds = array_unique($serverIds);
-
-        $serverIdsStr = implode(',', $serverIds);
-        $where = "(sid in ($serverIdsStr) or master_sid in ($serverIdsStr)) and active = 1";
-        $serverInfos = $configDataOne->selectRawWhere('server_setting', 0, array('*'), $where);
-
-        $serverList = array();
-        foreach ($serverInfos as $item)
-        {
-            $master_sid = $item['master_sid'];
-            $sid = $item['sid'];
-            $item = MCore_Min_TableDeployMan::convertServerInfoForDBResult($item);
-            if(!$master_sid)
-            {
-                $serverList[$sid]['master'] = $item;
-            }
-            else
-            {
-                $serverList[$sid]['slaves'][] = $item;
-            }
-        }
-        return MCore_Min_TableDeployMan::makeTableInfos($kind, $kindInfo, $serverList, $useSlave);
     }
 }

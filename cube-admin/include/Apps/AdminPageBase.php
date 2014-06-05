@@ -13,6 +13,10 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
 
     protected function checkAuth()
     {
+        if (!MAdmin_Init::checkInit())
+        {
+            $this->go2('/init');
+        }
         $user = MAdmin_UserAuth::getUser();
         if (!$user)
         {
@@ -49,8 +53,7 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
 
     public static function createDisplayView()
     {
-        // $viewDisplyer = new MCore_Tool_Smarty(CUBE_ADMIN_ROOT_DIR . '/template');
-        $viewDisplyer = new MCore_Web_SimpleView(CUBE_ADMIN_ROOT_DIR . '/template');
+        $viewDisplyer = new MCore_Web_SimpleView(CUBE_DEV_ROOT_DIR . '/template');
         $view = new MCore_Web_View($viewDisplyer);
         $baseData = array();
         $baseData['static_pre_path'] = 'http://' . MCore_Tool_Conf::getDataConfigByEnv('mix', 'static_res_host') . '/cube-admin-mix';

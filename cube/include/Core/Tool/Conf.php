@@ -8,10 +8,26 @@ class MCore_Tool_Conf
     private static $_cache = array();
     private static $_includeConfFileCache = array();
 
+    public static function setDataConfig($key, $data, $env = false)
+    {
+        if ($env)
+        {
+            $key = $key . '.' . ENV_TAG;
+        }
+        add_debug_log($key);
+        add_debug_log($data);
+        self::$_includeConfFileCache[$key] = $data;
+    }
+
     public static function getDataConfigPath($key)
     {
         $key = self::_ensureKeyFormat($key);
         return CONFIG_DATA_DIR . '/' . $key . '.php';
+    }
+
+    public static function getDataConfigPathByEnv($key)
+    {
+        return self::getDataConfigPath($key . '.' . ENV_TAG);
     }
 
     private static function _ensureKeyFormat($key)
@@ -90,17 +106,6 @@ class MCore_Tool_Conf
         }
     }
 
-    public static function updateDataConfigByEnv($key, $data)
-    {
-        $key = $key . '.' . ENV_TAG;
-        return self::updateDataConfig($key, $data);
-    }
-
-    public static function updateDataConfig($key, $data)
-    {
-        return MCore_Proxy_Servant::updateDataConfig($key, $data);
-    }
-
     public static function writeDataConfig($key, $data)
     {
         $key = self::_ensureKeyFormat($key);
@@ -123,8 +128,12 @@ class MCore_Tool_Conf
 
         $tempFilePath = $filePath . '.tmp';
 
-        $output = "<?php\n\$data = " . var_export($data, true) . ";\nreturn \$data;\n";
+        $output = self::formatConfigData($data);
         file_put_contents($tempFilePath, $output);
         rename($tempFilePath, $filePath);
+    }
+    public static function formatConfigData($data)
+    {
+        return "<?php\n\$data = " . var_export($data, true) . ";\nreturn \$data;\n";
     }
 }

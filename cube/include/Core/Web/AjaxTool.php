@@ -68,9 +68,9 @@ class MCore_Web_AjaxTool extends MCore_Web_JsonTool
     private function getOutputData()
     {
         $data = array();
+        $data['data'] = $this->data;
         if (!$this->error)
         {
-            $data['data'] = $this->data;
             $res = $this->getResource();
             $res && $data['resource'] = $res;
             $this->handler && $data["handler"] = $this->handler;

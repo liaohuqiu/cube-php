@@ -44,36 +44,20 @@ abstract class MCore_Web_BaseAjaxApp extends MCore_Web_BaseApp
         $this->ajaxTool->go2($url);
     }
 
-    /**
-     * pop up a sucess style dialog with title and message
-     */
-    public function setSuccDialogInfo($content, $title = '', $blockHandler, $autoClose = 0, $height = '350', $width = '')
+    public function popDialog($type, $msg, $autoClose = 0, $blockHandler = false)
     {
-        $this->_setPopDialogInfo('succ', $content, $title, $blockHandler, $autoClose, $height, $width);
-        return $this;
-    }
-
-    /**
-     * pop up a fail style dialog with title and message
-     */
-    public function setFailDialogInfo($content, $title = '', $blockHandler, $autoClose = 0, $height = '350', $width = '')
-    {
-        $this->_setPopDialogInfo('fail', $content, $title, $blockHandler, $autoClose, $height, $width);
-        return $this;
-    }
-
-    private function _setPopDialogInfo($type, $content, $title = '', $blockHandler, $autoClose = 0, $height = '350', $width = '')
-    {
+        if ($type != 'succ')
+        {
+            $type = 'error';
+        }
         $info = array();
         $info['type'] = $type;
         $info['title'] = $title;
-        $info['content'] = $content;
-        $info['height'] = $height;
-        $info['width'] = $width;
-        $info['autoClose'] = $autoClose;
-        $info['blockHandler'] = $blockHandler;
+        $info['msg'] = $msg;
+        $info['auto_close'] = $autoClose;
+        $info['block_handler'] = $blockHandler;
 
-        $this->ajaxTool->setData('popDialogInfo', $info);
+        $this->ajaxTool->setData('pop_dialog', $info);
     }
 
     protected function output()

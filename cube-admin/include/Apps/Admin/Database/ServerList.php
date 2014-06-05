@@ -22,7 +22,7 @@ class MApps_Admin_Database_ServerList extends MApps_AdminPageBase
         $conf = array();
         $conf['edit_info'] = $edit;
         $conf['table'] = $table;
-        $c = new MAdmin_Views_ListViewController($conf, MEngine_EngineDB::create());
+        $c = new MAdmin_Views_ListViewController($conf, MEngine_EngineDB::fromConfig());
         $c->render();
     }
 }

@@ -17,12 +17,11 @@ class MApps_Admin_Database_TableDeleteAjax extends MApps_AdminAjaxBase
             throw $ex;
         }
         $this->setData('kind', $kind);
-        MEngine_MysqlDeploy::updateDeployInfo();
     }
 
     private function _deleteSetting($kind)
     {
-        $dataOne = MEngine_EngineDB::create();
+        $dataOne = MEngine_EngineDB::fromConfig();
         $dataOne->delete('kind_setting', array('kind' => $kind));
         $dataOne->delete('table_setting', array('kind' => $kind));
     }

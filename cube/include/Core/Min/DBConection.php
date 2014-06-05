@@ -40,7 +40,7 @@ class MCore_Min_DBConection
         $cnt = false;
         for ($i = 0; $i < 3; $i++)
         {
-            $cnt = mysql_connect($host, $user, $pwd, true);
+            $cnt = @mysql_connect($host, $user, $pwd, true);
             if ($cnt === false)
             {
                 continue;

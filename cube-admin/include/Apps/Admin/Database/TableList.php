@@ -46,7 +46,7 @@ class MApps_Admin_Database_TableList extends MApps_AdminPageBase
         $conf['table'] = $table;
         $conf['header'] = $header;
         $conf['format_display_data_item'] = array($this, 'formatDisplayItem');
-        $c = new MAdmin_Views_ListViewController($conf, MEngine_EngineDB::create());
+        $c = new MAdmin_Views_ListViewController($conf, MEngine_EngineDB::fromConfig());
         $c->render();
     }
 

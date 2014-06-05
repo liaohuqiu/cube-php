@@ -48,7 +48,8 @@ class MCore_Min_TableIterator
 
     protected function getTableInfos($useSlave)
     {
-        return MCore_Min_TableDeployMan::getTableInfos($this->kind, $useSlave);
+        $deployData = MCore_Min_TableConfig::getDeployData();
+        return MCore_Min_TableConfig::getTableInfos($deployData, $this->kind, $useSlave);
     }
 }
 ?>

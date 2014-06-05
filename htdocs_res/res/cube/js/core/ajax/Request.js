@@ -175,21 +175,23 @@ define('core/ajax/Request', ['core/jQuery', 'core/URI'] , function(require) {
                 dataCache[this._uniqueKey] = ret;
             }
 
-            // TODO:
-            // dialogInfo
-            if (ret.data.popDialogInfo) {
+            // pop dialog
+            if (ret.data.pop_dialog) {
 
-                var dialogInfo = ret.data.popDialogInfo;
-                var className = dialogInfo.type == "succ" ? 'babyDialogSucceed' : 'babyDialogFail';
-                var msg = '<p class="' + className + '"><i></i>' + dialogInfo.content + '</p>';
+                var dialog = ret.data.pop_dialog;
+                require.async('core/dialog/MsgBox', function(MsgBox) {
+                    var msg = dialog.msg;
+                    var type = dialog.type;
 
-                var dialog = MessageBox.alert(msg, dialogInfo.title, dialogInfo.height, dialogInfo.width);
-
-                // autoclose
-                if (dialogInfo.autoClose) {
-                    setTimeout(function() {
-                        dialog.hide();
-                    }, dialogInfo.autoClose);
+                    var data = {auto_close: dialog.auto_close};
+                    if (type == 'succ') {
+                        MsgBox.success(msg, data);
+                    } else {
+                        MsgBox.error(msg, data);
+                    }
+                });
+                if (dialog.block_handler) {
+                    return;
                 }
             }
 

@@ -1,25 +1,35 @@
 <?php
 class MEngine_MysqlTableCreator
 {
-    public static function createFromFile($serverGroupKey, $dbName, $scriptFilePath, $onlyThisTable = null)
+    private $db;
+
+    public function __construct($db = null)
     {
-        $sqlContent = file_get_contents($scriptFilePath);
-        return self::create($serverGroupKey, $dbName, $sqlContent, $onlyThisTable);
+        if ($db == null)
+        {
+            $db = MEngine_EngineDB::fromConfig();
+        }
+        $this->db = $db;
     }
 
-    public static function create($serverGroupKey, $dbName, $sqlContent, $onlyThisTable = '')
+    public function createFromFile($serverGroupKey, $dbName, $scriptFilePath, $onlyThisTable = null)
     {
-        $dataOne = MEngine_EngineDB::create();
+        $sqlContent = file_get_contents($scriptFilePath);
+        return $this->create($serverGroupKey, $dbName, $sqlContent, $onlyThisTable);
+    }
+
+    public function createTable($serverGroupKey, $dbName, $sqlContent, $onlyThisTable = '')
+    {
         $where = array();
         $where['group_key'] = $serverGroupKey;
         $where['master_sid'] = 0;
-        $serverList = $dataOne->select('server_setting', array('*'), $where);
+        $serverList = $this->db->select('server_setting', array('*'), $where);
         $sids = array();
 
         // ensure every database for tables is ready.
         foreach ($serverList as $item)
         {
-            $dbInfo = MCore_Min_TableDeployMan::convertServerInfoForDBResult($item);
+            $dbInfo = MCore_Min_TableConfig::convertServerInfoForDBResult($item);
             $connection = MCore_Min_DBConection::get($dbInfo);
             MEngine_EngineDB::createDB($connection, $dbName);
             $sids[] = $item['sid'];
@@ -45,7 +55,7 @@ class MEngine_MysqlTableCreator
 
             try
             {
-                $ret =  MEngine_MysqlDeploy::createTable($sids, $dbName, $kind, $splitId, $tableNum, $sql);
+                $ret =  MEngine_MysqlDeploy::createTable($this->db, $sids, $dbName, $kind, $splitId, $tableNum, $sql);
                 if ($ret)
                 {
                     $succSqlList[$kind] = $sql;
@@ -60,8 +70,6 @@ class MEngine_MysqlTableCreator
                 throw $ex;
             }
         }
-
-        MEngine_MysqlDeploy::updateDeployInfo();
         return $succSqlList;
     }
 

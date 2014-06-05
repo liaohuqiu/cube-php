@@ -50,7 +50,7 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
             var dialog_body ='<div class="modal-body">' +
                 '<div class="alert alert-success">' + msg + '</div></div>' +
                 '<div class="modal-footer">' +
-                '<button class="btn btn-danger _j_msgbox_btn_ok">Yes</button>' +
+                '<button class="btn btn-success _j_msgbox_btn_ok">Yes</button>' +
                 '</div></div>';
 
             this.showDialog(dialog_body, data);

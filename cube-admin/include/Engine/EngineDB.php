@@ -1,18 +1,23 @@
 <?php
 class MEngine_EngineDB
 {
-    public static function create()
+    public static function fromConfig()
     {
         static $db;
         if (!$db)
         {
-            $rawDbInfo = MCore_Tool_Conf::getDataConfigByEnv('engine', 'engine_db_server');
-            $rawDbInfo['db'] = MCore_Tool_Conf::getDataConfigByEnv('engine', 'engine_db_name');
-            $connection = MCore_Min_DBConection::get($rawDbInfo);
-
-            $dbMan = new MEngine_EngineDBMan($connection);
-            $db = new MCore_Dao_DB($dbMan);
+            $rawDbInfo = MEngine_SysConfig::getSysConfig();
+            $db = self::fromDBInfo($rawDbInfo);
         }
+        return $db;
+    }
+
+    public static function fromDBInfo($dbInfo)
+    {
+        $connection = MCore_Min_DBConection::get($dbInfo);
+
+        $dbMan = new MEngine_EngineDBMan($connection);
+        $db = new MCore_Dao_DB($dbMan);
         return $db;
     }
 

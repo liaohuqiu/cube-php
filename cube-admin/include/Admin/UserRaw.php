@@ -38,7 +38,7 @@ class MAdmin_UserRaw
 
     public static function getTableKind()
     {
-        return MCore_Tool_Conf::getDataConfigByEnv('engine', 'admin_user_table');
+        return MCore_Tool_Conf::getDataConfigByEnv('sys-config', 'admin_user_table');
     }
 
     private static function formatItem($item)
