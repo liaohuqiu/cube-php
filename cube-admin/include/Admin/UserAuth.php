@@ -42,7 +42,7 @@ class MAdmin_UserAuth
         // if not check "remember me", set expire time to 0,
         // the cookie will expire at the end of the session(close the browser);
         $time = $remember ? $now + 86400 : 0;
-        $host = $_SERVER['HTTP_HOST'];
+        $host = $_SERVER['SERVER_NAME'];
         setcookie(self::_getSessionKey(), $token, $time, '/', $host);
     }
 
@@ -84,7 +84,7 @@ class MAdmin_UserAuth
             return self::$proxy->logout();
         }
         // just clean the cookie
-        $host = $_SERVER['HTTP_HOST'];
+        $host = $_SERVER['SERVER_NAME'];
         setcookie(self::_getSessionKey(), '', time() - 86400, '/', $host);
     }
 
