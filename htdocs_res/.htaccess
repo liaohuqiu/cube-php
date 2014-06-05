@@ -1,0 +1,64 @@
+## Begin Expire headers
+<IfModule mod_deflate.c>
+  SetOutputFilter DEFLATE
+
+  <IfModule mod_headers.c>
+    Header append Vary User-Agent env=!dont-vary
+  </IfModule>
+  <IfModule mod_setenvif.c>
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+    BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+  </IfModule>
+  SetEnvIfNoCase Request_URI .(?:gif|jpe?g|png)$ no-gzip dont-vary
+  SetEnvIfNoCase Request_URI .(?:exe|t?gz|zip|bz2|sit|rar)$ no-gzip dont-vary
+  SetEnvIfNoCase Request_URI .(?:pdf|mov|avi|mp3|mp4|rm)$ no-gzip dont-vary
+
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+  AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
+### END expire headers
+
+### Begin turn off ETags off
+FileETag None
+### END turn ETags off
+
+### Begin add default charset
+AddDefaultCharset UTF-8
+### END add default charset
+
+### Begin Expire headers
+<ifModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 5 seconds"
+  ExpiresByType image/x-icon "access plus 2592000 seconds"
+  ExpiresByType image/jpeg "access plus 2592000 seconds"
+  ExpiresByType image/png "access plus 2592000 seconds"
+  ExpiresByType image/gif "access plus 2592000 seconds"
+  ExpiresByType application/x-shockwave-flash "access plus 2592000 seconds"
+  ExpiresByType text/css "access plus 604800 seconds"
+  ExpiresByType text/javascript "access plus 604800 seconds"
+  ExpiresByType application/javascript "access plus 604800 seconds"
+  ExpiresByType application/x-javascript "access plus 604800 seconds"
+  ExpiresByType text/html "access plus 600 seconds"
+  ExpiresByType application/xhtml+xml "access plus 600 seconds"
+</ifModule>
+### END expire headers
+
+### Begin Cache-Control headers
+<ifModule mod_headers.c>
+  <filesMatch "\.(ico|jpe?g|png|gif|swf)$">
+    Header set Cache-Control "public"
+  </filesMatch>
+  <filesMatch "\.(css)$">
+    Header set Cache-Control "public"
+  </filesMatch>
+  <filesMatch "\.(js)$">
+    Header set Cache-Control "private"
+  </filesMatch>
+  <filesMatch "\.(x?html?|php)$">
+    Header set Cache-Control "private, must-revalidate"
+  </filesMatch>
+</ifModule>
+### End Cache-Control headers
