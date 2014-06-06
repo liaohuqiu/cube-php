@@ -8,6 +8,11 @@ class MAdmin_UserAuth
 {
     private static $proxy;
 
+    public static function setProxy($proxy)
+    {
+        self::$proxy = $proxy;
+    }
+
     public static function checkLoginByProxy()
     {
         if (self::$proxy)
