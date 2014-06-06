@@ -16,12 +16,7 @@ K.App('admin/AAdminGlobal', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'c
         clickLogout: function() {
             var msg = 'Are you sure to logout?';
             MsgBox.confirm(msg, {on_ok: function() {
-                var request = Request.create('/admin/user/logout-ajax');
-                if (!request)
-                    return;
-                var that = this;
-                request.setHandler(function(ret) {
-                }).send();
+                window.location.href = '/admin/user/logout';
             }});
         },
 

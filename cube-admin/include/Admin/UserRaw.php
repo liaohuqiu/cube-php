@@ -43,9 +43,12 @@ class MAdmin_UserRaw
 
     private static function formatItem($item)
     {
-        $map = self::getStatusMap();
-        $item['status'] = $map[$item['status']];
-        $item['auth_keys'] = array_filter(explode(',', $item['auth_keys']));
+        if (!empty($item))
+        {
+            $map = self::getStatusMap();
+            $item['status'] = $map[$item['status']];
+            $item['auth_keys'] = array_filter(explode(',', $item['auth_keys']));
+        }
         return $item;
     }
 

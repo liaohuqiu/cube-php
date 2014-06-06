@@ -80,6 +80,7 @@ class MAdmin_Module
     {
         $modules = MCore_Tool_Conf::getDataConfig('admin', 'module_list', true);
 
+        $list = array();
         foreach ($modules as $key => $module)
         {
             $root_path = $this->base_path . $module['root_path'];
@@ -113,9 +114,9 @@ class MAdmin_Module
                 }
                 $module['units'][$index] = $unit;
             }
-            $modules[$key] = $module;
+            $list[$key] = $module;
         }
-        $this->list = $modules;
+        $this->list = $list;
     }
 
     public function getModuleList()

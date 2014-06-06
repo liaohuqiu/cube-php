@@ -74,6 +74,11 @@ class MCore_Web_View
         }
     }
 
+    public function addDir($path)
+    {
+        $this->viewDisplayer->addDir($path);
+    }
+
     public function display($templatePath)
     {
         $this->processData();

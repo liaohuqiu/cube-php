@@ -4,13 +4,22 @@
  */
 class MCore_Web_SimpleView implements ArrayAccess, MCore_Web_IViewDisplayer
 {
-    private $path;
+    private $dir_list = array();
     private $page_data = array();
 
-    public function __construct($path)
+    public function __construct($dir)
     {
-        substr($path, -1) == '/' && $path = substr($path, 0, -1);
-        $this->path = $path;
+        substr($dir, -1) == '/' && $dir = substr($dir, 0, -1);
+        $this->dir_list[$dir] = 1;
+    }
+
+    public function addDir($path)
+    {
+        foreach (array($path) as $dir)
+        {
+            substr($dir, -1) == '/' && $dir = substr($dir, 0, -1);
+            $this->dir_list[$dir] = 1;
+        }
     }
 
     public function setData($key, $value)
@@ -48,13 +57,17 @@ class MCore_Web_SimpleView implements ArrayAccess, MCore_Web_IViewDisplayer
     {
         if (substr($template, 0, 1) != '/')
         {
-            $path = $this->path . DS . $template . '.php';
+            $template = DS . $template . '.php';
         }
-        else
+        foreach ($this->dir_list as $dir => $i1)
         {
-            $path = $this->path . $template . '.php';
+            $path = $dir . $template;
+            if (file_exists($path))
+            {
+                return $path;
+            }
         }
-        return $path;
+        throw new Exception('Can not find template: ' . $template);
     }
 
     public function render($template)

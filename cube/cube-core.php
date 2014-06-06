@@ -121,7 +121,7 @@ function fatal_handler()
         echo $error['message'];
     }
 }
-function ADD_DEBUG_LOG($v)
+function add_debug_log($v)
 {
     MCore_Tool_Log::addDebugLog($v);
 }

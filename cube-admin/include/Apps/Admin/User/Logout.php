@@ -1,5 +1,5 @@
 <?php
-class MApps_Admin_User_LogoutAjax extends MApps_AdminAjaxBase
+class MApps_Admin_User_Logout extends MApps_AdminPageBase
 {
     protected function main()
     {

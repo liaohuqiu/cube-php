@@ -2,7 +2,7 @@
 interface MAdmin_IAuthProxy
 {
     /**
-     * return MAdmin_UserData
+     * return MAdmin_UserData / false
      */
     public function checkLoginByGetUser();
 
@@ -12,9 +12,7 @@ interface MAdmin_IAuthProxy
     public function getRightLinks();
 
     /**
-     * check if has logined
+     * logout
      */
-    public function checkLogin();
-
     public function logout();
 }
