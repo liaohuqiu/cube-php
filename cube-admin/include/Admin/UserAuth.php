@@ -13,15 +13,6 @@ class MAdmin_UserAuth
         self::$proxy = $proxy;
     }
 
-    public static function checkLoginByProxy()
-    {
-        if (self::$proxy)
-        {
-            return false;
-        }
-        return self::$proxy->checkLogin();
-    }
-
     public static function getRightLinks()
     {
         if (self::$proxy)
@@ -51,11 +42,11 @@ class MAdmin_UserAuth
         setcookie(self::_getSessionKey(), $token, $time, '/', $host);
     }
 
-    public static function getUser()
+    public static function checkLoginByGetUser()
     {
         if (self::$proxy)
         {
-            return self::$proxy->getUser();
+            return self::$proxy->checkLoginByGetUser();
         }
         $token = MCore_Tool_Input::clean('c', self::_getSessionKey(), 'str');
         list($time, $hashStr, $uid) = explode('_', $token);

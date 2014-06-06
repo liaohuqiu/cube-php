@@ -11,29 +11,19 @@ class MApps_Admin_User_Login extends MApps_AdminPageBase
 
     protected function main()
     {
-        $user = MAdmin_UserAuth::getUser();
+        $user = MAdmin_UserAuth::checkLoginByGetUser();
         if ($user)
         {
             $this->go2('/admin');
         }
 
-        if (MAdmin_UserAuth::hasAuthProxy())
+        $email = $this->getRequest()->getData('email', 'r', 'str');
+        $pwd = $this->getRequest()->getData('pwd', 'r', 'str');
+        $uid = MAdmin_UserRaw::checkUserThenGetUid($email, $pwd);
+        if ($uid)
         {
-            if (MAdmin_UserAuth::checkLoginByProxy())
-            {
-                exit;
-            }
-        }
-        else
-        {
-            $email = $this->getRequest()->getData('email', 'r', 'str');
-            $pwd = $this->getRequest()->getData('pwd', 'r', 'str');
-            $uid = MAdmin_UserRaw::checkUserThenGetUid($email, $pwd);
-            if ($uid)
-            {
-                MAdmin_UserAuth::setLogin($uid, $salt, false);
-                $this->go2('/admin');
-            }
+            MAdmin_UserAuth::setLogin($uid, $salt, false);
+            $this->go2('/admin');
         }
     }
 

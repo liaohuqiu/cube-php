@@ -12,7 +12,8 @@ class MApps_Admin_Database_TableDetail extends MApps_AdminPageBase
 
         $iterator = new MEngine_MysqlIterator($kind);
         $sql = "show create table ". $kind;
-        $sqlText = $iterator->queryOne($sql);
+        $ret = $iterator->queryOne($sql)->first();
+        $sqlText = $ret['Create Table'];
         $tableInfos = $iterator->getTableInfos(false);
         $list = array();
 

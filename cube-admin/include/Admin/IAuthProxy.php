@@ -4,7 +4,7 @@ interface MAdmin_IAuthProxy
     /**
      * return MAdmin_UserData
      */
-    public function getUser();
+    public function checkLoginByGetUser();
 
     /**
      * return a list of item, with href and name as two field keys

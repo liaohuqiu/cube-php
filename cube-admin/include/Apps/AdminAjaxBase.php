@@ -8,7 +8,7 @@ abstract class MApps_AdminAjaxBase extends MCore_Web_BaseAjaxApp
 {
     protected function checkAuth()
     {
-        $user = MAdmin_UserAuth::getUser();
+        $user = MAdmin_UserAuth::checkLoginByGetUser();
         if (!$user)
         {
             $this->onNoAuth();

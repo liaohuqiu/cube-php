@@ -16,7 +16,7 @@ abstract class MApps_AdminDialogBase extends MCore_Web_BaseDialogApp
 
     protected function checkAuth()
     {
-        $user = MAdmin_UserAuth::getUser();
+        $user = MAdmin_UserAuth::checkLoginByGetUser();
         if (!$user)
         {
             $this->onNoAuth();
