@@ -46,7 +46,21 @@ class MCore_Min_TableIterator
         return $list;
     }
 
-    protected function getTableInfos($useSlave)
+    public function queryOne($sql)
+    {
+        $tableInfos = $this->getTableInfos($useSlave);
+
+        foreach ($tableInfos as $tableInfo)
+        {
+            $dbInfo = $tableInfo->getDBInfo();
+            $connection = MCore_Min_DBConection::get($dbInfo);
+            $sqlText = str_replace($this->kind, $tableInfo->getTableName(), $sql);
+            $ret = $connection->query($sqlText);
+            return $ret;
+        }
+    }
+
+    public function getTableInfos($useSlave)
     {
         $deployData = MCore_Min_TableConfig::getDeployData();
         return MCore_Min_TableConfig::getTableInfos($deployData, $this->kind, $useSlave);

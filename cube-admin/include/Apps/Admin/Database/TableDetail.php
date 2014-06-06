@@ -6,28 +6,14 @@
  */
 class MApps_Admin_Database_TableDetail extends MApps_AdminPageBase
 {
-    protected $kind;
-
-    private function getCreateTableInfo()
-    {
-        $iterator = new MCore_Min_TableIterator($this->kind);
-        $sql = "show create table ". $this->kind;
-        $ret = $iterator->query($sql, null, false, false);
-        $ret = reset($ret);
-        $firstItem = array_values($ret['data'][0]);
-        $sqlText = $firstItem[1];
-
-        $view = $this->getView();
-        $view->setData('sql', $sqlText);
-    }
-
     protected function main()
     {
-        $this->kind = MCore_Tool_Input::clean("r", "kind", 'str');
+        $kind = MCore_Tool_Input::clean("r", "kind", 'str');
 
-        $this->getCreateTableInfo();
-
-        $tableInfos = MEngine_MysqlDeploy::queryTableInfos($this->kind, false);
+        $iterator = new MEngine_MysqlIterator($kind);
+        $sql = "show create table ". $kind;
+        $sqlText = $iterator->queryOne($sql);
+        $tableInfos = $iterator->getTableInfos(false);
         $list = array();
 
         foreach ($tableInfos as $item)
@@ -42,7 +28,8 @@ class MApps_Admin_Database_TableDetail extends MApps_AdminPageBase
         }
 
         $view = $this->getView();
-        $view->setData('kind', $this->kind);
+        $view->setData('sql', $sqlText);
+        $view->setData('kind', $kind);
         $view->setData('list', $list);
     }
 

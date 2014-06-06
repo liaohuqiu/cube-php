@@ -1,5 +1,5 @@
 <?php
-MAdmin_IAuthProxy
+interface MAdmin_IAuthProxy
 {
     /**
      * return MAdmin_UserData
