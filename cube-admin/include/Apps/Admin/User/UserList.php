@@ -11,6 +11,18 @@ class MApps_Admin_User_UserList extends MApps_AdminPageBase
         $table = array(
             'kind' => $table_kind_name,
             'default_order' => 'order by sid asc',
+            // todo
+            'search' => array(
+                'fields' => array(
+                    'email'
+                ),
+                'select_field' => array(
+                ),
+            ),
+        );
+
+        // todo
+        $quick_query = array(
         );
 
         $edit = array(
@@ -21,6 +33,14 @@ class MApps_Admin_User_UserList extends MApps_AdminPageBase
         );
 
         $header = array(
+            'no_sort_filds' => array(
+            ),
+            // will filter by the value of this field when click an item.
+            'this_value_fields' => array(
+            ),
+            // only display these fields
+            'only_display_fields' => array(
+            ),
             'hide_fields' => array(
                 'user_group',
                 'status',
@@ -29,11 +49,22 @@ class MApps_Admin_User_UserList extends MApps_AdminPageBase
                 'salt',
                 'pwd',
             ),
+            // even the field not in table field will show
             'names' => array(
                 'is_sysadmin' => 'system admin',
                 'auth_keys' => 'authorization',
                 'ctime' => 'create at',
                 'mtime' => 'last modified',
+            ),
+            // default is center
+            'align' => array(
+                'email' => 'left',
+            ),
+            'order' => array(
+                'uid',
+                'email',
+                'auth_keys',
+                'is_sysadmin',
             ),
         );
 
@@ -41,6 +72,8 @@ class MApps_Admin_User_UserList extends MApps_AdminPageBase
         $conf['edit_info'] = $edit;
         $conf['table'] = $table;
         $conf['header'] = $header;
+        // $conf['format_data_item'] = $call_back;      // data from db will be filter by this callback
+        // $conf['format_display_data_item'] = $call_back;
         $c = new MAdmin_Views_ListViewController($conf, MCore_Dao_DB::create());
         $c->render();
     }

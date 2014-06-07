@@ -22,7 +22,7 @@ class MAdmin_Views_ListHeader
             'hideFields' => 'hide_fields',
             'names' => 'names',
             'align' => 'align',
-            'order' => 'order',
+            'fieldOrder' => 'order',
         );
         foreach ($keys as $key => $conf_key)
         {
@@ -37,12 +37,12 @@ class MAdmin_Views_ListHeader
     {
         $list = array();
 
-        // add reverse url / this vaule url
+        // add reverse url / filter vaule url
         foreach ($tableFields as $key)
         {
             $info = array();
 
-            // 表头逆序排列
+            // reverse by click column header
             if (!in_array($key, $this->noSortFields))
             {
                 $queryInfo = $input->getPageIdentityData();
@@ -51,7 +51,7 @@ class MAdmin_Views_ListHeader
                 $info['url_reverse_order'] = MCore_Str_Url::buildUrl($queryInfo);
             }
 
-            // 值过滤
+            // filter by the value in the cell you click
             if (in_array($key,$this->thisValueFields))
             {
                 $queryInfo = $input->getPageIdentityData();
@@ -59,11 +59,12 @@ class MAdmin_Views_ListHeader
                 $info['url_this_value'] = MCore_Str_Url::buildUrl($queryInfo);
             }
 
-            // name
+            // use the name in config
             $info['name'] = isset($this->names[$key]) ? $this->names[$key] : $key;
             $list[$key] = $info;
         }
 
+        // add column for appear in names config
         foreach ($this->names as $key => $name)
         {
             if (!isset($list[$key]))
@@ -96,9 +97,14 @@ class MAdmin_Views_ListHeader
         // only display what should be displayed.
         if (!empty($this->onlyDisplayFields))
         {
-            $list = MCore_Tool_Array::fetch($list, $this-onlyDisplayFields);
+            $list = MCore_Tool_Array::fetch($list, $this->onlyDisplayFields);
+        }
+
+        if (!empty($this->fieldOrder))
+        {
+            $part1 = MCore_Tool_Array::fetch($list, $this->fieldOrder);
+            $list = $part1 + $list;
         }
         return $list;
     }
-
 }

@@ -3,3 +3,9 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule .* index.php
+
+### Begin Cache-Control headers
+<ifModule mod_headers.c>
+Header set Cache-Control "no-cache"
+</ifModule>
+### End Cache-Control headers

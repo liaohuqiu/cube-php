@@ -35,7 +35,7 @@ class MAdmin_Views_ListViewController
         $this->listHeader = new MAdmin_Views_ListHeader($conf['header']);
         $this->dataTable = new MAdmin_Views_ListDataTable($conf['table'], $dataOne);
 
-        $this->pageQuickQuery = new MAdmin_Views_ListQuickQuery($conf['quickQuery']);
+        $this->pageQuickQuery = new MAdmin_Views_ListQuickQuery($conf['quick_query']);
         $this->pageQuickQuery->addSearchInfo($conf['table']['search']);
 
         if (isset($conf['format_data_item']))
