@@ -33,6 +33,7 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
     protected function outputHttp()
     {
         header('Content-type: text/html; charset=utf-8');
+        header("Cache-Control: no-cache");
     }
 
     protected function init()
