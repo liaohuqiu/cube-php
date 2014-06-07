@@ -5,6 +5,7 @@ class MAdmin_Views_ListHeader
     private $thisValueFields = array();
     private $onlyDisplayFields = array();
     private $hideFields = array();
+    private $fieldOrder = array();
 
     // if is not set, will be the key
     private $names = array();
@@ -21,6 +22,7 @@ class MAdmin_Views_ListHeader
             'hideFields' => 'hide_fields',
             'names' => 'names',
             'align' => 'align',
+            'order' => 'order',
         );
         foreach ($keys as $key => $conf_key)
         {

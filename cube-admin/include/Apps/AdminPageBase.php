@@ -11,6 +11,8 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
     protected $host;
     protected $moduleMan;
 
+    private $beginOutput = false;
+
     protected function checkAuth()
     {
         if (!MAdmin_Init::checkInit())
@@ -69,6 +71,7 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
 
     protected function output()
     {
+        $this->beginOutput = true;
         $this->outputHttp();
         $this->outputHead();
         $this->outputBody();
@@ -106,5 +109,27 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
 
     protected function outputBody()
     {
+    }
+
+    protected function processException($ex)
+    {
+        if (!$this->beginOutput)
+        {
+            $this->outputHttp();
+            $this->outputHead();
+        }
+        $page_data = array();
+        $page_data['msg'] = $ex->getMessage();
+        if (!MCore_Tool_Env::isProd())
+        {
+            $page_data['trace_str'] = $ex->getTraceAsString();
+            $page_data['trace'] = var_export($ex->getTrace(), true);
+        }
+        $this->getView()->setPageData($page_data)->display('admin/base/error.html');
+
+        if (!$this->beginOutput)
+        {
+            $this->outputTail();
+        }
     }
 }

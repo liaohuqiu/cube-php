@@ -1,12 +1,12 @@
 <h3 style="color: Red">
-    <?php $pageData->o('msg'); ?></h3>
+    <?php $page_data->o('msg'); ?></h3>
 <h3>
-    <a href="javascript:history.back()">< < 返回</a></h2>
+    <a href="javascript:history.back()">< < Return back</a></h2>
 <br />
-<pre>
-<?php $pageData->o('traceStr'); ?>
-</pre>
+<pre><code>
+<?php $page_data->o('trace_str', false); ?>
+</code></pre>
 <br />
-<pre>
-<?php $pageData->o('trace'); ?>
-</pre>
+<pre><code>
+<?php $page_data->o('trace', false); ?>
+</code></pre>
