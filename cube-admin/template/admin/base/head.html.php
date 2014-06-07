@@ -69,8 +69,8 @@
     <div class="col-md-2">
         <div class='bs-sidebar'>
             <ul class="nav bs-sidenav">
-                <li>
                 <?php foreach ($header_data['module_info']['units'] as $unit): ?>
+                <li>
                 <a class='active'><?php $unit->o('name'); ?></a>
                 <ul class='nav'>
                     <?php foreach ($unit['list'] as $item): ?>
