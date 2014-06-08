@@ -2,7 +2,7 @@
 $data = array (
   'js' => 
   array (
-    'admin/AAdminGlobal' => '/admin/js/AAdminGlobal.js?140608b74d7',
+    'admin/AAdminGlobal' => '/admin/js/AAdminGlobal.js?14060908999',
     'admin/AAjaxUpload' => '/admin/js/AAjaxUpload.js?1406085e8ff',
     'admin/AInit' => '/admin/js/AInit.js?140605f524c',
     'admin/ATableEdit' => '/admin/js/ATableEdit.js?14060595439',
@@ -56,7 +56,7 @@ $data = array (
     'core/dialog/AsyncDialog' => '/cube/js/core/dialog/AsyncDialog.js?14051034813',
     'core/dialog/DialogBase' => '/cube/js/core/dialog/DialogBase.js?14051034813',
     'core/dialog/Layer' => '/cube/js/core/dialog/Layer.js?14051034813',
-    'core/dialog/MsgBox' => '/cube/js/core/dialog/MsgBox.js?140605f83bb',
+    'core/dialog/MsgBox' => '/cube/js/core/dialog/MsgBox.js?14060908999',
     'core/doT' => '/cube/js/core/doT.js?14051034813',
     'core/placeholder' => '/cube/js/core/placeholder.js?14051034813',
     'core/popup/ClickPopUp' => '/cube/js/core/popup/ClickPopUp.js?14051034813',
@@ -68,11 +68,11 @@ $data = array (
     'core/switch/TabView' => '/cube/js/core/switch/TabView.js?14051034813',
     'core/tool/Browser' => '/cube/js/core/tool/Browser.js?14051034813',
     'core/webcam' => '/cube/js/core/webcam.js?14051034813',
-    'version' => '/version.js?1406082236b74d7',
+    'version' => '/version.js?140609022508999',
   ),
   'css' => 
   array (
-    'admin/admin-base' => '/admin/css/admin-base.css?140608787f1',
+    'admin/admin-base' => '/admin/css/admin-base.css?140609ad1df',
     'base' => '/cube/css/base.css?14051034813',
   ),
 );

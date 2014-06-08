@@ -46,6 +46,19 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
 
     K.mix(MsgBox, {
 
+        info: function(msg, data) {
+            var dialog_body ='<div class="modal-body">' +
+                '<div class="">' + msg + '</div></div>' +
+                '<div class="modal-footer">' +
+                '<button class="btn btn-success _j_msgbox_btn_ok">Yes</button>' +
+                '</div></div>';
+            return this.showDialog(dialog_body, data);
+        },
+
+        succ: function(msg, data) {
+            return this.success(msg, data);
+        },
+
         success: function(msg, data) {
             var dialog_body ='<div class="modal-body">' +
                 '<div class="alert alert-success">' + msg + '</div></div>' +
@@ -53,7 +66,7 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
                 '<button class="btn btn-success _j_msgbox_btn_ok">Yes</button>' +
                 '</div></div>';
 
-            this.showDialog(dialog_body, data);
+            return this.showDialog(dialog_body, data);
         },
 
         confirm: function(msg, data) {

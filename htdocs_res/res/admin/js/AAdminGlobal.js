@@ -8,6 +8,7 @@ K.App('admin/AAdminGlobal', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'c
             'click #_j_btn_change_pwd': 'clickChangePwd',
             'click #_j_btn_logout': 'clickLogout',
             'click ._j_btn_delete': 'clickDelete',
+            'click .msgbox_info': 'clickMsgBoxInfo',
         },
 
         clickChangePwd: function() {
@@ -40,6 +41,18 @@ K.App('admin/AAdminGlobal', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'c
                     window.location.reload(true);
                 }).send();
             },});
+        },
+
+        clickMsgBoxInfo: function(e) {
+            var target = $(e.target);
+            var p = target.parents('.msgbox_info');
+            var data = {}
+            var width = p.data('msgbox-width');
+            K.log(width);
+            if (width) {
+                data['width'] = width;
+            }
+            MsgBox.info(p.html(), data);
         },
 
         main: function(){

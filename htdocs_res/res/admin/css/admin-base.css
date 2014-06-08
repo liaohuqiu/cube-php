@@ -150,3 +150,7 @@
 .ta-c {text-align: center !important;}
 .ta-l {text-align: left !important;}
 .ta-r {text-align: right !important;}
+
+.msgbox_info:hover {
+    cursor: pointer;
+}

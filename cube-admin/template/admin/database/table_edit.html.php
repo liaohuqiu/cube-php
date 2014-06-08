@@ -16,7 +16,7 @@
             </div>
         </div>
     </div>
-    <div class='col-md-6'>
+    <div class='col-md-6 msgbox_info' data-msgbox-width='800'>
         <pre><code id='result'><?php $page_data->o('msg');?></code></pre>
     </div>
 </div>
