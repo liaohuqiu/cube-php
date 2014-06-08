@@ -4,6 +4,7 @@ class MApps_Sample_UploadAjax extends MApps_AdminAjaxBase
     protected function main()
     {
         $file = $this->getRequest()->getData('f1', 'f', 'file');
+        add_debug_log($file);
         if (is_array($file) && !$file['error'])
         {
             $fileName = $file['name'];

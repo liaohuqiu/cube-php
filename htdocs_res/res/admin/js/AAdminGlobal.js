@@ -7,6 +7,7 @@ K.App('admin/AAdminGlobal', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'c
         events: {
             'click #_j_btn_change_pwd': 'clickChangePwd',
             'click #_j_btn_logout': 'clickLogout',
+            'click ._j_btn_delete': 'clickDelete',
         },
 
         clickChangePwd: function() {
@@ -18,6 +19,27 @@ K.App('admin/AAdminGlobal', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'c
             MsgBox.confirm(msg, {on_ok: function() {
                 window.location.href = '/admin/user/logout';
             }});
+        },
+
+        clickDelete: function (e) {
+            var target = $(e.target);
+            var id = target.data('id');
+            var url;
+            var p = target.parents('._j_delele');
+            if (p.length) {
+                url = p.data('delete-url');
+            } else {
+                url = target.data('delete-url');
+            }
+            MsgBox.confirm('Are you sure to delete?' , {on_ok: function() {
+                var request = Request.create(url, id);
+                if (!request) {
+                    return;
+                }
+                request.setData({id: id}).setHandler(function() {
+                    window.location.reload(true);
+                }).send();
+            },});
         },
 
         main: function(){
