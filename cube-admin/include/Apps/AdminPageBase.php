@@ -47,11 +47,12 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
     protected function getTitle()
     {
         $module = $this->moduleMan->getCurrentModuleInfo();
+        $title = '';
         if ($module)
         {
-            return '';
+            $title = $module['name'];
         }
-        return $module['name'];
+        return $title . ' - Cube for ' . APP_NAME;
     }
 
     public static function createDisplayView()
