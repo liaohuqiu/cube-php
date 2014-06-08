@@ -3,7 +3,7 @@
  *
  * @author huqiu
  */
-class MCore_Data_LocalFile
+class MCore_Tool_LocalFile
 {
     /**
      *   $info = array();

@@ -54,6 +54,24 @@ $data['module_list'] = array(
                 )
             )
         ),
+    ),
+    'sample' => array(
+        'root_path' => '/sample',
+        'name' => 'Sample',
+        'url'  => 'ajax-upload',
+        'role' => 'master',
+        'auth_key' => 'sample',
+        'units'=> array(
+            array(
+                'name' => 'upload',
+                'list' => array(
+                    array(
+                        'name' => 'ajax upload',
+                        'url' => 'ajax-upload',
+                    ),
+                )
+            )
+        ),
     )
 );
 return $data;
