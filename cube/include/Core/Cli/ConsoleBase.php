@@ -3,31 +3,9 @@
  *
  * @author huqiu
  */
-class MCore_Cli_ConsoleBase
+if (!function_exists('p'))
 {
-    protected $argc;
-    protected $argv;
-    private $_lockfp;
-
-    function getInputOption($required, $optional = array())
-    {
-        $opt = new MCore_Cli_Options($required, $optional);
-        return $opt;
-    }
-
-    function execCmd($cmd)
-    {
-        $this->printInfo($cmd, false);
-        exec($cmd, $result);
-        return $result;
-    }
-
-    protected function checkLock($fileName = "")
-    {
-        $this->_lockfp = MCore_Tool_Lock::lock($fileName);
-    }
-
-    protected function printInfo($info, $withTime = true)
+    function p($info, $withTime = true)
     {
         if ($info instanceof MCore_Util_ArrayLike)
         {
@@ -52,6 +30,36 @@ class MCore_Cli_ConsoleBase
             return $msg;
         }
         echo $msg;
+    }
+}
+
+class MCore_Cli_ConsoleBase
+{
+    protected $argc;
+    protected $argv;
+    private $_lockfp;
+
+    function getInputOption($required, $optional = array())
+    {
+        $opt = new MCore_Cli_Options($required, $optional);
+        return $opt;
+    }
+
+    function execCmd($cmd)
+    {
+        $this->printInfo($cmd, false);
+        exec($cmd, $result);
+        return $result;
+    }
+
+    protected function checkLock($fileName = "")
+    {
+        $this->_lockfp = MCore_Tool_Lock::lock($fileName);
+    }
+
+    protected function printInfo($msg, $withTime = true)
+    {
+        return p($msg, $withTime);
     }
 
     function setNoLimit()
