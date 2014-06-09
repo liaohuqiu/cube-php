@@ -8,7 +8,7 @@ K.App('admin/AAdminGlobal', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'c
             'click #_j_btn_change_pwd': 'clickChangePwd',
             'click #_j_btn_logout': 'clickLogout',
             'click ._j_btn_delete': 'clickDelete',
-            'click .msgbox_info': 'clickMsgBoxInfo',
+            'click .msgbox-info': 'clickMsgBoxInfo',
         },
 
         clickChangePwd: function() {
@@ -45,7 +45,7 @@ K.App('admin/AAdminGlobal', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'c
 
         clickMsgBoxInfo: function(e) {
             var target = $(e.target);
-            var p = target.parents('.msgbox_info');
+            var p = target.parents('.msgbox-info');
             var data = {}
             var width = p.data('msgbox-width');
             K.log(width);

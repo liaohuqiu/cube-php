@@ -151,6 +151,6 @@
 .ta-l {text-align: left !important;}
 .ta-r {text-align: right !important;}
 
-.msgbox_info:hover {
+.msgbox-info:hover {
     cursor: pointer;
 }
