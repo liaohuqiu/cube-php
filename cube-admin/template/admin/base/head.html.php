@@ -66,10 +66,11 @@
 <div class="container">
 <div class="row">
     <?php if ($header_data['module_info']): ?>
+  <?php $_module = $header_data['module_info'];?>
     <div class="col-md-2">
         <div class='bs-sidebar'>
             <ul class="nav bs-sidenav">
-                <?php foreach ($header_data['module_info']['units'] as $unit): ?>
+                <?php foreach ($_module['units'] as $unit): ?>
                 <li>
                 <a class='active'><?php $unit->o('name'); ?></a>
                 <ul class='nav'>
@@ -89,6 +90,12 @@
         </div>
     </div>
     <div class="col-md-10">
+        <ol class="breadcrumb">
+          <li><a href="/">Home</a></li>
+          <li><a href="<?php $_module->o('url'); ?>"><?php $_module->o('name'); ?></a></li>
+          <li><a href="javascript:void(0);"><?php $_module['current_unit']->o('name'); ?></a></li>
+          <li class='active'><?php $_module['current_unit']['current_item']->o('name'); ?></li>
+        </ol>
         <?php else: ?>
         <div class="col-md-12">
         <?php endif; ?>

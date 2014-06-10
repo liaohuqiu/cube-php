@@ -104,12 +104,16 @@ class MAdmin_Module
                 foreach ($unit['list'] as $idx => $item)
                 {
                     $item_url = $this->combineUrl($root_path, $item['url']);
+                    $item['url'] = $item_url;
                     if (strpos($this->path, $item_url) !== false)
                     {
                         $item['is_current'] = 1;
                         $module['is_current'] = 1;
+                        $unit['is_current'] = 1;
+
+                        $unit['current_item'] = $item;
+                        $module['current_unit'] = $unit;
                     }
-                    $item['url'] = $item_url;
                     $unit['list'][$idx] = $item;
                 }
                 $module['units'][$index] = $unit;
