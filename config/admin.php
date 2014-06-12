@@ -3,7 +3,7 @@ $data['module_list'] = array(
     'database' => array(
         'root_path' => '/admin',
         'name' => 'System',
-        'url'  => '/database/server-list',
+        'url'  => '/database/table-list',
         'auth_key' => 'system',
         'units'=> array(
             array(

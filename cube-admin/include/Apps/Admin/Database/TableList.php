@@ -25,11 +25,10 @@ class MApps_Admin_Database_TableList extends MApps_AdminPageBase
             'only_display_fields' => array(),
             'names' => array(
                 'delete_table' => 'delete',
-                'detail_info' => 'detail',
                 'alter_table' => 'alter',
             ),
             'align' => array(
-                'kind' => 'left',
+                'name' => 'left',
             ),
         );
 
@@ -52,9 +51,8 @@ class MApps_Admin_Database_TableList extends MApps_AdminPageBase
 
     public function formatDisplayItem($item)
     {
-        $kind = $item['kind'];
+        $kind = $item['name'];
         $item['delete_table'] = "<a class='_j_table_delete' href='javascript:void(0)' data-kind='$kind'>delete</a>";
-        $item['detail_info'] = "<a href='table-detail?kind=$kind' target='_blank' >detail</a>";
         $item['alter_table'] = "<a href='table-edit?kind=$kind' target='_blank' >alter</a>";
         return $item;
     }
