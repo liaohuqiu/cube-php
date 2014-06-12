@@ -2,7 +2,7 @@
 $data = array (
   'js' => 
   array (
-    'admin/AAdminGlobal' => '/admin/js/AAdminGlobal.js?14060947882',
+    'admin/AAdminGlobal' => '/admin/js/AAdminGlobal.js?14061250c9b',
     'admin/AAjaxUpload' => '/admin/js/AAjaxUpload.js?1406085e8ff',
     'admin/AInit' => '/admin/js/AInit.js?140605f524c',
     'admin/ATableEdit' => '/admin/js/ATableEdit.js?14060595439',
@@ -68,7 +68,7 @@ $data = array (
     'core/switch/TabView' => '/cube/js/core/switch/TabView.js?14051034813',
     'core/tool/Browser' => '/cube/js/core/tool/Browser.js?14051034813',
     'core/webcam' => '/cube/js/core/webcam.js?14051034813',
-    'version' => '/version.js?140609133847882',
+    'version' => '/version.js?140612091250c9b',
   ),
   'css' => 
   array (

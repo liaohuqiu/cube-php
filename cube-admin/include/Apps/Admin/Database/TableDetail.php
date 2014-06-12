@@ -14,19 +14,7 @@ class MApps_Admin_Database_TableDetail extends MApps_AdminPageBase
         $sql = "show create table ". $kind;
         $ret = $iterator->queryOne($sql)->first();
         $sqlText = $ret['Create Table'];
-        $tableInfos = $iterator->getTableInfos(false);
         $list = array();
-
-        foreach ($tableInfos as $item)
-        {
-            $tableDBInfo = $item->getDBInfo();
-            $info = array();
-            $info['tableName'] = $item->getTableName();
-            $info['sid'] = $item->getSid();
-            $info['host'] = $tableDBInfo['h'];
-            $info['connectionStr'] = $tableDBInfo->getConnectionStr();
-            $list[] = $info;
-        }
 
         $view = $this->getView();
         $view->setData('sql', $sqlText);

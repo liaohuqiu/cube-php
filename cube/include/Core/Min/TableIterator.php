@@ -21,49 +21,45 @@ class MCore_Min_TableIterator
     /**
      * 对每个分表执行sql
      */
-    public function query($sql, $callback = null, $useSlave = true)
+    public function query($sql, $callback = null, $salve = true)
     {
-        $tableInfos = $this->getTableInfos($useSlave);
+        $tableInfos = MCore_Min_TableConfig::getTableInfos($this->kind, $salve);
+
+        add_debug_log($tableInfos);
 
         $list = array();
         foreach ($tableInfos as $tableInfo)
         {
-            $dbInfo = $tableInfo->getDBInfo();
-            $connection = MCore_Min_DBConection::get($dbInfo);
-            $sqlText = str_replace($this->kind, $tableInfo->getTableName(), $sql);
+            $table_name = $tableInfo['table_name'];
+            $db_info = $tableInfo['db_info'];
+            $connection = MCore_Min_DBConection::get($db_info);
+            $sqlText = str_replace($this->kind, $table_name, $sql);
             $ret = $connection->query($sqlText);
 
-            $tableName = $tableInfo->getTableName();
             if ($callback)
             {
-                call_user_func($callback, $ret, $tableName);
+                call_user_func($callback, $ret, $table_name);
             }
             else
             {
-                $list[$tableName] = $ret;
+                $list[$table_name] = $ret;
             }
         }
         return $list;
     }
 
-    public function queryOne($sql)
+    public function queryOne($sql, $salve = true)
     {
-        $tableInfos = $this->getTableInfos($useSlave);
+        $tableInfos = MCore_Min_TableConfig::getTableInfos($this->kind, $salve);
 
         foreach ($tableInfos as $tableInfo)
         {
-            $dbInfo = $tableInfo->getDBInfo();
-            $connection = MCore_Min_DBConection::get($dbInfo);
-            $sqlText = str_replace($this->kind, $tableInfo->getTableName(), $sql);
+            $db_info = $tableInfo['db_info'];
+            $table_name = $tableInfo['table_name'];
+            $connection = MCore_Min_DBConection::get($db_info);
+            $sqlText = str_replace($this->kind, $table_name, $sql);
             $ret = $connection->query($sqlText);
             return $ret;
         }
     }
-
-    public function getTableInfos($useSlave)
-    {
-        $deployData = MCore_Min_TableConfig::getDeployData();
-        return MCore_Min_TableConfig::getTableInfos($deployData, $this->kind, $useSlave);
-    }
 }
-?>

@@ -14,8 +14,8 @@ $data['module_list'] = array(
                         'url' => '/database/table-config',
                     ),
                     array(
-                        'name' => 'DB Servers',
-                        'url' => '/database/server-list',
+                        'name' => 'DB List',
+                        'url' => '/database/db-list',
                     ),
                     array(
                         'name' => 'Table List',

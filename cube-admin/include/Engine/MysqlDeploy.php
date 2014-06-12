@@ -1,119 +1,92 @@
 <?php
 class MEngine_MysqlDeploy
 {
-    public static function getDeployData($configDataOne = null)
+    public static function getDeployData($db = null)
     {
-        if ($configDataOne == null)
+        if ($db == null)
         {
-            $configDataOne = MEngine_EngineDB::fromConfig();
+            $db = MEngine_EngineDB::fromConfig();
         }
-        $serverSettings = $configDataOne->select('sys_sever_setting', array('*'), array('active' => 1));
-        $tableSetting = $configDataOne->select('sys_table_setting', array('*'), array());
-        $kindSetting = $configDataOne->select('sys_kind_setting', array('*'), array());
 
-        $serverList = array();
-        foreach ($serverSettings as $item)
+        $raw_db_list = $db->select('sys_db_info', array('*'), array('active' => 1));
+        $raw_table_list = $db->select('sys_table_info', array('*'), array());
+
+        $db_list = array();
+        foreach ($raw_db_list as $item)
         {
             $sid = $item['sid'];
-            $master_id = $item['master_id'];
             $info = MCore_Min_TableConfig::convertServerInfoForDBResult($item);
+            $db_list[$sid] = $info;
+        }
+
+        $db_group = array();
+        foreach ($raw_db_list as $item)
+        {
+            $sid = $item['sid'];
+            $group_key = $item['group_key'];
+            $master_id = $item['master_id'];
+            $cluster_index = $item['cluster_index'];
             if ($master_id)
             {
-                $serverList[$master_id]['slaves'][$sid] = $info;
+                $cluster_index = $db_list[$master_id]['cluster_index'];
+                $db_map[$group_key][$cluster_index]['slaves'][$sid] = $sid;
             }
             else
             {
-                $serverList[$sid]['master'] = $info;
+                $db_map[$group_key][$cluster_index]['master'] = $sid;
             }
         }
 
-        $tableInfos = array();
-        foreach ($kindSetting as $item)
+        $table_list = array();
+        foreach ($raw_table_list as $item)
         {
-            $kind = $item['kind'];
+            $name = $item['name'];
 
             $info = array();
             $info['id_field'] = $item['id_field'];
             $info['table_num'] = $item['table_num'];
-            $info['table_prefix'] = $item['table_prefix'];
-            $info['app'] = $item['app'];
-            $info['db_name'] = $item['db_name'];
-            $tableInfos[$kind] = $info;
-        }
-
-        foreach ($tableSetting as $item)
-        {
-            $kind = $item['kind'];
-            $tableIndex = $item['no'];
-            $tableInfos[$kind]['servers'][$tableIndex] = $item['sid'];
+            $info['db_group'] = $item['db_group'];
+            $table_list[$name] = $info;
         }
 
         $data = array();
-        $data['servers'] = $serverList;
-        $data['tables'] = $tableInfos;
+        $data['db_list'] = $db_list;
+        $data['db_map'] = $db_map;
+        $data['tables'] = $table_list;
         return $data;
     }
 
-    public static function createTable($configDataOne, $sids, $dbName, $kind, $idField, $tableNum, $sql, $onlyScheme = false)
+    public static function createTable($db, $name, $db_group, $idField, $tableNum, $sql, $onlyScheme = false)
     {
-        $sidLength = count($sids);
-        $exist = $configDataOne->select('sys_kind_setting', array('*'), array('kind' => $kind));
-        if ($exist->count() > 0 )
-        {
-            return false;
-        }
-        $exist = $configDataOne->select('sys_table_setting', array('*'), array('kind' => $kind));
+        $exist = $db->select('sys_table_info', array('*'), array('name' => $name));
         if ($exist->count() > 0 )
         {
             return false;
         }
         $info = array();
-        $info['kind'] = $kind;
+        $info['name'] = $name;
         $info['table_num'] = $tableNum;
-        $info['table_prefix'] = $kind;
         $info['id_field'] = $idField;
-        $info['db_name'] = $dbName;
-        $info['app_name'] = $dbName;
+        $info['db_group'] = $db_group;
 
-        // add kind setting info
-        $ret = $configDataOne->insert('sys_kind_setting', $info);
+        $ret = $db->insert('sys_table_info', $info);
         if (!$ret['affected_rows'])
         {
-            throw new Exception('Fail to add sys_kind_setting for: ' . $kind .  ' error: ' . var_export($ret, true));
-        }
-
-        // add table setting info(s)
-        for ($i=0; $i < $tableNum; $i++)
-        {
-            $idx = $i % count($sids);
-            $itemInfo = array();
-            $itemInfo['kind'] = $kind;
-            $itemInfo['no'] = $i;
-
-            $serverIndex = $i % $sidLength;
-            $itemInfo['sid'] = $sids[$serverIndex];
-
-            $ret = $configDataOne->insert('sys_table_setting', $itemInfo);
-            if (!$ret['affected_rows'])
-            {
-                $msg = sprintf('Failt to add sys_table_setting: %s $s %s', $kind, $i, $ret['error']);
-                throw new Exception($msg);
-            }
+            throw new Exception('Fail to add sys_table_info for: ' . $name .  ' error: ' . var_export($ret, true));
         }
 
         // create table(s)
         if (!$onlyScheme)
         {
-            $iterator = new MEngine_MysqlIterator($kind, $configDataOne);
-            $sql = str_replace($kind . '_0', $kind, $sql);
+            $iterator = new MEngine_MysqlIterator($name, $db);
+            $sql = str_replace($name . '_0', $name, $sql);
             try
             {
                 $iterator->query($sql, null, false, false);
             }
             catch (Exception $ex)
             {
-                $configDataOne->delete('sys_kind_setting', array('kind' => $kind));
-                $configDataOne->delete('sys_table_setting', array('kind' => $kind));
+                $db->delete('sys_table_info', array('name' => $name));
                 throw $ex;
             }
         }

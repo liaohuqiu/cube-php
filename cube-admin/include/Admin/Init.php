@@ -20,7 +20,7 @@ class MAdmin_Init
         {
             // check sysconfig
             $db = MEngine_EngineDB::fromConfig();
-            $db->select('sys_sever_setting', array('count(1) as num'));
+            $db->select('sys_db_info', array('count(1) as num'));
 
             // check db-deploy config
             $userTableName = MEngine_SysConfig::getSysConfig('admin_user_table');

@@ -81,20 +81,21 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
         $info['host'] = $dbInfo['h'];
         $info['port'] = $dbInfo['P'];
         $info['group_key'] = $sysDBKey;
+        $info['cluster_index'] = 0;
         $info['user'] = $dbInfo['u'];
         $info['passwd'] = $dbInfo['p'];
-        $ret = $db->insert('sys_sever_setting', $info, array());
+        $info['db_name'] = $sysDBName;
+        $ret = $db->insert('sys_db_info', $info, array('password', 'group_key'));
 
         // create table
         $sqlContent = file_get_contents(CUBE_DEV_ROOT_DIR . '/data/admin.sql');
         $sqlContent = str_replace('{admin_user_table}', $adminUserTable, $sqlContent);
 
         $creator = new MEngine_MysqlTableCreator($db);
-        $creator->createTable($sysDBKey, $adminUserDB, $sqlContent);
+        $creator->createTable($sysDBKey, $sqlContent);
 
         // set data to dataconfig so that Min DBMan will work.
         MEngine_SysConfig::updateSysConfig($this->buildSysConfig());
-        MCore_Min_TableConfig::setDeployData($this->getDeployData());
 
         MAdmin_UserRaw::create($this->input['user_account'], $userPwd, array(), 1);
 

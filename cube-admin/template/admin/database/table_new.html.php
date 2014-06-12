@@ -8,13 +8,6 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-2 control-label" for="_j_input_db_name">database name</label>
-        <div class="col-sm-4">
-            <input class='form-control' type="text" name="db_name" id="_j_input_db_name" placeholder="">
-        </div>
-    </div>
-
-    <div class="form-group">
         <label class="col-sm-2 control-label" for="only_schema">Is System Admin</label>
         <div class="col-md-4">
             <div class='checkbox'>

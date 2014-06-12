@@ -11,11 +11,8 @@ class MEngine_MysqlIterator extends MCore_Min_TableIterator
             $db = MEngine_EngineDB::fromConfig();
         }
         $this->db = $db;
-    }
 
-    public function getTableInfos($useSlave)
-    {
         $deployData = MEngine_MysqlDeploy::getDeployData($this->db);
-        return MCore_Min_TableConfig::getTableInfos($deployData, $this->kind, $useSlave);
+        MCore_Min_TableConfig::setDeployData($deployData);
     }
 }

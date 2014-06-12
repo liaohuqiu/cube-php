@@ -19,89 +19,49 @@ class MCore_Min_TableConfig
         return MCore_Tool_Conf::getDataConfigPathByEnv('db-deploy');
     }
 
-    public static function getDeployInfo($kind)
+    public static function getDeployInfo($table_name)
     {
         $data = self::getDeployData();
-        return $data['tables'][$kind];
+        return $data['tables'][$table_name];
     }
 
-    public static function getIdField($kind)
+    public static function getIdField($table_name)
     {
         $data = self::getDeployData();
-        return $data['tables'][$kind]['id_field'];
+        return $data['tables'][$table_name]['id_field'];
     }
 
-    public static function getTableNum($kind)
+    public static function getTableNum($table_name)
     {
         $data = self::getDeployData();
-        return $data['tables'][$kind]['table_num'];
+        return $data['tables'][$table_name]['table_num'];
     }
 
-    public static function getDBInfo($kind, $hintId, $useSlave = false)
+    public static function getDBInfo($table_name, $hint_id, $slave = false)
     {
-        $data = self::getDeployData();
-        $kindInfo = $data['tables'][$kind];
-        if (!$kindInfo)
+        $deploy_data = self::getDeployData();
+        $table_info = $deploy_data['tables'][$table_name];
+        if (!$table_info)
         {
-            throw new Exception('table deploy info is empty, kind: ' . $kind);
+            throw new Exception('table deploy info is empty, table_name: ' . $table_name);
         }
 
-        $tableIndex = $hintId % $kindInfo['table_num'];
-        $sid = $kindInfo['servers'][$tableIndex];
-        $server = $data['servers'][$sid];
+        $db_group = $table_info['db_group'];
+        $cluster_list = $deploy_data['db_map'][$db_group];
 
-        $serverInfo = array();
-        if ($useSlave && isset($server['slaves']) && $server['slaves'])
+        $cluster_index = ($hint_id % $table_info['table_num']) % count($cluster_list);
+        $cluster = $cluster_list[$cluster_index];
+
+        if ($slave && isset($cluster['slaves']) && $cluster['slaves'])
         {
-            $serverInfo = Core_Tool_Array::rand($server['slaves']);
+            $sid = Core_Tool_Array::rand($cluster['slaves']);
         }
         else
         {
-            $serverInfo = $server['master'];
+            $sid = $cluster['master'];
         }
-        $serverInfo['db'] = $kindInfo['db_name'];
-        return MCore_Min_DBInfo::create($serverInfo);
-    }
-
-    private static function makeTableInfos($kind, $kindInfo, $serverList, $salve)
-    {
-        if (empty($kindInfo))
-        {
-            throw new MCore_Min_DBException('$kindInfo is empty');
-        }
-
-        $list = array();
-        $isSplit = $kindInfo['table_num'];
-        $tablePrefix = $kindInfo['table_prefix'];
-        $dbName = $kindInfo['db_name'];
-
-        foreach ($kindInfo['servers'] as $tableIndex => $sid)
-        {
-            $serverInfoRaw = $serverList[$sid];
-
-            $tableName = $tablePrefix;
-            if ($isSplit > 1)
-            {
-                $tableName .= '_' . $tableIndex;
-            }
-            if($salve && $serverInfoRaw['slaves'])
-            {
-                $serverInfo = Core_Tool_Array::rand($serverInfoRaw['slaves']);
-            }
-            else
-            {
-                $serverInfo = $serverInfoRaw['master'];
-            }
-
-            $dbInfoArr = $serverInfo;
-            $dbInfoArr['db'] = $dbName;
-
-            $dbInfo = MCore_Min_DBInfo::create($dbInfoArr);
-
-            $tableInfo = new MCore_Min_TableInfo($kind, $tableIndex, $tableName, $sid, $dbInfo);
-            $list[$tableIndex] = $tableInfo;
-        }
-        return $list;
+        $db_info = $deploy_data['db_list'][$sid];
+        return MCore_Min_DBInfo::create($db_info);
     }
 
     public static function convertServerInfoForDBResult($item)
@@ -113,17 +73,35 @@ class MCore_Min_TableConfig
         $info['P'] = $port;
         $info['u'] = $item['user'];
         $info['p'] = $item['passwd'];
+        $info['db'] = $item['db_name'];
         return $info;
     }
 
-    public function getTableInfos($deployData, $kind, $useSlave)
+    public static function getTableInfos($table_name, $salve)
     {
-        $serverList = $deployData['servers'];
-        $tableInfo = $deployData['tables'][$kind];
-        if (!$tableInfo)
+        $deploy_data = self::getDeployData();
+        $table_info = $deploy_data['tables'][$table_name];
+        if (!$table_info)
         {
-            throw new Exception('There is no config info for this table: ' . $kind);
+            throw new Exception('There is no config info for this table: ' . $table_name);
         }
-        return self::makeTableInfos($kind, $tableInfo, $serverList, $useSlave);
+        $list = array();
+
+        $table_num = $table_info['table_num'];
+        $is_multi = $table_num > 1;
+        for ($i = 0; $i < $table_num; $i++)
+        {
+            $name = $table_name;
+            if ($is_multi)
+            {
+                $name = $table_name . '_' . $i;
+            }
+
+            $info = array();
+            $info['db_info'] = self::getDBInfo($table_name, $i, $salve);
+            $info['table_name'] = $name;
+            $list[$i] = $info;
+        }
+        return $list;
     }
 }

@@ -18,23 +18,8 @@ class MEngine_MysqlTableCreator
         return $this->create($serverGroupKey, $dbName, $sqlContent, $onlyThisTable);
     }
 
-    public function createTable($serverGroupKey, $dbName, $sqlContent, $onlyThisTable = '', $onlyScheme = false)
+    public function createTable($serverGroupKey, $sqlContent, $onlyThisTable = '', $onlyScheme = false)
     {
-        $where = array();
-        $where['group_key'] = $serverGroupKey;
-        $where['master_sid'] = 0;
-        $serverList = $this->db->select('sys_sever_setting', array('*'), $where);
-        $sids = array();
-
-        // ensure every database for tables is ready.
-        foreach ($serverList as $item)
-        {
-            $dbInfo = MCore_Min_TableConfig::convertServerInfoForDBResult($item);
-            $connection = MCore_Min_DBConection::get($dbInfo);
-            MEngine_EngineDB::createDB($connection, $dbName);
-            $sids[] = $item['sid'];
-        }
-
         $sqlList = self::parseSqlContent($sqlContent);
         $succSqlList = array();
         foreach ($sqlList as $item)
@@ -55,7 +40,7 @@ class MEngine_MysqlTableCreator
 
             try
             {
-                $ret =  MEngine_MysqlDeploy::createTable($this->db, $sids, $dbName, $kind, $splitId, $tableNum, $sql, $onlyScheme);
+                $ret =  MEngine_MysqlDeploy::createTable($this->db, $kind, $serverGroupKey, $splitId, $tableNum, $sql, $onlyScheme);
                 if ($ret)
                 {
                     $succSqlList[$kind] = $sql;

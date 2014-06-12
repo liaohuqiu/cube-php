@@ -9,7 +9,7 @@ class MApps_Admin_Database_TableList extends MApps_AdminPageBase
     protected function outputBody()
     {
         $table = array(
-            'kind' => 'sys_kind_setting',
+            'kind' => 'sys_table_info',
             'select_field' => array(),
             'default_order_by' => 'order by kind asc',
             'search' => array(

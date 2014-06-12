@@ -9,6 +9,13 @@ K.App('admin/AAdminGlobal', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'c
             'click #_j_btn_logout': 'clickLogout',
             'click ._j_btn_delete': 'clickDelete',
             'click .msgbox-info': 'clickMsgBoxInfo',
+            'change ._j_check_input' : 'checkInput',
+        },
+
+        checkInput: function(e) {
+            var t = $(e.target);
+            var value = t.val();
+            K.log(value);
         },
 
         clickChangePwd: function() {
