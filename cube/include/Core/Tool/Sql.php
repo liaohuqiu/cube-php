@@ -9,47 +9,55 @@ class MCore_Tool_Sql
     /**
      *  on duplicate key update
      */
-    public static function insert($table, $dataToBeInserted, $fieldsWillBeChangedOnDuplicate = array(), $dataToBeAddedOnDuplucated = array(), $notEscapeFields=array())
+    public static function insert($table, $insertKV, $keysChangeOnDup = array(), $kvAddOnDup = array(), $keysNoEscape = array())
     {
-        $sql = "insert into $table (";
 
-        $flag = 0;
-        foreach ($dataToBeInserted as $k => $v)
+        $keys = array();
+        foreach ($insertKV as $k => $v)
         {
             if (!$k)
             {
-                throw new Exception('empty key in $dataToBeInserted');
+                throw new Exception('empty key in $insertKV');
             }
-            $sql .= ($flag == 0 ? '': ', ') . $k;
-            $flag = 1;
+            $keys[] = $k;
         }
+        $keys = implode(',', $keys);
 
-        $sql .= ") values(";
-        $flag = 0;
-        foreach ($dataToBeInserted as $k => $v)
+        $values = array();
+        foreach ($insertKV as $k => $v)
         {
-            $v = (empty($notEscapeFields) || !in_array($k,$notEscapeFields)) ? ("'" . self::escape_string($v) . "'") : $v;
-            $sql .= ($flag == 0 ? '' : ", ") . $v;
-            $flag = 1;
+            if (!is_numeric($v) && (empty($keysNoEscape) || !in_array($k, $keysNoEscape)))
+            {
+                $v = "'" . self::escape_string($v) . "'";
+            }
+            $values[] = $v;
         }
-        $sql .= ")";
+        $values = implode(',', $values);
 
-        if (!empty($fieldsWillBeChangedOnDuplicate) || !empty($dataToBeAddedOnDuplucated))
+        $sql = 'insert into ' . $table . '(' . $keys . ') values (' . $values . ')';
+
+        if (!empty($keysChangeOnDup) || !empty($kvAddOnDup))
         {
             $sql .= " ON DUPLICATE KEY UPDATE ";
+
             $flag = 0;
-            foreach ($fieldsWillBeChangedOnDuplicate as $k)
+
+            foreach ($keysChangeOnDup as $k)
             {
-                if (!isset($dataToBeInserted[$k]))
+                if (!isset($insertKV[$k]))
                 {
                     continue;
                 }
-                $v = (empty($notEscapeFields) || !in_array($k,$notEscapeFields)) ? ("'" . self::escape_string($dataToBeInserted[$k]) . "'") : $dataToBeInserted[$k];
+                $v = $insertKV[$k];
+                if (!is_numeric($v) && (empty($keysNoEscape) || !in_array($k, $keysNoEscape)))
+                {
+                    $v = "'" . self::escape_string($v) . "'";
+                }
                 $sql .= ($flag == 0 ? '': ', ') . $k . " = " . $v;
                 $flag = 1;
             }
 
-            foreach ($dataToBeAddedOnDuplucated as $k => $v)
+            foreach ($kvAddOnDup as $k => $v)
             {
                 if (is_numeric($v))
                 {
@@ -73,7 +81,7 @@ class MCore_Tool_Sql
     /**
      * insert multi
      */
-    public static function insertList($table, $insertFieldList, $notEscapeFields=array())
+    public static function insertList($table, $insertFieldList, $keysNoEscape=array())
     {
         $tmpArr = $insertFieldList[0];
 
@@ -91,7 +99,10 @@ class MCore_Tool_Sql
             $sql .= "(";
             foreach ($varr as $k => $v)
             {
-                $v = (empty($notEscapeFields) || !in_array($k,$notEscapeFields)) ? ("'" . self::escape_string($v) . "'") : $v;
+                if (!is_numeric($v) && (empty($keysNoEscape) || !in_array($k, $keysNoEscape)))
+                {
+                    $v = "'" . self::escape_string($v) . "'";
+                }
                 $sql .= ($flag == 0 ? '' : ", ").$v;
                 $flag = 1;
             }
@@ -184,31 +195,39 @@ class MCore_Tool_Sql
         return $sql;
     }
 
-    public static function update($table, $dataToBeSet, $dataToBeAdded = array(), $whereField, $notEscapeFields=array())
+    public static function update($table, $kvSet, $kvChange = array(), $whereField, $keysNoEscape=array())
     {
-        $sql = "update $table set ";
-        $flag = 0;
-        foreach ($dataToBeSet as $k => $v)
+        add_debug_log(func_get_args());
+        $set = array();
+        foreach ($kvSet as $k => $v)
         {
-            $v = (empty($notEscapeFields) || !in_array($k,$notEscapeFields)) ? ("'" . self::escape_string($v) . "'") : $v;
-            $sql .= ($flag == 0 ? '': ', ') . $k . " = " . $v;
-            $flag = 1;
-        }
-        foreach ($dataToBeAdded as $k => $v)
-        {
-            if (is_numeric($v))
+            if (!is_numeric($v) && (empty($keysNoEscape) || !in_array($k, $keysNoEscape)))
             {
-                $sql .= sprintf("%s %s=%s%s%s", ($flag==0 ? '' : ","),
-                    $k, $k, ($v >= 0 ? "+" : " "), $v);
-                $flag = 1;
+                $v = "'" . self::escape_string($v) . "'";
+            }
+            $set[] = $k . ' = ' . $v;
+        }
+
+        foreach ($kvChange as $k => $v)
+        {
+            if (!is_numeric($v) && (empty($keysNoEscape) || !in_array($k, $keysNoEscape)))
+            {
+                if ($v >= 0)
+                {
+                    $set[] = $k . ' += ' . $v;
+                }
+                else
+                {
+                    $set[] = $k . ' -= ' . $v;
+                }
             }
             else
             {
-                $sql .= sprintf("%s %s=CONCAT(%s,'%s')", ($flag==0 ? '' : ","),
-                    $k, $k, self::escape_string($v));
-                $flag = 1;
+                $v = self::escape_string($v);
+                $set[] = $k . '=CONCAT(' . $k . ', ' . $v . ')';
             }
         }
+        $sql = 'update ' . $table . ' set ' . implode(', ', $set);
 
         $where = self::where($whereField);
         if(0 == strlen($where))
@@ -271,17 +290,17 @@ class MCore_Tool_Sql
         return $where;
     }
 
-    public static function updateRawWhere($table, $dataToBeSet, $dataToBeAdded = array(), $where = '', $notEscapeFields=array())
+    public static function updateRawWhere($table, $kvSet, $kvChange = array(), $where = '', $keysNoEscape=array())
     {
         $sql = "update $table set ";
         $flag = 0;
-        foreach ($dataToBeSet as $k => $v)
+        foreach ($kvSet as $k => $v)
         {
-            $v = (empty($notEscapeFields) || !in_array($k,$notEscapeFields)) ? ("'" . self::escape_string($v) . "'") : $v;
+            $v = (empty($keysNoEscape) || !in_array($k,$keysNoEscape)) ? ("'" . self::escape_string($v) . "'") : $v;
             $sql .= ($flag == 0 ? '': ', ') . $k . " = " . $v;
             $flag = 1;
         }
-        foreach ($dataToBeAdded as $k => $v)
+        foreach ($kvChange as $k => $v)
         {
             if (is_numeric($v))
             {

@@ -9,6 +9,7 @@ class MCore_Util_SimpleConf
     private $_confInfoListByKey = array();
     private $_confInfoListByCode = array();
     private $_keyCodeMap = array();
+    private $_codeKeyMap = array();
 
     function __construct($confInfoListMayByKey, $keyFieldName = '', $codeFieldName = 'code')
     {
@@ -26,6 +27,7 @@ class MCore_Util_SimpleConf
             $this->_confInfoListByKey[$key] = $info;
             $this->_confInfoListByCode[$code] = $info;
             $this->_keyCodeMap[$key] = $code;
+            $this->_codeKeyMap[$code] = $key;
         }
     }
 
@@ -56,12 +58,11 @@ class MCore_Util_SimpleConf
 
     function getKey($code)
     {
-        $ret = array_search($code,$this->_keyCodeMap);
-        if ($ret === false)
+        if (!isset($this->_codeKeyMap[$code]))
         {
             throw new Exception('code not found: ' . $code);
         }
-        return $ret;
+        return $this->_codeKeyMap[$code];
     }
 
     function getCode($key)
@@ -75,24 +76,48 @@ class MCore_Util_SimpleConf
 
     function getInfoByCode($code)
     {
+        if (!isset($this->_codeKeyMap[$code]))
+        {
+            throw new Exception('code not found: ' . $code);
+        }
         $info = $this->_confInfoListByCode[$code];
         return $info;
     }
 
     function getInfoByKey($key)
     {
+        if (!isset($this->_keyCodeMap[$key]))
+        {
+            throw new Exception('key not found: ' . $key);
+        }
         $info = $this->_confInfoListByKey[$key];
         return $info;
     }
 
     function getFieldByCode($code, $fieldName)
     {
-        return $this->_confInfoListByCode[$code][$fieldName];
+        if (!isset($this->_codeKeyMap[$code]))
+        {
+            throw new Exception('code not found: ' . $code);
+        }
+        if (isset($this->_confInfoListByCode[$code][$fieldName]))
+        {
+            return $this->_confInfoListByCode[$code][$fieldName];
+        }
+        return false;
     }
 
-    function getFieldByKey($key,$fieldName)
+    function getFieldByKey($key, $fieldName)
     {
-        return $this->_confInfoListByKey[$key][$fieldName];
+        if (!isset($this->_keyCodeMap[$key]))
+        {
+            throw new Exception('key not found: ' . $key);
+        }
+        if (isset($this->_confInfoListByKey[$key][$fieldName]))
+        {
+            return $this->_confInfoListByKey[$key][$fieldName];
+        }
+        return false;
     }
 
     function getKeyCodeMap()
@@ -112,7 +137,7 @@ class MCore_Util_SimpleConf
 
     function getCodeKeyMap()
     {
-        return array_flip($this->_keyCodeMap);
+        return $this->_codeKeyMap;
     }
 
     function getCodeMapTo($fieldName)

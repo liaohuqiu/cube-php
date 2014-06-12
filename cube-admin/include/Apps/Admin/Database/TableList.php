@@ -29,7 +29,7 @@ class MApps_Admin_Database_TableList extends MApps_AdminPageBase
                 'alter_table' => 'alter',
             ),
             'align' => array(
-                'create_table' => 'left',
+                'kind' => 'left',
             ),
         );
 
