@@ -14,7 +14,7 @@ class MEngine_MysqlDeploy
         $db_list = array();
         foreach ($raw_db_list as $item)
         {
-            $sid = $item['sid'];
+            $sid = (int)$item['sid'];
             $info = MCore_Min_TableConfig::convertServerInfoForDBResult($item);
             $db_list[$sid] = $info;
         }
@@ -22,10 +22,10 @@ class MEngine_MysqlDeploy
         $db_group = array();
         foreach ($raw_db_list as $item)
         {
-            $sid = $item['sid'];
+            $sid = (int)$item['sid'];
             $group_key = $item['group_key'];
-            $master_id = $item['master_id'];
-            $cluster_index = $item['cluster_index'];
+            $master_id = (int)$item['master_id'];
+            $cluster_index = (int)$item['cluster_index'];
             if ($master_id)
             {
                 $cluster_index = $db_list[$master_id]['cluster_index'];
@@ -44,7 +44,7 @@ class MEngine_MysqlDeploy
 
             $info = array();
             $info['id_field'] = $item['id_field'];
-            $info['table_num'] = $item['table_num'];
+            $info['table_num'] = (int)$item['table_num'];
             $info['db_group'] = $item['db_group'];
             $table_list[$name] = $info;
         }

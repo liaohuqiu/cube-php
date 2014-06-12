@@ -25,8 +25,6 @@ class MCore_Min_TableIterator
     {
         $tableInfos = MCore_Min_TableConfig::getTableInfos($this->kind, $salve);
 
-        add_debug_log($tableInfos);
-
         $list = array();
         foreach ($tableInfos as $tableInfo)
         {

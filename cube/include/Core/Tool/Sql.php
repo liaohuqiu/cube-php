@@ -197,7 +197,6 @@ class MCore_Tool_Sql
 
     public static function update($table, $kvSet, $kvChange = array(), $whereField, $keysNoEscape=array())
     {
-        add_debug_log(func_get_args());
         $set = array();
         foreach ($kvSet as $k => $v)
         {
