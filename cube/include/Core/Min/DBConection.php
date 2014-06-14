@@ -28,6 +28,7 @@ class MCore_Min_DBConection
             }
             $this->_connect();
             $this->selectDB();
+            $this->setCharset('utf8');
         }
         return true;
     }

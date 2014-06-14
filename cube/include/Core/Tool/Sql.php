@@ -11,7 +11,7 @@ class MCore_Tool_Sql
      */
     public static function insert($table, $insertKV, $keysChangeOnDup = array(), $kvAddOnDup = array(), $keysNoEscape = array())
     {
-
+        $table = '`' . $table . '`';
         $keys = array();
         foreach ($insertKV as $k => $v)
         {
@@ -83,6 +83,7 @@ class MCore_Tool_Sql
      */
     public static function insertList($table, $insertFieldList, $keysNoEscape=array())
     {
+        $table = '`' . $table . '`';
         $tmpArr = $insertFieldList[0];
 
         $sql = "insert into $table (";
@@ -138,6 +139,7 @@ class MCore_Tool_Sql
 
     public static function deleteRawWhere($table,$where)
     {
+        $table = '`' . $table . '`';
         if(0 == strlen($where))
         {
             throw new Exception("try to excute sql text without a where condition");
@@ -149,6 +151,7 @@ class MCore_Tool_Sql
 
     public static function replace($table, $replaceField)
     {
+        $table = '`' . $table . '`';
         $sql = "replace into $table (";
         $flag = 0;
         foreach ($replaceField as $k => $v)
@@ -170,6 +173,7 @@ class MCore_Tool_Sql
 
     public static function replaceList($table, $replaceFieldList)
     {
+        $table = '`' . $table . '`';
         $tmpArr = $replaceFieldList[0];
         $sql = "replace into $table (";
         $flag = 0;
@@ -197,6 +201,7 @@ class MCore_Tool_Sql
 
     public static function update($table, $kvSet, $kvChange = array(), $whereField, $keysNoEscape=array())
     {
+        $table = '`' . $table . '`';
         $set = array();
         foreach ($kvSet as $k => $v)
         {
@@ -291,6 +296,7 @@ class MCore_Tool_Sql
 
     public static function updateRawWhere($table, $kvSet, $kvChange = array(), $where = '', $keysNoEscape=array())
     {
+        $table = '`' . $table . '`';
         $sql = "update $table set ";
         $flag = 0;
         foreach ($kvSet as $k => $v)
@@ -323,6 +329,7 @@ class MCore_Tool_Sql
 
     public static function select($table, $selectField, $whereField, $order, $start, $num, $foundRows = false)
     {
+        $table = '`' . $table . '`';
         $selectField = (array) $selectField;
         $select = implode(",", $selectField);
 
@@ -352,6 +359,7 @@ class MCore_Tool_Sql
 
     public static function selectRawWhere($table, $selectField, $where, $order, $start, $num, $foundRows = false)
     {
+        $table = '`' . $table . '`';
         $selectField = (array) $selectField;
         $select = implode(",", $selectField);
 
