@@ -14,7 +14,7 @@ K.App('admin/AInit', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'core/aja
         },
 
         getInputData: function(cmd) {
-            var fields = ['db_key', 'db_host', 'db_port', 'db_user', 'db_pwd', 'db_name'];
+            var fields = ['db_key', 'db_host', 'db_port', 'db_user', 'db_pwd', 'db_name', 'db_charset'];
             fields = fields.concat(['user_db', 'user_table', 'user_account', 'user_pwd']);
 
             var data = {};

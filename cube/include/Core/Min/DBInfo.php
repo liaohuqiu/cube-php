@@ -7,7 +7,7 @@
 class MCore_Min_DBInfo extends MCore_Util_ArrayLike
 {
     private static $_KEYS = array('h', 'P', 'db');
-    public function __construct($h, $u, $p, $P, $db, $key)
+    public function __construct($h, $u, $p, $P, $db, $key, $charset = 'utf8')
     {
         if (!$h || !$u)
         {
@@ -22,6 +22,9 @@ class MCore_Min_DBInfo extends MCore_Util_ArrayLike
         $data['db'] = $db;
         $data['P'] = $P;
         $data['key'] = $key;
+
+        !$charset && $charset = 'utf8';
+        $data['charset'] = $charset;
         parent::__construct($data, array());
     }
 
@@ -35,7 +38,7 @@ class MCore_Min_DBInfo extends MCore_Util_ArrayLike
         $key = self::getUniqueKey($conf);
         if (!isset($infoList[$key]))
         {
-            $infoList[$key] = new MCore_Min_DBInfo($conf['h'], $conf['u'], $conf['p'], $conf['P'], $conf['db'], $key);
+            $infoList[$key] = new MCore_Min_DBInfo($conf['h'], $conf['u'], $conf['p'], $conf['P'], $conf['db'], $key, $conf['charset']);
         }
         return $infoList[$key];
     }

@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS sys_db_info (
     user varchar(32) NOT NULL,
     passwd varchar(32) NOT NULL,
     db_name varchar(32) NOT NULL,
+    charset varchar(32) NOT NULL,
     active tinyint(1) NOT NULL default '1',
     remark text NOT NULL,
     PRIMARY KEY  (sid),

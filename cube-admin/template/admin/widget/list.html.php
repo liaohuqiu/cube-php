@@ -1,5 +1,5 @@
 <?php
-$_listPageInfo = [];
+$_listPageInfo = array();
 ?>
 <div>
     <?php if ($_listPageInfo['title']): ?>

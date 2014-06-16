@@ -49,7 +49,14 @@
         <div class="form-group">
             <label for="db_name" class="col-sm-4 control-label">DB name</label>
             <div class="col-sm-6">
-                <input class="form-control" id="db_name" value='cube_sys'>
+                <input class="form-control" id="db_name" value='cube_demo'>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="db_charset" class="col-sm-4 control-label">Charset</label>
+            <div class="col-sm-6">
+                <input class="form-control" id="db_charset" value='utf8'>
             </div>
         </div>
 
@@ -60,7 +67,7 @@
         <div class="form-group">
             <label for="user_db" class="col-sm-4 control-label">Admin DB</label>
             <div class="col-sm-6">
-                <input class="form-control" id="user_db" value='cube_admin'>
+                <input class="form-control" id="user_db" value='cube_demo'>
             </div>
         </div>
         <div class="form-group">

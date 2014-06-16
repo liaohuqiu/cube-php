@@ -38,7 +38,7 @@ class MApps_Init_InitIndex extends MApps_AdminPageBase
     protected function checkIfHasError()
     {
         $path = WRITABLE_DIR;
-        if (!is_writable($path))
+        if (!is_writable($path) && !MCore_Tool_Env::isProd())
         {
             return 'The <code>WRITABLE_DIR</code> can not be written:  <code>' . $path . '</code>';
 

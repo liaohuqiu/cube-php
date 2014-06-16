@@ -28,7 +28,7 @@ class MCore_Min_DBConection
             }
             $this->_connect();
             $this->selectDB();
-            $this->setCharset('utf8');
+            $this->setCharset();
         }
         return true;
     }
@@ -80,7 +80,15 @@ class MCore_Min_DBConection
                 return $this;
             }
             $this->_lastDB = $dbName;
+            if (null == $this->_connection)
+            {
+                throw new MCore_Min_DBException('Connection has not been initialized.');
+            }
             $ret = mysql_select_db($dbName, $this->_connection);
+            if (!$ret)
+            {
+                throw new MCore_Min_DBException('Database is not existent or do not have privilege to access it: ' . $dbName);
+            }
             return $this;
         }
     }

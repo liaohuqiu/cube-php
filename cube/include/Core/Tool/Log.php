@@ -4,10 +4,6 @@
  *
  * @author huqiu
  */
-if (!is_writable(WRITABLE_DIR))
-{
-    throw new Exception('WRITABLE_DIR is not writable: ' . WRITABLE_DIR);
-}
 class MCore_Tool_Log
 {
     /**

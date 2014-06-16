@@ -85,6 +85,7 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
         $info['user'] = $dbInfo['u'];
         $info['passwd'] = $dbInfo['p'];
         $info['db_name'] = $sysDBName;
+        $info['charset'] = $dbInfo['charset'];
         $ret = $db->insert('sys_db_info', $info, array('password', 'group_key'));
 
         // create table
@@ -105,11 +106,14 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
 
     private function checkDeploy()
     {
-        $ret = MAdmin_Init::checkInit();
-
-        if ($ret)
+        try
         {
+            $ret = MAdmin_Init::checkInitException();
             $this->popDialog('succ', 'Deployment has been done. Click <a href="/">HERE</a> to login.');
+        }
+        catch(Exception $ex)
+        {
+            $this->popDialog('error', $ex->getMessage());
         }
     }
 
@@ -137,7 +141,7 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
     {
         $sysDBName = $this->dbInfo['db'];
         $this->connection->selectDB($sysDBName);
-        $list = array('sys_sever_setting', 'sys_table_setting', 'sys_kind_setting');
+        $list = array('sys_db_info', 'sys_table_info');
         foreach ($list as $table)
         {
             $sql = 'drop table if exists ' . $table;
@@ -163,29 +167,37 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
             $dbInfo = $this->dbInfo;
             $dbInfo['db'] = '';
             $this->connection = MCore_Min_DBConection::get($dbInfo);
-            $dbList = $this->connection->query('show databases');
+            $this->connection->query('select now()');
         }
         catch (MCore_Min_DBException $ex)
         {
             $errorKeys = array('db_host', 'db_port', 'db_user', 'db_pwd');
             $this->setData('error_keys', $errorKeys);
-            $this->setError('Can not connect to this database server.');
+            $this->setError('Can not connect to this database server: ' . $ex->getMessage());
             return false;
         }
 
         $sysDBName = $this->dbInfo['db'];
-        if ($dbList->where(array('Database' => $sysDBName))->count() == 0)
+        try
+        {
+            $this->connection->selectDB($sysDBName);
+        }
+        catch (MCore_Min_DBException $ex)
         {
             $this->setData('error_keys', array('db_name'));
-            $this->setError('This database is not existent: ' . $sysDBName);
+            $this->setError('Database is not existent or do not have privilege to access it: ' . $sysDBName);
             return false;
         }
 
         $userDBName = $this->input['user_db'];
-        if ($dbList->where(array('Database' => $userDBName))->count() == 0)
+        try
+        {
+            $this->connection->selectDB($userDBName);
+        }
+        catch (MCore_Min_DBException $ex)
         {
             $this->setData('error_keys', array('user_db'));
-            $this->setError('This database is not existent: ' . $userDBName);
+            $this->setError('Database is not existent or do not have privilege to access it: ' . $userDBName);
             return false;
         }
         return true;
@@ -193,7 +205,7 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
 
     private function formatDBInfo($data)
     {
-        $keys = array('h' => 'db_host', 'u' => 'db_user', 'P' => 'db_port', 'p' => 'db_pwd', 'db' => 'db_name');
+        $keys = array('h' => 'db_host', 'u' => 'db_user', 'P' => 'db_port', 'p' => 'db_pwd', 'db' => 'db_name', 'charset' => 'db_charset');
 
         $dbInfo = array();
         foreach ($keys as $k => $key)

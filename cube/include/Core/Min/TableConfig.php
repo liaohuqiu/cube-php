@@ -47,6 +47,11 @@ class MCore_Min_TableConfig
         }
 
         $db_group = $table_info['db_group'];
+
+        if (!isset($deploy_data['db_map'][$db_group]))
+        {
+            throw new Exception('db map not found in config');
+        }
         $cluster_list = $deploy_data['db_map'][$db_group];
 
         $cluster_index = ($hint_id % $table_info['table_num']) % count($cluster_list);
@@ -74,6 +79,7 @@ class MCore_Min_TableConfig
         $info['u'] = $item['user'];
         $info['p'] = $item['passwd'];
         $info['db'] = $item['db_name'];
+        $info['charset'] = $item['charset'];
         return $info;
     }
 
