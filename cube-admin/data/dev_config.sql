@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS sys_db_info (
     host varchar(255) NOT NULL,
     port int(10) unsigned NOT NULL,
     user varchar(32) NOT NULL,
-    passwd varchar(32) NOT NULL,
+    passwd varchar(200) NOT NULL,
     db_name varchar(32) NOT NULL,
     charset varchar(32) NOT NULL,
     active tinyint(1) NOT NULL default '1',

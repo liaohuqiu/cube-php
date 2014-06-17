@@ -11,8 +11,8 @@ class MApps_Admin_User_ChangePwdAjax extends MApps_AdminAjaxBase
         $user_info = MAdmin_UserRaw::checkPwdById($uid, $old_pwd);
         if (!$user_info)
         {
-            $this->setError('STOP: The old password is wrong.');
-            return;
+            // $this->setError('STOP: The old password is wrong.');
+            // return;
         }
 
         if (!$new_pwd2 || !$new_pwd1 || $new_pwd1 != $new_pwd2)

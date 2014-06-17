@@ -90,19 +90,19 @@ class MCore_Cli_ConsoleBase
         }
     }
 
-    function main()
+    protected function main()
     {
     }
 
-    function getPara()
+    protected function getPara()
     {
     }
 
-    function checkPara()
+    protected function checkPara()
     {
     }
 
-    function ouput()
+    protected function ouput()
     {
     }
 }

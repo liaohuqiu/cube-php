@@ -32,11 +32,6 @@ class MCore_Web_DialogView
         return $this->id;
     }
 
-    public function getAjaxTool()
-    {
-        return $this->ajaxTool;
-    }
-
     public function noTitle($noTitle = true)
     {
         $this->noTitle = $noTitle;

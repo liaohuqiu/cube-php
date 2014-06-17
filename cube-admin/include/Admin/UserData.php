@@ -4,7 +4,7 @@ class MAdmin_UserData extends MCore_Util_ArrayLike
     public function __construct($raw)
     {
         $data = array();
-        $keys = array('is_sysadmin', 'name', 'auth_keys');
+        $keys = array('is_sysadmin', 'name', 'auth_keys', 'uid');
         foreach ($keys as $key)
         {
             if (!isset($raw[$key]))

@@ -162,7 +162,7 @@ class MAdmin_Views_ListViewController
         $num_perpage = $this->input['pageinfo_num_perpage'];
         $data = $this->input->getPageIdentityData();
         $this->pagination = new MAdmin_Views_ListPagination($num_perpage, $data);
-        $this->pagination->setStart($this->input['start']);
+        $this->pagination->setStart($this->input['pageinfo_start']);
 
         $data = $this->pagination->getPaginationData();
         $list = array(20 => 20, 50 => 50, 100 => 100, 300 => 300, 500 => 500, 1000 => 1000, 2000 => 2000, 10000 => 10000, 100000 => 100000);

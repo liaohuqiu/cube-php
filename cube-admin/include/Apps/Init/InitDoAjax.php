@@ -74,7 +74,6 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
             $ret = $this->connection->query($sql);
         }
 
-        // add system config db to `sys_sever_setting`
         $db = MEngine_EngineDB::fromDBInfo($dbInfo);
 
         $info = array();

@@ -67,6 +67,7 @@ class MAdmin_UserAuth
         }
 
         $data = array();
+        $data['uid'] = $uid;
         $data['is_sysadmin'] = $info['is_sysadmin'];
         $data['name'] = $info['email'];
         $data['auth_keys'] = $info['auth_keys'];

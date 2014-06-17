@@ -58,7 +58,7 @@ class MCore_Util_ArrayLike implements ArrayAccess, Countable, Iterator
         }
         if (!isset($this->data[$offset]))
         {
-            return null;
+            throw new Exception('can not access this key: ' . $offset);
         }
         return $this->data[$offset];
     }
