@@ -56,6 +56,22 @@ class MCore_Util_SimpleConf
         return $this->_confInfoListByCode;
     }
 
+    function checkKey($key)
+    {
+        if (!isset($this->_keyCodeMap[$key]))
+        {
+            throw new Exception('key not found: ' . $key);
+        }
+    }
+
+    function checkCode($code)
+    {
+        if (!isset($this->_codeKeyMap[$code]))
+        {
+            throw new Exception('code not found: ' . $code);
+        }
+    }
+
     function getKey($code)
     {
         if (!isset($this->_codeKeyMap[$code]))

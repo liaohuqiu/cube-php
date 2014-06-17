@@ -264,6 +264,11 @@ class MCore_Tool_Array
         return $ret;
     }
 
+    public static function fetchKey($arr, $key, $default)
+    {
+        return isset($arr[$key]) ? $arr[$key] : $default;
+    }
+
     public static function remove($arrs, $keys)
     {
         foreach ($keys as $key)
