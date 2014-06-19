@@ -264,7 +264,7 @@ class MCore_Tool_Array
         return $ret;
     }
 
-    public static function fetchKey($arr, $key, $default)
+    public static function fetchOne($arr, $key, $default)
     {
         return isset($arr[$key]) ? $arr[$key] : $default;
     }
@@ -278,16 +278,25 @@ class MCore_Tool_Array
         return $arrs;
     }
 
-    public static function mapValue($arr, $fieldMap, $remainEmpty = false)
+    public static function mapValue($arr, $fieldMap, $throw = false)
     {
         if (!is_array($arr))
         {
             return false;
         }
         $ret = array();
+        if ($throw)
+        {
+            $keys = array_keys($arr);
+            $keys = array_flip($keys);
+        }
         foreach ($fieldMap as $key => $mapedKey)
         {
-            if (isset($arr[$mapedKey]) || $remainEmpty)
+            if ($throw && !isset($keys[$mapedKey]))
+            {
+                throw new Exception('mapValue, this key is not existent: ' . $mapedKey);
+            }
+            if (isset($arr[$mapedKey]))
             {
                 $ret[$key] = $arr[$mapedKey];
             }
