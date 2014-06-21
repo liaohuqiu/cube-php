@@ -38,21 +38,10 @@ class MEngine_MysqlTableCreator
             $tableNum = $item['table_num'];
             $sql = $item['sql'];
 
-            try
+            $ret =  MEngine_MysqlDeploy::createTable($this->db, $kind, $serverGroupKey, $splitId, $tableNum, $sql, $onlyScheme);
+            if ($ret)
             {
-                $ret =  MEngine_MysqlDeploy::createTable($this->db, $kind, $serverGroupKey, $splitId, $tableNum, $sql, $onlyScheme);
-                if ($ret)
-                {
-                    $succSqlList[$kind] = $sql;
-                }
-                else
-                {
-                    throw new Exception('Fail to create table: ' . $kind . '. Its config information is existent.');
-                }
-            }
-            catch(Exception $ex)
-            {
-                throw $ex;
+                $succSqlList[$kind] = $sql;
             }
         }
         return $succSqlList;

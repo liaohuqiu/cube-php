@@ -1,6 +1,7 @@
 RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !^/(res|static|crossDomain\.xml|robots\.txt|favicon\.ico)
 RewriteRule .* index.php
 
 ### Begin Cache-Control headers

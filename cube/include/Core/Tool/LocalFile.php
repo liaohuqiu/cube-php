@@ -109,7 +109,7 @@ class MCore_Tool_LocalFile
             $fileType = 'swf';
             break;
         default:
-            $fileType = 'unknown';
+            $fileType = false;
         }
         return $fileType;
     }
