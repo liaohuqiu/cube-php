@@ -1,30 +1,22 @@
 <?php
 /**
- *  翻页
+ *  list pagination
  *
- * @author      huqiu
+ * @author     liaohuqiu@gmail.com
  */
 class MAdmin_Views_ListPagination
 {
-    private $_total;
-    private $_totalPage;
+    private $total;
+    private $totalPage;
 
-    private $_currentStart = 0;
-    private $_currentPage;
+    private $currentStart = 0;
+    private $currentPage;
 
-    private $_numPerPage;
-    private $_otherUrlKVInfo;
-    private $_url;
-
-    function __construct($numPerPage, $otherUrlKVInfo = array(), $url = '')
-    {
-        $this->_numPerPage = $numPerPage;
-        $this->_otherUrlKVInfo = $otherUrlKVInfo;
-        $this->_url = $url;
-    }
+    private $numPerPage;
+    private $otherUrlKVInfo;
+    private $url;
 
     /**
-     * @param mixed $currentStart      当前开始
      * @param mixed $numPerPage        每页项数
      * @param mixed $otherUrlKVInfo    其他要附带如url的信息
      * @param mixed $url               url
@@ -34,88 +26,93 @@ class MAdmin_Views_ListPagination
         return new MAdmin_Views_ListPagination($numPerPage, $otherUrlKVInfo, $url);
     }
 
+    public function __construct($numPerPage, $otherUrlKVInfo = array(), $url = '')
+    {
+        $this->numPerPage = $numPerPage;
+        $this->otherUrlKVInfo = $otherUrlKVInfo;
+        $this->url = $url;
+    }
+
     public function setStart($start)
     {
         if ($start > 0)
         {
-            $this->_currentStart = $start;
+            $this->currentStart = $start;
         }
         return $this;
     }
 
     public function setTotal($total)
     {
-        $this->_total = $total;
+        $this->total = $total;
         return $this;
     }
 
     public function setInfo($info)
     {
-        $this->_otherUrlKVInfo = $info;
+        $this->otherUrlKVInfo = $info;
         return $this;
     }
 
     public function getStart()
     {
-        return $this->_currentStart;
+        return $this->currentStart;
     }
 
     public function setUrl($url)
     {
-        $this->_url = $url;
+        $this->url = $url;
         return $this;
     }
 
     public function getPaginationData()
     {
-        $this->_currentPage = floor($this->_currentStart / $this->_numPerPage) + 1;
-        $this->_totalPage = ceil($this->_total / $this->_numPerPage);
-
-        //无数据时候
-        if (!$this->_total || $this->_totalPage == 1)
+        if (!$this->numPerPage)
         {
-            return "";
+            throw new Exception('You should set numPerPage first');
         }
+        $this->currentPage = floor($this->currentStart / $this->numPerPage) + 1;
+        $this->totalPage = ceil($this->total / $this->numPerPage);
 
         $pageInfo = array();
 
-        $pageInfo['totalPage'] = $this->_totalPage;
-        $pageInfo['currentPage'] = $this->_currentPage;
+        $pageInfo['total_page'] = $this->totalPage;
+        $pageInfo['current_page'] = $this->currentPage;
 
-        $pageInfo["head_url"] = $this->_getHeadUrl();
-        $pageInfo["tail_url"] = $this->_getTailUrl();
+        $pageInfo["head_url"] = $this->getHeadUrl();
+        $pageInfo["tail_url"] = $this->getTailUrl();
 
-        $pageInfo["prev_url"] = $this->_getPrevPageUrl();
-        $pageInfo['next_url'] = $this->_getNextPageUrl();
+        $pageInfo["prev_url"] = $this->getPrevPageUrl();
+        $pageInfo['next_url'] = $this->getNextPageUrl();
 
-        $pageInfo["pages"] = $this->_getPages();
+        $pageInfo["pages"] = $this->getPages();
 
-        $pageInfo['start'] = $this->_currentStart;
-        $pageInfo['total'] = $this->_total;
+        $pageInfo['start'] = $this->currentStart;
+        $pageInfo['total'] = $this->total;
         return $pageInfo;
     }
 
-    private function _getPages()
+    private function getPages()
     {
-        if ($this->_totalPage <= 5)
+        if ($this->totalPage <= 5)
         {
             $start = 1;
-            $end = $this->_totalPage;
+            $end = $this->totalPage;
         }
         else
         {
-            if ($this->_currentPage >= 3)
+            if ($this->currentPage >= 3)
             {
-                $remainPageNum = $this->_totalPage - $this->_currentPage;
+                $remainPageNum = $this->totalPage - $this->currentPage;
                 if ($remainPageNum <= 2)
                 {
-                    $start = $this->_totalPage - 5 + 1;
-                    $end = $this->_totalPage;
+                    $start = $this->totalPage - 5 + 1;
+                    $end = $this->totalPage;
                 }
                 else
                 {
-                    $start = $this->_currentPage - 2;
-                    $end = $this->_currentPage + 2;
+                    $start = $this->currentPage - 2;
+                    $end = $this->currentPage + 2;
                 }
             }
             else
@@ -126,7 +123,7 @@ class MAdmin_Views_ListPagination
         }
 
         //确保不超范围
-        $end > $this->_totalPage && $end = $this->_totalPage;
+        $end > $this->totalPage && $end = $this->totalPage;
         $start < 1 && $start = 1;
 
         $pages = array();
@@ -134,73 +131,73 @@ class MAdmin_Views_ListPagination
         {
             $pageInfo = array();
             $pageInfo["page"] = $i;
-            $pageStart = ($i -1) * $this->_numPerPage;
-            $pageInfo["url"] = $this->_buildUrl(array("page_start" => $pageStart));
-            $pageInfo["is_current"] = $this->_currentPage == $i;
+            $pageStart = ($i -1) * $this->numPerPage;
+            $pageInfo["url"] = $this->buildUrl(array("page_start" => $pageStart));
+            $pageInfo["is_current"] = $this->currentPage == $i;
             $pages[] = $pageInfo;
         }
         return $pages;
     }
 
-    private function _isAtFirstPage()
+    private function isAtFirstPage()
     {
-        return $this->_currentPage == 1;
+        return $this->currentPage == 1;
     }
 
-    private function _isAtLastPage()
+    private function isAtLastPage()
     {
-        return $this->_currentPage == $this->_totalPage;
+        return $this->currentPage == $this->totalPage;
     }
 
-    private function _getHeadUrl()
+    private function getHeadUrl()
     {
-        if ($this->_isAtFirstPage())
+        if ($this->isAtFirstPage())
         {
             return "";
         }
 
         $info = array("page_start" => 0);
-        return $this->_buildUrl($info);
+        return $this->buildUrl($info);
     }
 
-    private function _getTailUrl()
+    private function getTailUrl()
     {
-        if ($this->_isAtLastPage())
+        if ($this->isAtLastPage())
         {
             return "";
         }
-        $pageStart = ($this->_totalPage - 1) * $this->_numPerPage;
+        $pageStart = ($this->totalPage - 1) * $this->numPerPage;
         $info = array("page_start" => $pageStart);
-        return $this->_buildUrl($info);
+        return $this->buildUrl($info);
     }
 
-    private function _getPrevPageUrl()
+    private function getPrevPageUrl()
     {
-        if ($this->_isAtFirstPage())
+        if ($this->isAtFirstPage())
         {
             return "";
         }
 
-        $pageStart = ($this->_currentPage - 2) * $this->_numPerPage;
+        $pageStart = ($this->currentPage - 2) * $this->numPerPage;
         $info = array("page_start" => $pageStart);
-        return $this->_buildUrl($info);
+        return $this->buildUrl($info);
     }
 
-    private function _getNextPageUrl()
+    private function getNextPageUrl()
     {
-        if ($this->_isAtLastPage())
+        if ($this->isAtLastPage())
         {
             return "";
         }
-        $pageStart = $this->_currentPage * $this->_numPerPage;
+        $pageStart = $this->currentPage * $this->numPerPage;
         $info = array("page_start" => $pageStart);
-        return $this->_buildUrl($info);
+        return $this->buildUrl($info);
     }
 
-    private function _buildUrl($info)
+    private function buildUrl($info)
     {
-        $info = array_merge($this->_otherUrlKVInfo, $info);
-        $link = $this->_url . '?' . http_build_query($info);
+        $info = array_merge($this->otherUrlKVInfo, $info);
+        $link = $this->url . '?' . http_build_query($info);
         return $link;
     }
 }
