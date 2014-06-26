@@ -26,7 +26,7 @@ class MCore_Tool_Sql
         $values = array();
         foreach ($insertKV as $k => $v)
         {
-            if (!is_numeric($v) && (empty($keysNoEscape) || !in_array($k, $keysNoEscape)))
+            if (is_string($v) && (empty($keysNoEscape) || !in_array($k, $keysNoEscape)))
             {
                 $v = "'" . self::escape_string($v) . "'";
             }
@@ -49,7 +49,7 @@ class MCore_Tool_Sql
                     continue;
                 }
                 $v = $insertKV[$k];
-                if (!is_numeric($v) && (empty($keysNoEscape) || !in_array($k, $keysNoEscape)))
+                if (is_string($v) && (empty($keysNoEscape) || !in_array($k, $keysNoEscape)))
                 {
                     $v = "'" . self::escape_string($v) . "'";
                 }
@@ -100,7 +100,7 @@ class MCore_Tool_Sql
             $sql .= "(";
             foreach ($varr as $k => $v)
             {
-                if (!is_numeric($v) && (empty($keysNoEscape) || !in_array($k, $keysNoEscape)))
+                if (is_string($v) && (empty($keysNoEscape) || !in_array($k, $keysNoEscape)))
                 {
                     $v = "'" . self::escape_string($v) . "'";
                 }
@@ -123,7 +123,7 @@ class MCore_Tool_Sql
         $list = array();
         foreach ($whereField as $k=>$v)
         {
-            if (is_numeric($v))
+            if (!is_string($v))
             {
                 $list[] = $k . ' = ' . $v;
             }
@@ -205,7 +205,7 @@ class MCore_Tool_Sql
         $set = array();
         foreach ($kvSet as $k => $v)
         {
-            if (!is_numeric($v) && (empty($keysNoEscape) || !in_array($k, $keysNoEscape)))
+            if (is_string($v) && (empty($keysNoEscape) || !in_array($k, $keysNoEscape)))
             {
                 $v = "'" . self::escape_string($v) . "'";
             }
@@ -214,15 +214,15 @@ class MCore_Tool_Sql
 
         foreach ($kvChange as $k => $v)
         {
-            if (!is_numeric($v) && (empty($keysNoEscape) || !in_array($k, $keysNoEscape)))
+            if (is_numeric($v) && (empty($keysNoEscape) || !in_array($k, $keysNoEscape)))
             {
                 if ($v >= 0)
                 {
-                    $set[] = $k . ' += ' . $v;
+                    $set[] = $k . ' = ' . $k . ' + ' . $v;
                 }
                 else
                 {
-                    $set[] = $k . ' -= ' . $v;
+                    $set[] = $k . ' = ' . $k . ' - ' . $v;
                 }
             }
             else
@@ -267,7 +267,7 @@ class MCore_Tool_Sql
                     }
                     else
                     {
-                        if (is_numeric(current($v)))
+                        if (!is_string(current($v)))
                         {
                             $str = implode(',', $v);
                             $list[] = $k . " in ($str)";
@@ -280,7 +280,7 @@ class MCore_Tool_Sql
                         continue;
                     }
                 }
-                if (is_numeric($v))
+                if (!is_string($v))
                 {
                     $list[] = $k . ' = ' . $v;
                 }

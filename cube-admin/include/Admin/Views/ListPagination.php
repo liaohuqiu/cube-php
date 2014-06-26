@@ -9,7 +9,7 @@ class MAdmin_Views_ListPagination
     private $_total;
     private $_totalPage;
 
-    private $_currentStart;
+    private $_currentStart = 0;
     private $_currentPage;
 
     private $_numPerPage;
@@ -24,7 +24,6 @@ class MAdmin_Views_ListPagination
     }
 
     /**
-     * @param mixed $total             总项数
      * @param mixed $currentStart      当前开始
      * @param mixed $numPerPage        每页项数
      * @param mixed $otherUrlKVInfo    其他要附带如url的信息
@@ -32,7 +31,7 @@ class MAdmin_Views_ListPagination
      */
     public static function create($numPerPage, $otherUrlKVInfo = array(), $url = '')
     {
-        return new MView_ListLink($numPerPage, $otherUrlKVInfo, $url);
+        return new MAdmin_Views_ListPagination($numPerPage, $otherUrlKVInfo, $url);
     }
 
     public function setStart($start)
@@ -83,11 +82,11 @@ class MAdmin_Views_ListPagination
         $pageInfo['totalPage'] = $this->_totalPage;
         $pageInfo['currentPage'] = $this->_currentPage;
 
-        $pageInfo["headUrl"] = $this->_getHeadUrl();
-        $pageInfo["tailUrl"] = $this->_getTailUrl();
+        $pageInfo["head_url"] = $this->_getHeadUrl();
+        $pageInfo["tail_url"] = $this->_getTailUrl();
 
-        $pageInfo["prevPageUrl"] = $this->_getPrevPageUrl();
-        $pageInfo['nextPageUrl'] = $this->_getNextPageUrl();
+        $pageInfo["prev_url"] = $this->_getPrevPageUrl();
+        $pageInfo['next_url'] = $this->_getNextPageUrl();
 
         $pageInfo["pages"] = $this->_getPages();
 
@@ -134,10 +133,10 @@ class MAdmin_Views_ListPagination
         for ($i = $start; $i <= $end; $i++)
         {
             $pageInfo = array();
-            $pageInfo["pageIndex"] = $i;
+            $pageInfo["page"] = $i;
             $pageStart = ($i -1) * $this->_numPerPage;
             $pageInfo["url"] = $this->_buildUrl(array("page_start" => $pageStart));
-            $pageInfo["current"] = $this->_currentPage == $i;
+            $pageInfo["is_current"] = $this->_currentPage == $i;
             $pages[] = $pageInfo;
         }
         return $pages;
@@ -205,4 +204,3 @@ class MAdmin_Views_ListPagination
         return $link;
     }
 }
-?>

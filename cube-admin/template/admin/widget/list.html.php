@@ -100,6 +100,7 @@ $_listPageInfo = array();
     </table>
     <?php if ($page_data['rowList']): ?>
     <div class="page-info">
+    <?php include $view->getTemplate('admin/widget/list_pageinfo.html'); ?>
     </div>
     <?php endif; ?>
     <form id="form_num_perpage" action='<?php $_listPageInfo['pageInfoUrl']; ?>' method = 'POST'>
@@ -110,22 +111,22 @@ $_listPageInfo = array();
     </form>
 </div>
 <script>
-    var $ = window.jQuery;
-    //<!-- 删除警告 -->
-    $('._j_del').click(function(ev) {
-        if (!confirm('Are you sure to delete?')) {
-            ev.preventDefault();
-        }
-    });
-    //翻页提交
-    $('.__j_pageinfo_num_perpage').change(function(e) {
-        $("#__j_id_pageinfo_num_perpage").val(e.target.value);
-        $('#form_num_perpage').submit();
-    });
-    //下载
-    $('#__j_button_download').click(function(e) {
-        $("#__j_input_action_name").val("download");
-        $('#form_download').submit();
-        $("#__j_input_action_name").val("");
-    });
+var $ = window.jQuery;
+//<!-- 删除警告 -->
+$('._j_del').click(function(ev) {
+    if (!confirm('Are you sure to delete?')) {
+        ev.preventDefault();
+    }
+});
+//翻页提交
+$('.__j_pageinfo_num_perpage').change(function(e) {
+    $("#__j_id_pageinfo_num_perpage").val(e.target.value);
+    $('#form_num_perpage').submit();
+});
+//下载
+$('#__j_button_download').click(function(e) {
+    $("#__j_input_action_name").val("download");
+    $('#form_download').submit();
+    $("#__j_input_action_name").val("");
+});
 </script>
