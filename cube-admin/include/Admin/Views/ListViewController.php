@@ -168,7 +168,6 @@ class MAdmin_Views_ListViewController
         $list = array(20 => 20, 50 => 50, 100 => 100, 300 => 300, 500 => 500, 1000 => 1000, 2000 => 2000, 10000 => 10000, 100000 => 100000);
         $data['numPerPageOptions'] = MCore_Str_Html::options($list, $num_perpage);
 
-        add_debug_log($data);
         return $data;
     }
 

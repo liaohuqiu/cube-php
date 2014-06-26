@@ -132,7 +132,7 @@ class MAdmin_Views_ListPagination
             $pageInfo = array();
             $pageInfo["page"] = $i;
             $pageStart = ($i -1) * $this->numPerPage;
-            $pageInfo["url"] = $this->buildUrl(array("page_start" => $pageStart));
+            $pageInfo["url"] = $this->buildUrl(array("pageinfo_start" => $pageStart));
             $pageInfo["is_current"] = $this->currentPage == $i;
             $pages[] = $pageInfo;
         }
@@ -156,7 +156,7 @@ class MAdmin_Views_ListPagination
             return "";
         }
 
-        $info = array("page_start" => 0);
+        $info = array("pageinfo_start" => 0);
         return $this->buildUrl($info);
     }
 
@@ -167,7 +167,7 @@ class MAdmin_Views_ListPagination
             return "";
         }
         $pageStart = ($this->totalPage - 1) * $this->numPerPage;
-        $info = array("page_start" => $pageStart);
+        $info = array("pageinfo_start" => $pageStart);
         return $this->buildUrl($info);
     }
 
@@ -179,7 +179,7 @@ class MAdmin_Views_ListPagination
         }
 
         $pageStart = ($this->currentPage - 2) * $this->numPerPage;
-        $info = array("page_start" => $pageStart);
+        $info = array("pageinfo_start" => $pageStart);
         return $this->buildUrl($info);
     }
 
@@ -190,7 +190,7 @@ class MAdmin_Views_ListPagination
             return "";
         }
         $pageStart = $this->currentPage * $this->numPerPage;
-        $info = array("page_start" => $pageStart);
+        $info = array("pageinfo_start" => $pageStart);
         return $this->buildUrl($info);
     }
 

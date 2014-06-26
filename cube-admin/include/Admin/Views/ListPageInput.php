@@ -16,7 +16,7 @@ class MAdmin_Views_ListPageInput extends MCore_Util_ArrayLike
     {
         $start = MCore_Tool_Input::clean('r', 'pageinfo_start', 'int');
         $num_perpage = MCore_Tool_Input::clean('r', 'pageinfo_num_perpage', 'int');
-        !$num_perpage && $num_perpage = 2;
+        !$num_perpage && $num_perpage = 20;
 
         $this['pageinfo_start'] = $start;
         $this['pageinfo_num_perpage'] = $num_perpage;

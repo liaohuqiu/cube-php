@@ -6,9 +6,7 @@
         </select>
     </div>
 </div>
-<ul class="pagination col-md-4">
-    <?php if ($pager['head_url']): ?>
-    <li><a href="<?php $pager->o('head_url'); ?>">First</a></li>
+<ul class="pagination col-md-6"> <?php if ($pager['head_url']): ?> <li><a href="<?php $pager->o('head_url'); ?>">First</a></li>
     <?php else: ?>
     <li class='disabled'><a href="#">First</a></li>
     <?php endif; ?>
