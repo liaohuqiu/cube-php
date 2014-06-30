@@ -86,7 +86,7 @@ class MCore_Cli_ConsoleBase
         {
             $msg = $ex->getMessage() . "\n";
             $msg .= $ex->getTraceAsString();
-            $this->printInfo($msg, false);
+            p($msg);
         }
     }
 

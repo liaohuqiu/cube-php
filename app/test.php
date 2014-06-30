@@ -1,7 +1,20 @@
 <?php
 include dirname(dirname(__FILE__)) . '/boot.php';
-$data = ['name' => 'srain'];
-$key = 'test';
-MCore_Proxy_Cache::setObj($key, $data, -1);
-$ret = MCore_Proxy_Cache::getObj($key);
-var_dump($ret);
+class App extends MCore_Cli_ConsoleBase
+{
+    protected function main()
+    {
+        $t1 = microtime(true);
+        $end_point = 'pygments@tcp:127.0.0.1:2016';
+        $proxy = MCore_Proxy_CubeProxy::getInstance($end_point);
+        $data = array();
+        $data['lang'] = 'php';
+        $data['code'] = '<?php phpinfo?>';
+        $ret = $proxy->request('highlight', $data);
+        p($ret);
+        $t2 = microtime(true);
+        p($t2 - $t1);
+    }
+}
+$app = new App();
+$app->run();
