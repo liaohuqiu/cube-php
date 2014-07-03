@@ -6,6 +6,20 @@
  */
 class MCore_Tool_Http
 {
+    public static function getHost()
+    {
+        static $host;
+        if (!$host)
+        {
+            $host = $_SERVER['HTTP_HOST'];
+            if (($pos = strpos($host, ':')) !== false)
+            {
+                $host = substr($host, 0, $pos);
+            }
+        }
+        return $host;
+    }
+
     public static function buildGetUrl($info, $url = "")
     {
         $list = array();

@@ -296,10 +296,7 @@ class MCore_Tool_Array
             {
                 throw new Exception('mapValue, this key is not existent: ' . $mapedKey);
             }
-            if (isset($arr[$mapedKey]))
-            {
-                $ret[$key] = $arr[$mapedKey];
-            }
+            $ret[$key] = $arr[$mapedKey];
         }
         return $ret;
     }
