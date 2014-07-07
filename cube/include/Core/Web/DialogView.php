@@ -47,7 +47,7 @@ class MCore_Web_DialogView
     public function setProperty()
     {
         $this->property->setFuncArgsData(func_get_args());
-        return this;
+        return $this;
     }
 
     public function setTitle($title)
@@ -122,6 +122,7 @@ class MCore_Web_DialogView
         {
             $msg .= '<pre>' . $ex->getTraceAsString() . '</pre>';
         }
-        $this->ajaxTool->outputError($msg);
+        $this->ajaxTool->setError($msg);
+        $this->ajaxTool->output();
     }
 }

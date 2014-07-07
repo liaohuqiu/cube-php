@@ -24,7 +24,7 @@ abstract class MCore_Web_BaseDialogApp extends MCore_Web_BaseApp
 
     protected function processException($ex)
     {
-        $this->dialog->processException($ex);
+        $this->dialogView->processException($ex);
     }
 }
 ?>
