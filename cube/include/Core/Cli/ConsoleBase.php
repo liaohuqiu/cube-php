@@ -1,3 +1,4 @@
+
 <?php
 /**
  *
@@ -37,7 +38,7 @@ class MCore_Cli_ConsoleBase
 {
     protected $argc;
     protected $argv;
-    private $_lockfp;
+    private $lockfp;
 
     function getInputOption($required, $optional = array())
     {
@@ -52,9 +53,16 @@ class MCore_Cli_ConsoleBase
         return $result;
     }
 
-    protected function checkLock($fileName = "")
+    protected function checkLock()
     {
-        $this->_lockfp = MCore_Tool_Lock::lock($fileName);
+        $fileName = basename($this->argv[0]) . '.lock';
+        $lock = MCore_Tool_Lock::getLock($fileName);
+        if (!$lock)
+        {
+            p('check lock fail');
+            exit;
+        }
+        $this->lockfp = $lock;
     }
 
     protected function printInfo($msg, $withTime = true)
