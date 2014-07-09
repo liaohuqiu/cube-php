@@ -61,7 +61,6 @@ K.App('admin/AAdminGlobal', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'c
         },
 
         main: function(){
-            AsyncDialog.open('/admin/user/change-pwd-dialog');
         },
 
     };

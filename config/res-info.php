@@ -2,13 +2,13 @@
 $data = array (
   'js' => 
   array (
-    'admin/AAdminGlobal' => '/admin/js/AAdminGlobal.js?140708c6034',
+    'admin/AAdminGlobal' => '/admin/js/AAdminGlobal.js?14070957e58',
     'admin/AAjaxUpload' => '/admin/js/AAjaxUpload.js?1406085e8ff',
     'admin/AInit' => '/admin/js/AInit.js?140616f59cb',
     'admin/ATableEdit' => '/admin/js/ATableEdit.js?14060595439',
     'admin/ATableList' => '/admin/js/ATableList.js?14051034813',
     'admin/ATableQuery' => '/admin/js/ATableQuery.js?1406049b272',
-    'admin/ChangePwd' => '/admin/js/ChangePwd.js?140708741b2',
+    'admin/ChangePwd' => '/admin/js/ChangePwd.js?140709d8a9b',
     'base/Cube' => '/cube/js/base/Cube.js?14051034813',
     'core/AJHistory' => '/cube/js/core/AJHistory.js?14051034813',
     'core/AjaxUpload' => '/cube/js/core/AjaxUpload.js?14060851252',
@@ -53,8 +53,8 @@ $data = array (
     'core/ajax/ResponseCache' => '/cube/js/core/ajax/ResponseCache.js?14051034813',
     'core/cookie/Cookie' => '/cube/js/core/cookie/Cookie.js?14051034813',
     'core/cutHTML' => '/cube/js/core/cutHTML.js?14051034813',
-    'core/dialog/AsyncDialog' => '/cube/js/core/dialog/AsyncDialog.js?140709cf51d',
-    'core/dialog/DialogBase' => '/cube/js/core/dialog/DialogBase.js?140709117b0',
+    'core/dialog/AsyncDialog' => '/cube/js/core/dialog/AsyncDialog.js?140709d8a9b',
+    'core/dialog/DialogBase' => '/cube/js/core/dialog/DialogBase.js?140709d8a9b',
     'core/dialog/Layer' => '/cube/js/core/dialog/Layer.js?1407099e103',
     'core/dialog/MsgBox' => '/cube/js/core/dialog/MsgBox.js?14060908999',
     'core/doT' => '/cube/js/core/doT.js?14051034813',
@@ -67,8 +67,9 @@ $data = array (
     'core/switch/Scroll' => '/cube/js/core/switch/Scroll.js?14051034813',
     'core/switch/TabView' => '/cube/js/core/switch/TabView.js?14051034813',
     'core/tool/Browser' => '/cube/js/core/tool/Browser.js?14051034813',
+    'core/util/Str' => '/cube/js/core/util/Str.js?140709db4b6',
     'core/webcam' => '/cube/js/core/webcam.js?14051034813',
-    'version' => '/version.js?1407090828cf51d',
+    'version' => '/version.js?140709084457e58',
   ),
   'css' => 
   array (
