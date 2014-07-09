@@ -10,6 +10,7 @@ define('admin/ChangePwd', ['core/ajax/Request', 'core/dialog/MsgBox'], function(
         },
 
         main: function (){
+            dialog = this;
         },
 
         doSubmit: function() {

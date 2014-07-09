@@ -15,7 +15,6 @@ K.App('admin/AAdminGlobal', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'c
         checkInput: function(e) {
             var t = $(e.target);
             var value = t.val();
-            K.log(value);
         },
 
         clickChangePwd: function() {
@@ -55,7 +54,6 @@ K.App('admin/AAdminGlobal', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'c
             var p = target.parents('.msgbox-info');
             var data = {}
             var width = p.data('msgbox-width');
-            K.log(width);
             if (width) {
                 data['width'] = width;
             }
@@ -63,6 +61,7 @@ K.App('admin/AAdminGlobal', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'c
         },
 
         main: function(){
+            AsyncDialog.open('/admin/user/change-pwd-dialog');
         },
 
     };

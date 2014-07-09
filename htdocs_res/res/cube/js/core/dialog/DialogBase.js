@@ -28,7 +28,8 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
         this.visible = false;
         this.destroyed = false;
 
-        this.init();
+        this._createDialog();
+        this._bindEvents();
     }
 
     K.mix(DialogBase, {
@@ -46,9 +47,11 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
 
         _mask: null,
 
+        _actionList: [],
+
         _dataContainer: {},
 
-        'setData': function() {
+        setData: function() {
             var args = arguments;
             if (args.length == 1) {
                 this._dataContainer = args[0];
@@ -57,19 +60,14 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
             return this;
         },
 
-        'getData': function(key) {
+        getData: function(key) {
             if (key) {
                 return this._dataContainer[key];
             }
             return this._dataContainer;
         },
 
-        'init': function() {
-            this._createDialog();
-            this._bindEvents();
-        },
-
-        '_getLayerOptions': function() {
+        _getLayerOptions: function() {
             var options = this.layerOptions || {};
             options.background = options.background || "black";
             options.opacity = options.opacity || "0.6";
@@ -78,7 +76,7 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
             return options;
         },
 
-        '_addToLayer': function() {
+        _addToLayer: function() {
 
             var options = this._getLayerOptions();
             this._layer = Layer.want(options, 'Dialog', this.newLayer);
@@ -89,7 +87,7 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
             this._layer.pushToContentStack(this);
         },
 
-        '_createDialog': function() {
+        _createDialog: function() {
             this._panel = $('<div class="_j_panel"/>');
             this._panel.css({
                 'position': 'absolute',
@@ -110,22 +108,20 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
             this._mask.css(maskCss);
             this._panel.append(this._mask);
 
-            this.setRect({ 'width': this.width, 'height': this.height });
-
             this._addToLayer();
 
             this.drawDialogContent();
         },
 
 
-        '_bindEvents': function() {
+        _bindEvents: function() {
             // 监听window resize事件
             var me = this, timer;
             $(window).resize(function() {
                 clearTimeout(timer);
                 if (me.visible) {
                     timer = setTimeout(function() {
-                        me.setPosition();
+                        me.setPosition(null, 300);
                     }, 100);
                 }
             });
@@ -141,44 +137,28 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
             this._layer.on('mask_clicked', this.maskClickHandler);
         },
 
-        'addClass': function(classes) {
-            this._panel.addClass(classes);
-        },
-
-        'removeClass': function(classes) {
-            this._panel.removeClass(classes);
-        },
-
-        'setRect': function(rect) {
-            if (rect.width) {
-                this._panel.css('width', rect.width);
-                this._mask.css('width', rect.width);
-                this.width = rect.width;
-            }
-            if (rect.height) {
-                this._panel.css('height', rect.height);
-                this.height = rect.height;
-            }
-        },
-
-        'getPanel': function() {
+        getPanel: function() {
             return this._panel;
         },
 
         /**
         * 获得遮罩层(显示之前，getMask返回false)
         */
-        'getMask': function() {
+        getMask: function() {
             return this._layer && this._layer.getMask();
         },
 
-        'drawDialogContent': function() {
-            // 重写此方法来设置Dialog Panel内容
+        /**
+        * 重写此方法来设置Dialog Panel内容
+        */
+        drawDialogContent: function() {
         },
 
-        '_getPanelRect': function() {
+        _getPanelRect: function(pos) {
             var panelClone = this.getPanel().clone()
-            .css({ position: "absolute", visibility: "hidden", display: "block" }).appendTo('body');
+            var css_data = K.clone(pos) || {};
+            K.mix(css_data, { position: "absolute", visibility: "hidden", display: "block" });
+            panelClone.css(css_data).appendTo('body');
             panelHeight = panelClone.outerHeight(),
             panelWidth = panelClone.outerWidth();
 
@@ -186,37 +166,69 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
             return { 'height': panelHeight, 'width': panelWidth };
         },
 
-        '_getNumric': function(num) {
+        _getNumric: function(num) {
             num = parseInt(num, 10);
             return isNaN(num) ? 0 : num;
         },
 
-        'setPosition': function(position, noAnimate) {
-            var panelRect = this._getPanelRect(),
+        /**
+        * width, height, top, left, keep_top
+        */
+        setPosition: function(pos_data, ani_time, callback) {
+            var action = K.mix(pos_data || {}, {
+                ani_time: ani_time,
+                callback: callback,
+            });
+            this._actionList.push(action);
+            this.doNextAction();
+        },
+
+        doNextAction: function() {
+            if (this.isDoing) {
+                return;
+            }
+            if (this._actionList.length == 0) {
+                return;
+            }
+            this.isDoing = true;
+            var action = this._actionList.shift();
+            var callback = action.callback;
+
+            var panelRect = this._getPanelRect(action),
             winWH = {
                 'width': $(window).width(),
                 'height': $(window).height()
             };
 
-            // 默认定位（水平居中，2/7*total）
-            var defaultLeft = (winWH.width - (this._getNumric(this.width) > 0 ? this._getNumric(this.width) : panelRect.width)) / 2,
-            detaultTop = (winWH.height - (this._getNumric(this.height) > 0 ? this._getNumric(this.height) : panelRect.height)) * 2 / 7;
+            // 默认定位（水平居中，垂直min50 2/5*total）
+            var w = (this._getNumric(action.width) > 0 ? this._getNumric(action.width) : panelRect.width);
+            var h = (this._getNumric(action.height) > 0 ? this._getNumric(action.height) : panelRect.height);
 
-            detaultTop = detaultTop < 0 ? 0 : detaultTop;
+            if (h > winWH.height) {
+                // h = winWH.height - 40;
+            }
+
+            var defaultLeft = (winWH.width - w) / 2,
+            defaultTop = (winWH.height - h) * 2 / 5;
+
+            defaultTop = defaultTop < 0 ? 0 : defaultTop;
             if (isOldIE || !this.fixed) {
                 var scrollTop = $(window).scrollTop();
                 if (scrollTop > 0) {
-                    detaultTop += scrollTop;
+                    defaultTop += scrollTop;
                 }
             }
 
-            position = K.clone(position) || {};
-            position.top = position.top || detaultTop;
-            position.left = position.left || defaultLeft;
+            var pos = {};
+            pos.top = action.top || defaultTop;
+            if (!action.keep_top && action.top) {
+                pos.top =  action.top;
+            }
+            pos.left = action.left || defaultLeft;
 
             // 显示区域超过浏览器边界处理
             if (!isOldIE && this.fixed) {
-                if (winWH.height - panelHeight < position.top) {
+                if (winWH.height - panelHeight < pos.top) {
                     this.getPanel().addClass('dialog_overflow');
                     this._layer.setOverFlow(true);
                 } else {
@@ -225,27 +237,39 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
                 }
             }
 
-            var postionAction = noAnimate ? 'css' : 'animate';
-            $.fn[postionAction].call(this.getPanel(), position, 200);
+            var size = {};
+            size.width = w;
+            size.height = h;
+            this._panel.css(size);
 
-            this.position = position;
+            var that = this;
+            var done = function () {
+                that.isDoing = false;
+                that.doNextAction();
+                if (callback) {
+                    callback();
+                }
+            };
+
+            if (action.ani_time > 0) {
+                var aniOptions = { duration: action.ani_time, done: done};
+                this._panel.animate(pos, aniOptions);
+            } else {
+                this._panel.css(pos);
+                done();
+            }
         },
 
-        'setFixed': function(fixed) {
+        setFixed: function(fixed) {
             this.fixed = !!fixed;
             this._layer.setFixed(this.fixed);
         },
 
-        'getPosition': function() {
-            return this.position;
-        },
-
-        'show': function(position, noAnimate) {
+        show: function() {
             if (this.visible) {
                 return;
             }
 
-            var me = this;
             this.fire('beforeshow');
 
             // 切换活动Dialog，显示活动Dialog
@@ -254,32 +278,14 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
             // 显示动作主体
             this._layer.show();
             this.getPanel().css({ 'display': '', 'z-index': 1 });
-            this.setPosition(position, noAnimate);
-
-            if (noAnimate) {
-                this.getPanel().css({ 'opacity': 1 });
-                me.fire('aftershow');
-            }
-            else {
-                this.getPanel().animate({ 'opacity': 1 }, 200, function() {
-                    me.fire('aftershow');
-                });
-            }
-        },
-
-        'updatePostion': function(noAnimate) {
-            if (this.visible) {
-                this.setPosition(null, noAnimate);
-            }
-            else {
-                this.show(null, noAnimate);
-            }
+            this.getPanel().css({ 'opacity': 1 });
+            this.fire('aftershow');
         },
 
         /**
         * Implements Layer content method
         */
-        'whenESC': function() {
+        whenESC: function() {
             if (this.closeWhenESC) {
                 this.close();
             }
@@ -288,7 +294,7 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
         /**
         * Implements Layer content method
         */
-        'sendToBack': function() {
+        sendToBack: function() {
             this.isAtBackground = true;
             this._mask.show();
         },
@@ -296,13 +302,13 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
         /**
         * Implements Layer content method
         */
-        'bringToFront': function() {
+        bringToFront: function() {
 
             this.isAtBackground = false;
             this._mask.hide();
         },
 
-        'onLayerMaskClick': function() {
+        onLayerMaskClick: function() {
 
             if (this.isAtBackground) {
                 return;
@@ -315,11 +321,11 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
         /**
         * 根据当前Dialog是否可被叠加，来确认隐藏还是销毁
         */
-        'close': function(callback) {
+        close: function(callback) {
             this.destroy(callback);
         },
 
-        'hide': function(callback) {
+        hide: function(callback) {
 
             // 已经隐藏状态
             if (!this.visible) {
@@ -339,10 +345,9 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
             }, this));
         },
 
-        'destroy': function(callback) {
+        destroy: function(callback) {
             // 不重复处理
             if (this.destroyed) {
-                K.log('Dialog already destroyed!');
                 typeof callback == 'function' && callback();
                 return;
             }

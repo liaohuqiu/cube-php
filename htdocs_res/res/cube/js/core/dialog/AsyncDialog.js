@@ -8,9 +8,6 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
 
         this.options = options || {};
 
-        this.PANEL_CLASS = '';
-        this.MASK_CLASS = '';
-
         K.CustEvent.createEvents(this, 'after_async_show');
         AsyncDialog.$super.call(this, options);
 
@@ -39,10 +36,11 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
             dialogHead.append(this._close);
             dialogHead.append(this._dialogTitle);
 
-            if (this.options.body)
+            if (this.options.body) {
                 this._dialogBody = $(this.options.body);
-            else
+            } else {
                 this._dialogBody = $('<div class="modal-body"></div>');
+            }
 
             this._dialogContent = $('<div class="cube-dialog"></div>');
             this._dialogContent.append(dialogHead);
@@ -53,8 +51,7 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
 
             if (this.options.noTitle) {
                 this.hideTitle();
-            }
-            else {
+            } else {
                 var title = this.options.title || "";
                 this.setTitle(title);
             }
@@ -63,14 +60,7 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
                 this.setBodyContent(this.options.content);
             }
 
-            this.setRect({ width: this.options.width, height: this.options.height });
-
-            if (this.options.autoShow) {
-                this.show(null, true);
-            }
-
-            this.addClass(this.PANEL_CLASS);
-            this.getMask().addClass(this.MASK_CLASS);
+            this.setPosition({ width: this.options.width, height: this.options.height }, 0);
 
             this.on('afterdestroy', $.proxy(function() {
                 this._updateRequest = null;
@@ -81,26 +71,26 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
             this._dialogTitle.parent().css('display', 'none');
         },
 
-        'setTitle': function(title) {
+        setTitle: function(title) {
             this._dialogTitle.text(title).parent().css('display', '');
             this.title = title;
         },
 
-        'getTitle': function() {
+        getTitle: function() {
             return this.title;
         },
 
-        'setBodyContent': function(content) {
+        setBodyContent: function(content) {
             this._dialogBody.html(content);
         },
 
-        'replaceBodyContent': function(content) {
+        replaceBodyContent: function(content) {
             this._dialogBody.remove();
             this._dialogBody = $(content);
             this._dialogContent.append(this._dialogBody);
         },
 
-        'autoClose': function(delay, callback) {
+        autoClose: function(delay, callback) {
             callback = typeof callback === 'function' ? callback : $.noop;
             setTimeout($.proxy(function() {
                 this.close(callback);
@@ -111,7 +101,7 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
             return this._close;
         },
 
-        'requestNewDialog': function(request) {
+        requestNewDialog: function(request) {
             var me = this;
             request.setHandler(function(ret) {
                 if (!ret || !ret.data.dialog || me.destroyed) {
@@ -123,7 +113,7 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
             }).send();
         },
 
-        'setRequestDialog': function(ret, request) {
+        setRequestDialog: function(ret, request) {
 
             var me = this;
 
@@ -140,21 +130,13 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
             if (data.dialogProperty) {
                 K.mix(this, data.dialogProperty);
             }
-            if (data.width || data.height) {
-                this.setRect({ width: data.width, height: "auto" });
-            }
-            if (data.maskClassName) {
-                this.MASK_CLASS = data.maskClassName;
-                this.getMask() && this.getMask().addClass(data.maskClassName);
-            }
-            if (data.dialogClassName) {
-                this.addClass(data.dialogClassName);
-            }
             if (typeof data.fixed !== 'undefined') {
                 this.setFixed(data.fixed);
             }
 
-            this.updatePostion(true);
+            if (data.width) {
+                this.setPosition({ width: data.width, height: "auto" });
+            }
 
             this.fire('after_async_show');
 
@@ -165,7 +147,7 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
             }
         },
 
-        'setHandler': function (handlerMod) {
+        setHandler: function (handlerMod) {
             var me = this;
             K.App(['core/dialog/AsyncDialog', handlerMod]).define(function(require) {
                 var handler = K.create(require(handlerMod));
@@ -187,11 +169,11 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
 
         },
 
-        'setAsyncRequest': function() {
+        setAsyncRequest: function() {
             this.requestUpdateDialog.apply(this, Array.prototype.slice.call(arguments));
         },
 
-        'requestUpdateDialog': function(request) {
+        requestUpdateDialog: function(request) {
             var me = this,
             originalHandler = request.getHandler() || $.noop;
 
@@ -221,8 +203,12 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
 
         defaultLoading: '<div style="padding: 15px 0 0 0; height: 30px; text-align: center;">' +
             '<img src="' + K.Resource.getResPrePath() + '/cube/i/base/loading.gif">' +
-        '</div>',
+            '</div>',
 
+        /**
+        * noTitle, width, height, loadingContent, closeElement, noLoading
+        *
+        */
         open: function(href, requestData, opts, dialogOptions) {
             if (!href) {
                 return;
@@ -240,12 +226,13 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
             options.height = opts.height || 'auto';
             options.closeElement = opts.closeElement;
             options.content = opts.loadingContent || AsyncDialog.defaultLoading;
+
             K.mix(options, dialogOptions);
 
-            var show = !(!opts.loadingContent && opts.noLoading);
+            var show = !opts.noLoading;
             var dialog = new AsyncDialog(options);
             if (show)
-                dialog.show(null, true);
+                dialog.show();
             dialog.requestNewDialog(request);
             return dialog;
         },
