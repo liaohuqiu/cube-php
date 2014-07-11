@@ -45,11 +45,11 @@ class MCore_Str_Util
         return $word;
     }
 
-    public static function shorten($str, $len, $fn = 'substr')
+    public static function shorten($str, $len, $fn_len = 'strlen', $fn_sub = 'substr')
     {
-        if (strlen($str) > $len)
+        if ($fn_len($str) > $len)
         {
-            return $fn($str, 0, $len - 1) . "...";
+            return $fn_sub($str, 0, $len - 1) . "...";
         }
         return $str;
     }
