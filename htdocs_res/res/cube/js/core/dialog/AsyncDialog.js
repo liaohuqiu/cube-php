@@ -138,6 +138,8 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
                 this.setPosition({ width: data.width, height: "auto" });
             }
 
+            this.show();
+
             this.fire('after_async_show');
 
             // 其他App handler处理
