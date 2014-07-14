@@ -276,5 +276,12 @@ class MCore_Tool_Smarty implements MCore_Web_IViewDisplayer
     {
         return nl2br(htmlspecialchars($input));
     }
+
+    /**
+     * Does not support this funciton in smarty
+     */
+    public function addDir($path)
+    {
+    }
 }
 ?>
