@@ -25,14 +25,24 @@ class MCore_Min_Memcached implements MCore_Proxy_IMCache
         return $this->cache->set($key, $value, $expire);
     }
 
-    public function add($key, $value, $expire)
-    {
-        return $this->cache->add($key, $value, $expire);
-    }
-
     public function get($key)
     {
         return $this->cache->get($key);
+    }
+
+    public function delete($key)
+    {
+        return $this->cache->delete($key);
+    }
+
+    public function getObj($key)
+    {
+        $ret = $this->get($key);
+        if ($ret !== false)
+        {
+            $ret = bin_decode($ret);
+        }
+        return $ret;
     }
 
     public function getMulti($keys)
@@ -40,9 +50,22 @@ class MCore_Min_Memcached implements MCore_Proxy_IMCache
         return $this->cache->getMulti($keys);
     }
 
-    public function delete($key)
+    public function getMultiObj($keys)
     {
-        return $this->cache->delete($key);
+        $r = $this->getMulti();
+        $list = array();
+
+        if (is_array($r))
+        {
+            foreach ($keys as $index => $key)
+            {
+                if (isset($r[$index]) && ($v = $r[$index]) !== false)
+                {
+                    $list[$key] = bin_decode($v);
+                }
+            }
+        }
+        return $list;
     }
 
     public function increment($key, $value)

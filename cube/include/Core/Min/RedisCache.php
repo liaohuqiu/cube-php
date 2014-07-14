@@ -1,8 +1,8 @@
 <?php
 /**
- * Redis常用缓存封装
+ * Redis wrapper
  */
-class MCore_Min_RedisCache
+class MCore_Min_RedisCache implements MCore_Proxy_IMCache
 {
     private $cache;
 
@@ -54,7 +54,7 @@ class MCore_Min_RedisCache
 
     public function getMulti($keys)
     {
-        $this->cache->multi(\Redis::PIPELINE);
+        $this->cache->multi(Redis::PIPELINE);
         foreach ($keys as $key)
         {
             $this->cache->get($key);
@@ -64,8 +64,7 @@ class MCore_Min_RedisCache
         $list = array();
         foreach ($keys as $index => $key)
         {
-            $v = $r[$index];
-            if ($v !== false)
+            if (isset($r[$index]) && ($v = $r[$index]) !== false)
             {
                 $list[$key] = bin_decode($v);
             }

@@ -25,12 +25,3 @@ CREATE TABLE IF NOT EXISTS sys_table_info (
     remark text NOT NULL,
     PRIMARY KEY  (name)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-CREATE TABLE IF NOT EXISTS sys_service_info (
-    id int NOT NULL auto_increment PRIMARY key,
-    key varchar(20) NOT NULL default '',
-    ip varchar(16) NOT NULL default '',
-    port int NOT NULL default 0,
-    key (key),
-    key (ip)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
