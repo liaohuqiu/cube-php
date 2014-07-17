@@ -1,35 +1,27 @@
 <?php
-namespace Tool;
 /**
- * 缓存工具，提供常用的几个方法以及进程内缓存
+ * The value `false` can not be cached directly
  *
- * @author huqiu.lhq@taobao.com
+ * @author liaohuqiu@gmail.com
  */
 class MCore_Tool_Cache
 {
     private static $proxy; // MCore_Proxy_IMCache
     private static $cacheList = array();
 
-    private static function getCacheProxy()
+    public static function getCacheProxy()
     {
         if (!self::$proxy)
         {
-            if (!defined(FN_getCacheProxy))
+            if (!function_exists('fn_getCacheProxy'))
             {
-                throw new MCore_Proxy_Exception('FN_getCacheProxy undefined');
+                throw new MCore_Proxy_Exception('fn_getCacheProxy undefined');
             }
-            $fn = FN_getCacheProxy;
-            if (is_callable($fn))
-            {
-                self::$proxy = call_user_func($fn);
-            }
+            self::$proxy = fn_getCacheProxy($fn);
         }
         return self::$proxy;
     }
 
-    /**
-     * 获取值
-     */
     public static function get($key, $localCache = true)
     {
         if (!MCore_Tool_Env::isProd())
@@ -42,18 +34,19 @@ class MCore_Tool_Cache
         }
         $ret = self::getCacheProxy()->get($key);
         // cache even the $ret is false;
-        if ($localCache)
+        if ($localCache && $ret !== false)
         {
             self::$cacheList[$key] = $ret;
         }
         return $ret;
     }
 
-    /*
-     * 设置值
-     */
     public static function set($key, $value, $expired = 0)
     {
+        if ($value === false)
+        {
+            return false;
+        }
         if (!MCore_Tool_Env::isProd())
         {
             MCore_Tool_Log::addDebugLog('cache', 'set: ' . $key);
@@ -109,11 +102,12 @@ class MCore_Tool_Cache
         return $list;
     }
 
-    /**
-     * 设置数组
-     */
     public static function setObj($key, $value, $expired = 0)
     {
+        if ($value === false)
+        {
+            return false;
+        }
         if (!MCore_Tool_Env::isProd())
         {
             MCore_Tool_Log::addDebugLog('cache', 'setObj: ' . $key);
@@ -127,7 +121,13 @@ class MCore_Tool_Cache
     }
 
     /**
-     * 获取数组
+     * get value by $key
+     *
+     * You can store the data in process cache by set $localCache to true
+     *
+     * the data will be cache in process cache.
+     *
+     * When $localCache is set to true and you can filter the value by $onToLocalFn
      */
     public static function getObj($key, $localCache = true, $onToLocalFn = null)
     {
@@ -227,32 +227,42 @@ class MCore_Tool_Cache
         return self::getCacheProxy()->delete($key);
     }
 
+    /**
+     * fetch value by $cacheKey, the value will cache to process cache.
+     *
+     * The data return by $getFn will be cached into process cache
+     *
+     * $onToLocalFn($info) filter the data
+     *
+     * You can pass $expired by a value lower than 0 to set the data returned by $getFn to cache.
+     */
     public static function fetch($cacheKey, $getFn, $onToLocalFn = null, $expired = 0)
     {
         $data = false;
         if ($expired >= 0)
         {
-            $data = \Tool\Cache::getObj($cacheKey, true, $onToLocalFn);
+            $data = self::getObj($cacheKey, true, $onToLocalFn);
         }
         if ($data === false)
         {
             $data = call_user_func($getFn);
             if ($data !== false || $expired < 0)
             {
-                \Tool\Cache::setObj($cacheKey, $data, $expired);
+                self::setObj($cacheKey, $data, $expired);
             }
             if ($onToLocalFn)
             {
                 $data = call_user_func($onToLocalFn, $data);
-                self::$cacheList[$key] = $data;
+            }
+            if ($data !== false)
+            {
+                self::$cacheList[$cacheKey] = $data;
             }
         }
         return $data;
     }
 
     /**
-     * 获取ids对应的列表缓存
-     *
      * onToLocalFn($id, $item)
      */
     public static function fetchList($ids, $getKeyFn, $getListFn, $onToLocalFn = null, $expired = 0, $default = false)
@@ -274,7 +284,7 @@ class MCore_Tool_Cache
             if (is_array($id))
             {
                 var_export($ids);
-                throw new \Exception();
+                throw new Exception();
             }
             $keys[$id] = call_user_func($getKeyFn, $id);
         }
@@ -321,17 +331,16 @@ class MCore_Tool_Cache
                     if ($onToLocalFn)
                     {
                         $item = call_user_func($onToLocalFn, $id, $item);
-                        if ($item === false)
-                        {
-                            continue;
-                        }
-                        self::$cacheList[$cacheKey] = $item;
                     }
+                    if ($item === false)
+                    {
+                        continue;
+                    }
+                    self::$cacheList[$cacheKey] = $item;
                     $list[$id] = $item;
                 }
             }
         }
-
 
         if ($isArray)
         {

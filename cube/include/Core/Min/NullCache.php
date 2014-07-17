@@ -26,6 +26,11 @@ class MCore_Min_NullCache implements MCore_Proxy_IMCache
         return false;
     }
 
+    function setObj($key, $value, $expire)
+    {
+        return false;
+    }
+
     function getMulti($keys)
     {
         return false;

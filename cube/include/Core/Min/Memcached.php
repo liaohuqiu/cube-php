@@ -1,7 +1,11 @@
 <?php
+/**
+ * Wrapper for Memcached
+ */
 class MCore_Min_Memcached implements MCore_Proxy_IMCache
 {
     private $cache;
+
     public function __construct($cache)
     {
         $this->cache = $cache;
@@ -20,7 +24,7 @@ class MCore_Min_Memcached implements MCore_Proxy_IMCache
         return $cache;
     }
 
-    public function set($key, $value, $expire)
+    public function set($key, $value, $expire = 0)
     {
         return $this->cache->set($key, $value, $expire);
     }
@@ -33,6 +37,16 @@ class MCore_Min_Memcached implements MCore_Proxy_IMCache
     public function delete($key)
     {
         return $this->cache->delete($key);
+    }
+
+    public function setObj($key, $value, $expire = 0)
+    {
+        if ($value === false)
+        {
+            return;
+        }
+        $value = bin_encode($value);
+        return $this->cache->set($key, $value, $expire);
     }
 
     public function getObj($key)
@@ -68,13 +82,24 @@ class MCore_Min_Memcached implements MCore_Proxy_IMCache
         return $list;
     }
 
-    public function increment($key, $value)
+    public function increment($key, $value = 1)
     {
-        return $this->cache->increment($key, $value);
+        $ret = $this->cache->increment($key, $value);
+        if ($ret === false)
+        {
+            $this->cache->set($key, $value);
+            $ret = $value;
+        }
+        return $ret;
     }
 
-    public function decrement($key, $value)
+    public function decrement($key, $value = 1)
     {
         return $this->cache->decrement($key, $value);
+    }
+
+    public function getEngine()
+    {
+        return $this->cache;
     }
 }

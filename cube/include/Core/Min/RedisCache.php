@@ -1,12 +1,14 @@
 <?php
 /**
  * Redis wrapper
+ *
+ * The value cache into Redis will be convert into String.
  */
 class MCore_Min_RedisCache implements MCore_Proxy_IMCache
 {
     private $cache;
 
-    public static function getInstance()
+    public static function create()
     {
         static $instance;
         if (!$instance)
@@ -25,7 +27,6 @@ class MCore_Min_RedisCache implements MCore_Proxy_IMCache
 
     public function set($key, $value, $expired = 0)
     {
-        $value = bin_encode($value);
         if ($expired)
         {
             $ret = $this->cache->setex($key, $expired, $value);
@@ -45,10 +46,6 @@ class MCore_Min_RedisCache implements MCore_Proxy_IMCache
     public function get($key)
     {
         $r = $this->cache->get($key);
-        if ($r !== false)
-        {
-            $r = bin_decode($r);
-        }
         return $r;
     }
 
@@ -66,7 +63,7 @@ class MCore_Min_RedisCache implements MCore_Proxy_IMCache
         {
             if (isset($r[$index]) && ($v = $r[$index]) !== false)
             {
-                $list[$key] = bin_decode($v);
+                $list[$key] = $v;
             }
         }
         return $list;
@@ -74,18 +71,60 @@ class MCore_Min_RedisCache implements MCore_Proxy_IMCache
 
     public function setObj($key, $value, $expired = 0)
     {
+        if ($value === false)
+        {
+            return;
+        }
+        $value = bin_encode($value);
         return $this->set($key, $value, $expired);
     }
 
     public function getObj($key)
     {
-        $value = $this->get($key);
-        return $value;
+        $r = $this->get($key);
+        if ($r !== false)
+        {
+            $r = bin_decode($r);
+        }
+        return $r;
     }
 
     public function getMultiObj($keys)
     {
         $values = $this->getMulti($keys);
+        foreach ($values as $key => $r)
+        {
+            $values[$key] = bin_decode($r);
+        }
         return $values;
+    }
+
+    public function increment($key, $value = 1)
+    {
+        if ($value != 1)
+        {
+            return $this->cache->incrBy($key, $value);
+        }
+        else
+        {
+            return $this->cache->incr($key);
+        }
+    }
+
+    public function decrement($key, $value = 1)
+    {
+        if ($value != 1)
+        {
+            return $this->cache->decrBy($key, $value);
+        }
+        else
+        {
+            return $this->cache->decr($key);
+        }
+    }
+
+    public function getEngine()
+    {
+        return $this->cache;
     }
 }

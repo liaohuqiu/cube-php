@@ -1,7 +1,7 @@
 <?php
 interface MCore_Proxy_IMCache
 {
-    function set($key, $value, $expire);
+    function set($key, $value, $expire = 0);
 
     function get($key);
 
@@ -9,11 +9,11 @@ interface MCore_Proxy_IMCache
 
     function getObj($key);
 
+    function setObj($key, $value, $expire = 0);
+
     function getMulti($keys);
 
     function getMultiObj($keys);
 
-    function increment($key, $value);
-
-    function decrement($key, $value);
+    function getEngine();
 }
