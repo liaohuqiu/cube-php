@@ -1,6 +1,6 @@
 <?php
 /**
- *   日期时间
+ *  month
  *
  * @author      huqiu
  */
@@ -13,12 +13,12 @@ class MCore_Util_DateMonth extends MCore_Util_DateTime
 
     public function lastWeekDay($weekDay)
     {
-        $begin_day = date('d',$this->firstDay()->time);
-        $end_day = date('d',$this->lastDay()->time);
+        $begin_day = date('d', $this->firstDay()->time);
+        $end_day = date('d', $this->lastDay()->time);
         for($i = $end_day; $i >= $begin_day; $i--)
         {
             $time = mktime(0, 0, 0, $this->month, $i, $this->year);
-            if(date('N',$time) == $weekDay)
+            if(date('N', $time) == $weekDay)
             {
                 return new MCore_Util_DateMonth($time);
             }
@@ -27,13 +27,13 @@ class MCore_Util_DateMonth extends MCore_Util_DateTime
 
     public function weekDays($weekDay)
     {
-        $begin_day = date('d',$this->firstDay()->time);
-        $end_day = date('d',$this->lastDay()->time);
+        $begin_day = date('d', $this->firstDay()->time);
+        $end_day = date('d', $this->lastDay()->time);
         $days = array();
         for($i = $begin_day; $i <= $end_day; $i++)
         {
             $time = mktime(0, 0, 0, $this->month, $i, $this->year);
-            if(date('N',$time) == $weekDay)
+            if(date('N', $time) == $weekDay)
             {
                 $days[] = new MCore_Util_DateMonth($time);
             }
@@ -43,12 +43,12 @@ class MCore_Util_DateMonth extends MCore_Util_DateTime
 
     public function firstWeekDay($weekDay)
     {
-        $begin_day = date('d',$this->firstDay()->time);
-        $end_day = date('d',$this->lastDay()->time);
-        for($i = $begin_day; $i <= $end_day; $i++)
+        $begin_day = date('d', $this->firstDay()->time);
+        $end_day = date('d', $this->lastDay()->time);
+        for ($i = $begin_day; $i <= $end_day; $i++)
         {
-            $time = mktime(0, 0, 0, $this->month,$i,$this->year);
-            if(date('N', $time) == $weekDay)
+            $time = mktime(0, 0, 0, $this->month, $i, $this->year);
+            if (date('N', $time) == $weekDay)
             {
                 return new MCore_Util_DateMonth($time);
             }
@@ -57,13 +57,13 @@ class MCore_Util_DateMonth extends MCore_Util_DateTime
 
     public function firstDay()
     {
-        $time = mktime(0,0,0,$this->month,1,$this->year);
+        $time = mktime(0, 0, 0, $this->month, 1, $this->year);
         return new MCore_Util_DateMonth($time);
     }
 
     public function lastDay()
     {
-        $time = mktime(0,0,0,$this->month + 1,0,$this->year);
+        $time = mktime(0, 0, 0, $this->month + 1, 0, $this->year);
         return new MCore_Util_DateMonth($time);
     }
 
@@ -72,4 +72,3 @@ class MCore_Util_DateMonth extends MCore_Util_DateTime
         return ($this->lastDay()->getTime() - $this->getTime()) / 86400 + 1;
     }
 }
-?>
