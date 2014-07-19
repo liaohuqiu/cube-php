@@ -9,6 +9,9 @@ class MCore_Tool_Cache
     private static $proxy; // MCore_Proxy_IMCache
     private static $cacheList = array();
 
+    /**
+     * return an instance of cache proxy
+     */
     public static function getCacheProxy()
     {
         if (!self::$proxy)
@@ -60,7 +63,7 @@ class MCore_Tool_Cache
     }
 
     /**
-     * 批量获取，返回 关联数组
+     * return an array indexed by key
      */
     public static function getMulti($keys, $localCache = true)
     {
@@ -102,6 +105,9 @@ class MCore_Tool_Cache
         return $list;
     }
 
+    /**
+     * set array to cache
+     */
     public static function setObj($key, $value, $expired = 0)
     {
         if ($value === false)
@@ -121,7 +127,7 @@ class MCore_Tool_Cache
     }
 
     /**
-     * get value by $key
+     * get array by $key
      *
      * You can store the data in process cache by set $localCache to true
      *
@@ -152,7 +158,7 @@ class MCore_Tool_Cache
     }
 
     /**
-     * 批量获取数组
+     * batch get a list or array, indexed by key
      */
     public static function getMultiObj($keys, $localCache = true, $onToLocalFn = null)
     {
@@ -263,6 +269,10 @@ class MCore_Tool_Cache
     }
 
     /**
+     * fetch all the values by given $ids, if the value is not in cache, $getListFn will be called to get value
+     *
+     * $getListFn($ids)
+     *
      * onToLocalFn($id, $item)
      */
     public static function fetchList($ids, $getKeyFn, $getListFn, $onToLocalFn = null, $expired = 0, $default = false)
