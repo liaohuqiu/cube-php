@@ -39,13 +39,13 @@ class MCore_Cli_ConsoleBase
     protected $argv;
     private $lockfp;
 
-    function getInputOption($required, $optional = array())
+    protected function getInputOption($required, $optional = array())
     {
         $opt = new MCore_Cli_Options($required, $optional);
         return $opt;
     }
 
-    function execCmd($cmd)
+    protected function execCmd($cmd)
     {
         $this->printInfo($cmd, false);
         exec($cmd, $result);
@@ -69,21 +69,20 @@ class MCore_Cli_ConsoleBase
         return p($msg, $withTime);
     }
 
-    function setNoLimit()
+    protected function setNoLimit()
     {
         ini_set("memory_limit", -1);
+        return $this;
     }
 
-    function run()
+    public function run()
     {
         try
         {
             $this->argc = $_SERVER['argc'];
             $this->argv = $_SERVER['argv'];
 
-            $this->getPara();
-
-            $this->checkPara();
+            $this->init();
 
             $this->main();
 
@@ -97,15 +96,11 @@ class MCore_Cli_ConsoleBase
         }
     }
 
+    protected function init()
+    {
+    }
+
     protected function main()
-    {
-    }
-
-    protected function getPara()
-    {
-    }
-
-    protected function checkPara()
     {
     }
 
