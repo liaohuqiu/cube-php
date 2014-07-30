@@ -5,6 +5,14 @@
  */
 if (!function_exists('p'))
 {
+    function pf()
+    {
+        $argv = func_get_args();
+        $format = array_shift($argv);
+        $msg = vsprintf($format, $argv);
+        p($msg);
+    }
+
     function p($info, $withTime = true)
     {
         if ($info instanceof MCore_Util_ArrayLike)

@@ -18,10 +18,10 @@ class MCore_Min_RedisCache implements MCore_Proxy_IMCache
         return $instance;
     }
 
-    public function __construct()
+    public function __construct($host = '127.0.0.1', $port = 6379)
     {
         $cache = new Redis();
-        $cache->pconnect('127.0.0.1', 6379);
+        $cache->pconnect($host, $port);
         $this->cache = $cache;
     }
 
