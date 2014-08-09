@@ -20,9 +20,9 @@ function update_dir()
     exe_cmd "cp -rf $from/$1 ./$1"
 }
 
-update_dir 'cube'
-update_dir 'cube-admin'
-update_dir 'cube-demo'
+update_dir 'cube-core'
+update_dir 'app-cube-admin'
+update_dir 'app-cube-demo'
 update_dir 'htdocs_res/cube-admin-mix'
 update_dir 'htdocs_res/res/cube'
 update_dir 'htdocs_res/res/admin'

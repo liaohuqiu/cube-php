@@ -5,7 +5,7 @@ $boot_dir = dirname(__FILE__);
 
 // set up for cube
 define('APP_NAME', 'cube-demo'); // change to you app name
-define('CUBE_ROOT_DIR', $boot_dir . '/cube');
+define('CUBE_ROOT_DIR', $boot_dir . '/cube-core');
 define('CONFIG_DATA_DIR', $boot_dir . '/config');
 define('WRITABLE_DIR', $boot_dir . '/writable');
 
@@ -34,7 +34,7 @@ else
 }
 
 // load cube
-require CUBE_ROOT_DIR . '/cube-core.php';
+require CUBE_ROOT_DIR . '/cube-boot.php';
 
 // boot
 Cube::boot();
