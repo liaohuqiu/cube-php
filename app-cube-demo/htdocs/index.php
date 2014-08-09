@@ -1,5 +1,5 @@
 <?php
-include dirname(dirname(__FILE__)) . '/cube-demo-boot.php';
+include dirname(dirname(__FILE__)) . '/app-boot.php';
 $api_class_list = array(
     'MApis_Admin_ServerGroup_InfoV1' => 1,
     'MApis_Admin_ServerGroup_InfoV8' => 1,
