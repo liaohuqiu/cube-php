@@ -36,8 +36,5 @@ else
 // load cube
 require CUBE_ROOT_DIR . '/cube-core.php';
 
-// set include dir
-Cube::addIncludePath($boot_dir . '/include');
-
 // boot
 Cube::boot();

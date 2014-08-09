@@ -62,7 +62,7 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
         // create system tables
         $this->connection->selectDB($sysDBName);
         $separator = 'CREATE TABLE';
-        $sqlText = file_get_contents(CUBE_DEV_ROOT_DIR . '/data/dev_config.sql');
+        $sqlText = file_get_contents(ADMIN_ROOT_DIR . '/data/dev_config.sql');
         $sqls = explode($separator, $sqlText);
         foreach ($sqls as $item)
         {
@@ -88,7 +88,7 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
         $ret = $db->insert('sys_db_info', $info, array('password', 'group_key'));
 
         // create table
-        $sqlContent = file_get_contents(CUBE_DEV_ROOT_DIR . '/data/admin.sql');
+        $sqlContent = file_get_contents(ADMIN_ROOT_DIR . '/data/admin.sql');
         $sqlContent = str_replace('{admin_user_table}', $adminUserTable, $sqlContent);
 
         $creator = new MEngine_MysqlTableCreator($db);

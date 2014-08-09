@@ -48,10 +48,6 @@ class Cube
         {
             throw new Exception('APP_NAME undefined');
         }
-        if (empty(self::$include_dirs))
-        {
-            throw new Exception('include path has not been specified, call addIncludePath() fisrt.');
-        }
         if (!defined('CONFIG_DATA_DIR'))
         {
             throw new Exception('CONFIG_DATA_DIR undefined');
@@ -97,7 +93,7 @@ class Cube
             $class_file = $include_path . DS . $file_name;
             if (file_exists($class_file))
             {
-                require_once($class_file);
+                require($class_file);
                 return true;
             }
         }
