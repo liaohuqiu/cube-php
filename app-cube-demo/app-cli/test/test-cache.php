@@ -1,5 +1,5 @@
 <?php
-include dirname(dirname(dirname(__FILE__))) . '/boot.php';
+include dirname(dirname(dirname(__FILE__))) . '/boot-hook.php';
 function fn_getCacheProxy()
 {
     // return new MCore_Min_NullCache();

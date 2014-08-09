@@ -13,9 +13,9 @@ class MCore_Util_SimpleConf
 
     function __construct($confInfoListMayByKey, $keyFieldName = '', $codeFieldName = 'code')
     {
-        foreach($confInfoListMayByKey as $key => $info)
+        foreach ($confInfoListMayByKey as $key => $info)
         {
-            if($keyFieldName)
+            if ($keyFieldName)
             {
                 $key = $info[$keyFieldName];
             }
@@ -33,12 +33,12 @@ class MCore_Util_SimpleConf
 
     function __get($name)
     {
-        if($name == "code")
+        if ($name == "code")
         {
             $this->$name = $this->_confInfoListByCode;
             return $this->$name;
         }
-        else if($name == "key")
+        else if ($name == "key")
         {
             $this->$name = $this->_confInfoListByKey;
             return $this->$name;
@@ -92,7 +92,7 @@ class MCore_Util_SimpleConf
 
     function getInfoByCode($code)
     {
-        if (!isset($this->_codeKeyMap[$code]))
+        if (!isset($this->_confInfoListByCode[$code]))
         {
             throw new Exception('code not found: ' . $code);
         }
@@ -102,7 +102,7 @@ class MCore_Util_SimpleConf
 
     function getInfoByKey($key)
     {
-        if (!isset($this->_keyCodeMap[$key]))
+        if (!isset($this->_confInfoListByKey[$key]))
         {
             throw new Exception('key not found: ' . $key);
         }
