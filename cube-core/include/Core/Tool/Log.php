@@ -7,12 +7,15 @@
 class MCore_Tool_Log
 {
     /**
-     * level : dev / test /prod
      * addDebugLog($msg);
-     * addDebugLog($logname, $msg, $level, $ip)
+     * addDebugLog($logname, $msg)
      */
     public static function addDebugLog()
     {
+        if (MCore_Tool_Env::isProd())
+        {
+            return;
+        }
         $argv = func_get_args();
         $argc = func_num_args();
         if ($argc == 1)
@@ -26,23 +29,12 @@ class MCore_Tool_Log
             $v = $argv[1];
         }
 
-        $level = 'dev' && isset($argv[2]) && $level = $argv[2];
-        $ip = '' && isset($argv[3]) && $ip = $argv[3];
-
-        if (MCore_Tool_Env::isProd() && $level != 'prod')
-        {
-            return;
-        }
-        if ($ip && self::getIp() != $ip)
-        {
-            return;
-        }
         $desc = $v;
         if (!is_string($v))
         {
             try
             {
-                $desc = var_export($v,true);
+                $desc = var_export($v, true);
             }
             catch(Exception $ex)
             {
@@ -51,7 +43,7 @@ class MCore_Tool_Log
                 $desc = ob_get_clean();
             }
         }
-        self::addFileLog('debug_'.$logName, $desc);
+        self::addFileLog('debug_' . $logName, $desc);
     }
 
     private static function wantFile($filename)

@@ -1,12 +1,12 @@
 <?php
 /**
- *	检查Email地址是否合法
+ *	字符串检查
  *
  * @author
  */
 class MCore_Str_Check
 {
-    public function checkEmail($email)
+    public static function checkEmail($email)
     {
         //检查email用户和域名字符串长度，rfc规定最大不超过320,本应用限定128个字符
         if (!ereg("[^@]{1,64}@[^@]{1,255}", $email) || strlen($email) > 128)
@@ -100,4 +100,3 @@ class MCore_Str_Check
         return mb_check_encoding($string, 'UTF-8');
     }
 }
-?>

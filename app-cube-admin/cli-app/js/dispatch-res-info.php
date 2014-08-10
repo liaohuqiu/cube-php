@@ -1,5 +1,5 @@
 <?php
-include dirname(dirname(dirname(__FILE__))) . '/cube-admin-boot.php';
+include dirname(dirname(dirname(__FILE__))) . '/app-boot.php';
 class App extends MCore_Cli_ConsoleBase
 {
     private $denstination_dir;

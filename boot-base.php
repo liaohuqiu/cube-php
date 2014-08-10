@@ -38,3 +38,32 @@ require CUBE_ROOT_DIR . '/cube-boot.php';
 
 // boot
 Cube::boot();
+
+// system decode / encode
+function cube_encode($value)
+{
+    return bin_encode($value);
+}
+function cube_decode($value)
+{
+    return bin_decode($value);
+}
+
+// chose a cache
+function fn_getCacheProxy()
+{
+    // return new MCore_Min_NullCache();
+    // return new MCore_Min_Memcached();
+    return MCore_Min_RedisCache::create();
+}
+
+// open this if you want
+// register_shutdown_function( "fatal_handler" );
+function fatal_handler()
+{
+    $error = error_get_last();
+    if ($error)
+    {
+        echo $error['message'], "\n";
+    }
+}

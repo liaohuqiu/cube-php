@@ -105,21 +105,20 @@ class Cube
         spl_autoload_register(array('Cube', 'autoload'));
     }
 }
-
-// open this if you want
-// register_shutdown_function( "fatal_handler" );
-function fatal_handler()
-{
-    $error = error_get_last();
-    if ($error)
-    {
-        echo '<pre/>';
-        echo $error['message'];
-    }
-}
 function add_debug_log($v)
 {
     MCore_Tool_Log::addDebugLog($v);
+}
+function add_debug_logf()
+{
+    if (MCore_Tool_Env::isProd())
+    {
+        return;
+    }
+    $argv = func_get_args();
+    $format = array_shift($argv);
+    $msg = vsprintf($format, $argv);
+    MCore_Tool_Log::addDebugLog($msg);
 }
 function add_error_log($msg)
 {
