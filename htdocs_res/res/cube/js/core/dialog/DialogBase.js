@@ -15,19 +15,25 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
 
     function DialogBase(options) {
 
+        // options
         this.newLayer = false; // 是否基于新图层（默认基于当前活跃图层）
         this.width = '';
         this.height = '';
         this.fixed = true;
         this.closeWhenESC = true;
+        this.visible = false;
+        this.isAtBackground = false;
+        this.closeWhenMaskClicked = true;
 
         K.mix(this, options);
 
-        K.CustEvent.createEvents(this, 'beforeshow,aftershow,beforehide,afterhide,beforedestroy,afterdestroy');
-
-        this.visible = false;
+        // instance member
         this.destroyed = false;
+        this._mask = null;
+        this._actionList = [];
+        this._dataContainer = {};
 
+        K.CustEvent.createEvents(this, 'beforeshow,aftershow,beforehide,afterhide,beforedestroy,afterdestroy');
         this._createDialog();
         this._bindEvents();
     }
@@ -40,16 +46,6 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
     });
 
     DialogBase.prototype = {
-
-        isAtBackground: false,
-
-        closeWhenMaskClicked: true,
-
-        _mask: null,
-
-        _actionList: [],
-
-        _dataContainer: {},
 
         setData: function() {
             var args = arguments;
@@ -112,7 +108,6 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
 
             this.drawDialogContent();
         },
-
 
         _bindEvents: function() {
             // 监听window resize事件

@@ -2,7 +2,7 @@
 class MCore_Proxy_Exception extends Exception
 {
     private $detail;
-    public function __construct($msg, $code, $detail)
+    public function __construct($msg, $code = 0, $detail = null)
     {
         parent::__construct($msg, $code);
         $this->detail = $detail;

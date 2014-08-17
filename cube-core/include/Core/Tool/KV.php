@@ -43,6 +43,11 @@ class MCore_Tool_KV
             $select = array('v', 'ctime', 'mtime');
             $where = array('k' => $key);
             $ret = MCore_Dao_DB::create()->select($table, $select, $where)->first();
+            if (!empty($ret))
+            {
+                $ret['ctime'] = strtotime($ret['ctime']);
+                $ret['mtime'] = strtotime($ret['mtime']);
+            }
             return $ret;
         };
         $onToLocalFn = function($item) {

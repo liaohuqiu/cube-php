@@ -107,7 +107,7 @@ class Cube
 }
 function add_debug_log($v)
 {
-    MCore_Tool_Log::addDebugLog($v);
+    MCore_Tool_Log::addDebugLog(APP_NAME, $v);
 }
 function add_debug_logf()
 {
@@ -118,7 +118,7 @@ function add_debug_logf()
     $argv = func_get_args();
     $format = array_shift($argv);
     $msg = vsprintf($format, $argv);
-    MCore_Tool_Log::addDebugLog($msg);
+    MCore_Tool_Log::addDebugLog(APP_NAME, $msg);
 }
 function add_error_log($msg)
 {

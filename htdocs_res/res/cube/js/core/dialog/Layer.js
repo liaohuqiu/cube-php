@@ -31,21 +31,20 @@ define('core/dialog/Layer', ['core/tool/Browser'], function(require) {
         this.background = '#fff'; // 更加高级的控制背景
 
         this.fixed = true;
+        this.frozenBackground = false;
 
-        K.mix(this, options);
-        this.id = 'layer_' + layerId++;
-        this._contentStatck = [];
         this.overflow = false;
         this.changeFixed = false;
 
+        this._contentStatck = [];
+        this._content = null;
+
+        K.mix(this, options);
+        this.id = 'layer_' + layerId++;
         this.init();
     }
 
     Layer.prototype = {
-
-        '_content': null,
-
-        'frozenBackground': false,
 
         'init': function() {
 

@@ -8,23 +8,21 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
 
         this.options = options || {};
 
+        // instance member
+        this.controller = null;
+        this._dialogContent = null,
+        this._close = null;
+        this._dialogTitle = null;
+        this._dialogBody = null;
+        this._updateRequest = null; // 异步更新自身用
+
         K.CustEvent.createEvents(this, 'after_async_show');
         AsyncDialog.$super.call(this, options);
-
-        this._updateRequest = null; // 异步更新自身用
     };
 
     AsyncDialog = K.extend(AsyncDialog, DialogBase);
 
     K.mix(AsyncDialog.prototype, {
-
-        options: null,
-        _dialogContent: null,
-        _close: null,
-
-        _dialogTitle: null,
-        _dialogBody: null,
-        _dialogContainer: null,
 
         drawDialogContent: function() {
 
@@ -151,9 +149,15 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
 
         setHandler: function (handlerMod) {
             var me = this;
-            K.App(['core/dialog/AsyncDialog', handlerMod]).define(function(require) {
-                var handler = K.create(require(handlerMod));
-                K.mix(handler, {
+
+            if (this.controller) {
+                this.controller.destroy();
+                this.controller = null;
+            }
+
+            var app = K.App(['core/dialog/AsyncDialog', handlerMod]).define(function(require) {
+                var mod = K.create(require(handlerMod));
+                K.mix(mod, {
                     container: me._panel,
                     getRequest: function() {
                         return request;
@@ -163,12 +167,13 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
                         return me;
                     }
                 });
-                me.on('afterdestroy', function() {
-                    handler = null;
-                });
-                return handler;
+                return mod;
             });
-
+            me.on('afterdestroy', function() {
+                app.destroy();
+                app = null;
+            });
+            this.controller = app;
         },
 
         setAsyncRequest: function() {

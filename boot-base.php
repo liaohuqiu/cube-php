@@ -4,6 +4,7 @@ date_default_timezone_set('Asia/Chongqing');
 $boot_dir = dirname(__FILE__);
 
 // set up for cube
+define('ROOT_DIR', $boot_dir); // change to you app name
 define('APP_NAME', 'cube-demo'); // change to you app name
 define('CUBE_ROOT_DIR', $boot_dir . '/cube-core');
 define('CONFIG_DATA_DIR', $boot_dir . '/config');
@@ -38,6 +39,10 @@ require CUBE_ROOT_DIR . '/cube-boot.php';
 
 // boot
 Cube::boot();
+
+/**
+ * customize
+ */
 
 // system decode / encode
 function cube_encode($value)

@@ -1,33 +1,10 @@
-server {
-    listen       80;
-    server_name  test.com
-
-    root /base-path/htdocs;
-
-    # rewrite all request to index.php except whitelist
-    if ( $uri !~ ^/(res|static|crossDomain\.xml|robots\.txt|favicon\.ico) ) {
-        rewrite ^ /index.php last;
-    }
-
-    include public.conf;
-}
-
-server {
-    listen       80;
-    server_name  admin.test.com
-
-    root /base-path/cube-admin/htdocs;
-
-    if ( $uri !~ ^/(res|static|crossDomain\.xml|robots\.txt|favicon\.ico) ) {
-        rewrite ^ /index.php last;
-    }
-
-    include public.conf;
-}
-
-server {
-    listen       80;
-    server_name  s.test.com
-
-    root /base-path/htdocs_res;
-}
+-- kind=s_demo_kv
+-- table_num=1
+-- split_id=k
+CREATE TABLE s_demo_kv (
+    k varchar(50) NOT NULL default '',
+    v blob NOT NULL,
+    ctime timestamp NOT NULL default 0,
+    mtime timestamp NOT NULL default current_timestamp ON UPDATE current_timestamp,
+    UNIQUE KEY k(k)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;

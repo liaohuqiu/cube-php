@@ -878,7 +878,6 @@ else{
             dependency = ['core/jQuery'].concat(dependency);
 
         if (definedModules[ moduleId ]) {
-            K.fire('haibei:resource:conflict');
             throw new Error(moduleId + ' has defined');
             return;
         }
@@ -1481,7 +1480,6 @@ else{
 
     function Application(id, dependency, execBeforeDomready) {
         if (appList[ id ]) {
-            K.fire('haibei:resource:conflict');
             throw new Error('App:' + id + ' has defined');
             return;
         }
@@ -1491,10 +1489,27 @@ else{
         // App默认加载jQuery
         this.requiredModList = [ 'core/jQuery' ].concat(dependency);
         this.execBeforeDomready = execBeforeDomready;
+
+        this.destroy_fns = [];
+        this.destroyed = false;
     }
 
     K.mix(Application.prototype, {
-        'define' : function(definition) {
+
+        destroy: function() {
+            this.destroy_fns.forEach(function(fn) {
+                fn.apply();
+            });
+            this.destroyed = true;
+            delete appList[this.id];
+        },
+
+        onDestroy: function(fn) {
+            this.destroy_fns.push(fn);
+        },
+
+        define: function(definition) {
+
             var dependency = K.unique(this.requiredModList),
             allModules = Module.getDependencyDeeply(dependency),
             me = this,
@@ -1512,7 +1527,8 @@ else{
                 var require = Module.createRequire(dependency, me.id);
                 if (K.isFunction(definition)) {
                     definition = definition.call({}, require);
-                }
+                    definition = K.mix(definition, me);
+                };
 
                 // App的factory可能没有return definition
                 if (!definition) {
@@ -1565,6 +1581,7 @@ else{
                     ready();
                 }
             });
+            return this;
         }
     });
 
@@ -1596,15 +1613,24 @@ else{
 
         K.map(events, function(handler, evtStr) {
             var match = evtStr.match(eventSpliter),
-            evtName = match[ 1 ],
-            selector = match[ 2 ],
-            method = K.bind(app[ handler ], app);
+            evtName = match[1],
+            selector = match[2];
+            method = K.bind(app[handler], app);
+
+            var _handler = function() {
+                app[handler].apply(app, arguments);
+            };
 
             if (!selector) {
-                container.bind(evtName, method);
-            }
-            else {
-                container.delegate(selector, evtName, K.bind(app[ handler ], app));
+                container.bind(evtName, _handler);
+                app.onDestroy(function() {
+                    container.unbind(evtName, _handler);
+                });
+            } else {
+                container.delegate(selector, evtName, _handler);
+                app.onDestroy(function() {
+                    container.undelegate(selector, evtName, _handler);
+                });
             }
         });
     }
@@ -1650,7 +1676,7 @@ else{
     };
 
     K.App.get = function(appID) {
-        return appList[ appID ] || null;
+        return appList[ appID ] || appList;
     };
 
 })(K, K.Module);

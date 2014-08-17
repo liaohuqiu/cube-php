@@ -6,27 +6,24 @@
  */
 class MCore_Tool_Log
 {
-    /**
-     * addDebugLog($msg);
-     * addDebugLog($logname, $msg)
-     */
-    public static function addDebugLog()
+    public static function addDebugLogF()
     {
         if (MCore_Tool_Env::isProd())
         {
             return;
         }
         $argv = func_get_args();
-        $argc = func_num_args();
-        if ($argc == 1)
+        $logName = array_shift($argv);
+        $format = array_shift($argv);
+        $msg = vsprintf($format, $argv);
+        self::addDebugLog($logName, $msg);
+    }
+
+    public static function addDebugLog($logName, $v)
+    {
+        if (MCore_Tool_Env::isProd())
         {
-            $v = $argv[0];
-            $logName = APP_NAME;
-        }
-        else
-        {
-            $logName = $argv[0];
-            $v = $argv[1];
+            return;
         }
 
         $desc = $v;
