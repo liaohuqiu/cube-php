@@ -130,26 +130,6 @@
     border-left: 2px solid #185E37;
     border-right: 2px solid #185E37;
 }
-.mt-10 {margin-top: 10px}
-.mt-20 {margin-top: 20px}
-.mt-30 {margin-top: 30px}
-.mt-50 {margin-top: 50px}
-
-.mr-10 {margin-right: 10px}
-.mr-30 {margin-right: 30px}
-.mr-50 {margin-right: 50px}
-
-.mb-10 {margin-bottom: 10px}
-.mb-30 {margin-bottom: 30px}
-.mb-50 {margin-bottom: 50px}
-
-.pt-10 {padding-top: 10px}
-.pt-30 {padding-top: 30px}
-
-.va-m {vertical-align: middle !important;}
-.ta-c {text-align: center !important;}
-.ta-l {text-align: left !important;}
-.ta-r {text-align: right !important;}
 
 .msgbox-info:hover {
     cursor: pointer;
