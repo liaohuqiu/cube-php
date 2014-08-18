@@ -20,18 +20,10 @@ else if (gethostname() == 'xxxxxx')
 {
     define('ENV_TAG', 'pre');
 }
-else if (gethostname() == 'xxxxxx')
-{
-    define('ENV_TAG', 'test');
-}
-else if (gethostname() == 'xxxxxx')
-{
-    define('ENV_TAG', 'dev');
-}
 else
 {
-    // here we set to demo
-    define('ENV_TAG', 'demo');
+    // here we set to dev
+    define('ENV_TAG', 'dev');
 }
 
 // load cube
