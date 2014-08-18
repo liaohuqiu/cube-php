@@ -3,3 +3,4 @@ writable/smarty/
 *auto-gen*
 config/*.demo.php
 */app/run-*
+*.log
