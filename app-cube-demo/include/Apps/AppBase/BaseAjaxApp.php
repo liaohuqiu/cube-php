@@ -4,7 +4,7 @@
  *
  * @author huqiu
  */
-abstract class MApps_BaseAjaxApp extends MCore_Web_BaseAjaxApp
+abstract class MApps_AppBase_BaseAjaxApp extends MCore_Web_BaseAjaxApp
 {
     protected function checkAuth()
     {

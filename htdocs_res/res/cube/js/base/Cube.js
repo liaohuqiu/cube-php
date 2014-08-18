@@ -1133,6 +1133,9 @@ else{
 
     Resource.getFullPath = function(js) {
         var mid = Resource.getModuleName(js);
+        if (!jsInfo[mid]) {
+            throw new Error('Can not find information for: ' + mid);
+        }
         var url = jsInfo[mid]['url'];
         var ret = Resource.getResPrePath() + url;
         return ret;

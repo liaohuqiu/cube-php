@@ -1,13 +1,13 @@
 <?php
-class MApps_Index extends MApps_BasePageApp
+class MApps_Index extends MApps_AppBase_BasePageApp
 {
     protected function main()
     {
-        $this->getResTool()->addFootJs('mw/ALogin.js');
+        $this->getResTool()->addFootJs('cube-demo/AIndex.js');
     }
 
     protected function outputBody()
     {
-        $this->getView()->display('app/index.html');
+        $this->getView()->display('index.html');
     }
 }

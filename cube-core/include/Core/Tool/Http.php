@@ -20,14 +20,13 @@ class MCore_Tool_Http
         return $host;
     }
 
-    public static function buildGetUrl($info, $url = "")
+    public static function buildGetUrl($info, $url = '')
     {
-        $list = array();
-        foreach ($info as $key => $val)
+        if (empty($info))
         {
-            $list[] ="$key=$val";
+            return $url;
         }
-        $link = "$url?".implode("&",$list);
+        $link = $url . '?' . http_build_query($info);
         return $link;
     }
 

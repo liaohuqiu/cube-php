@@ -7,4 +7,4 @@ include $root_dir . '/boot-app-cube-demo.php';
 // add include dir
 Cube::addIncludePath($current_dir . '/include');
 
-define('DEMO_ROOT_DIR', $current_dir);
+define('APP_ROOT_DIR', $current_dir);

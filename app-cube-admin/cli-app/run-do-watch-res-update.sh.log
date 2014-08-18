@@ -2097,3 +2097,139 @@ php dispatch-res-info.php -f /home/huqiu/git/cube-php/cube-admin/app/js/auto-gen
 update res info
 [2014-07-09 08:44:42] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
 mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+Fork in: 2956  parent: 2956, daemon: 2957
+Parent process exit: 2956
+Fork in: 2957  parent: 2956, daemon: 0
+Pid: 2957, try running/home/huqiu/git/cube-php/app-cube-admin/cli-app/js/do-watch-res-update.sh /home/huqiu/git/cube-php/htdocs_res/res/
+Child pid 2957
+watch:	/home/huqiu/git/cube-php/htdocs_res/res
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/admin
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/admin/css
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/admin/js
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube/css
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube/i
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube/i/base
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube/js
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube/js/base
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube/js/core
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube/js/core/ajax
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube/js/core/cookie
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube/js/core/dialog
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube/js/core/popup
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube/js/core/switch
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube/js/core/tool
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube/js/core/util
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube-demo
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube-demo/css
+watch:	/home/huqiu/git/cube-php/htdocs_res/res/cube-demo/js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 22:59:42] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 22:59:54] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:00:07] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:01:05] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:01:22] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:01:30] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:01:49] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:02:00] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:02:11] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:02:16] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:02:33] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:02:43] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:02:54] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:02:59] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:03:17] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:03:45] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:04:00] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:04:10] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:04:22] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:04:39] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:06:16] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
+node update-res-info.js /home/huqiu/git/cube-php/htdocs_res/res /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json
+php dispatch-res-info.php -f /home/huqiu/git/cube-php/app-cube-admin/cli-app/js/auto-gen-res-list-info.json -t /home/huqiu/git/cube-php/htdocs_res/res
+update res info
+[2014-08-18 23:06:23] save version.js:	/home/huqiu/git/cube-php/htdocs_res/res/version.js
+mv /home/huqiu/git/cube-php/htdocs_res/res/version.js.tmp /home/huqiu/git/cube-php/htdocs_res/res/version.js
