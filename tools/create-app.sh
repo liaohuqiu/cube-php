@@ -27,3 +27,6 @@ replace $f_app_boot_php 'cube-demo.php' $app_name'.php'
 replace $app_root_dir/include/Apps/Index.php 'cube-demo' $app_name
 replace $app_root_dir/include/Apps/AppBase/BasePageApp.php 'cube-demo' $app_name
 replace $app_root_dir/include/Apps/AppBase/BasePageApp.php 'Cube Demo' $app_name
+
+exe_cmd "cd $root_dir/app-cube-admin/cli-app/js/"
+exe_cmd "sh 

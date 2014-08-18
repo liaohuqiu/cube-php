@@ -7,7 +7,8 @@ $api_class_list = array(
 );
 
 $path_map = array(
-    '/api' => '/api/api-list'
+    '/' => '/index',
+    '/api' => '/api/api-list',
 );
 MCore_Web_Router::addPathMapList($path_map);
 MCore_Web_Router::addApiClassList($api_class_list);
