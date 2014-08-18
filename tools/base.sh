@@ -43,11 +43,11 @@ function replace()
 {
     local file=$1
     local from=$2
-    from=`echo $from | sed -e 's/[]\/$*.^|[]/\\&/g'`
+    from=`echo $from | sed -e 's/[]\/$*^|[]/\\&/g'`
     local to=$3
     # http://stackoverflow.com/questions/13055889/sed-with-literal-string-not-input-file
-    to=$(echo $to | sed -e 's/[]\/$*.^|[]/\\&/g')
-    cmd="sed -i 's/{{$"$from"}}/"$to"/g' $file"
+    to=$(echo $to | sed -e 's/[]\/$*^|[]/\\&/g')
+    cmd="sed -i 's/"$from"/"$to"/g' $file"
     exe_cmd "$cmd"
 }
 

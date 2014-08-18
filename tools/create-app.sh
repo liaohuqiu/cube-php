@@ -21,3 +21,6 @@ exe_cmd "cp -rf $root_dir/htdocs_res/cube-demo-static/* $static_dir"
 res_dir=$root_dir/htdocs_res/res/$app_name/
 ensure_dir $res_dir
 exe_cmd "cp -rf $root_dir/htdocs_res/res/cube-demo/* $res_dir"
+
+f_app_boot_php=$app_root_dir/app-boot.php
+replace $f_app_boot_php 'cube-demo.php' $app_name'.php'
