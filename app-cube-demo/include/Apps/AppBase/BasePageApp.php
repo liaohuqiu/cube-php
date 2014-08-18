@@ -32,7 +32,6 @@ abstract class MApps_AppBase_BasePageApp extends MCore_Web_BasePageApp
 
     public static function createDisplayView()
     {
-        //TODO: change cube-demo-static
         $viewDisplyer = new MCore_Web_SimpleView(APP_ROOT_DIR . '/template');
         $view = new MCore_Web_View($viewDisplyer);
         $baseData = array();
