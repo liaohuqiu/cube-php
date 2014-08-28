@@ -6,8 +6,9 @@ if [ $# != 1 ]; then
 fi
 from=`readlink -f $1`
 
-if [ ! -d $from || ! -d $from'/cube-core' ]; then
+if [ ! -d $from ] || [ ! -d $from'/cube-core' ]; then
     echo $from 'is not cube source directory'
+    exit;
 fi
 echo 'update from: ' $from;
 dir=`pwd`
