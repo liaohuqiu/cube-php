@@ -2,5 +2,7 @@ writable/log/
 writable/smarty/
 *auto-gen*
 config/*.demo.php
+db-deploy.dev.php
+sys-config.dev.php
 */app/run-*
 *.log

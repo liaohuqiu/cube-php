@@ -22,13 +22,13 @@ class MAdmin_Module
         $base_path = MCore_Tool_Conf::getDataConfig('admin', 'base_path', false);
         if ($base_path)
         {
-            $base_path = self::removeLastSlash($str);
+            $base_path = self::removeLastSlash($base_path);
             $this->base_path = $base_path;
         }
         $this->process();
     }
 
-    private function combineUrl($url1,$url2)
+    private function combineUrl($url1, $url2)
     {
         $url = $url1 . DS . $url2;
         $url = $this->tidyUrl($url);
@@ -62,7 +62,7 @@ class MAdmin_Module
     {
         if (!isset($module['auth_key']))
         {
-            throw Exception('This module in config has no auth_key');
+            throw new Exception('This module in config has no auth_key');
         }
 
         $auth_key = $module['auth_key'];

@@ -150,6 +150,12 @@ class MCore_Web_Router
 
         $reuqest_info['argv'] = $argv;
         $reuqest_info['path'] = DS . $path;
+
+        if ($post_path)
+        {
+            $reuqest_info['path'] .= '.' . $post_path;
+        }
+
         $reuqest_info['class_name'] = $class_name;
         return $reuqest_info;
     }

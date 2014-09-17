@@ -12,6 +12,7 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
     protected $moduleMan;
 
     private $beginOutput = false;
+    private $error = false;
 
     protected function checkAuth()
     {
@@ -46,6 +47,10 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
 
     protected function getTitle()
     {
+        if (!$this->moduleMan)
+        {
+            return '';
+        }
         $module = $this->moduleMan->getCurrentModuleInfo();
         $title = '';
         if ($module)
@@ -85,7 +90,7 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
         $header_data['css_html'] = $this->getResTool()->getCssHtml();
         $header_data['js_html'] = $this->getResTool()->getHeadJsHtml();
 
-        if ($this->userData)
+        if (!$this->error && $this->userData)
         {
             $header_data['proxy_auth'] = MAdmin_UserAuth::hasAuthProxy();
             $header_data['right_links'] = MAdmin_UserAuth::getRightLinks();
@@ -114,23 +119,40 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
 
     protected function processException($ex)
     {
-        if (!$this->beginOutput)
+        $this->error = true;
+        try
         {
-            $this->outputHttp();
-            $this->outputHead();
-        }
-        $page_data = array();
-        $page_data['msg'] = $ex->getMessage();
-        if (!MCore_Tool_Env::isProd())
-        {
-            $page_data['trace_str'] = $ex->getTraceAsString();
-            $page_data['trace'] = var_export($ex->getTrace(), true);
-        }
-        $this->getView()->setPageData($page_data)->display('admin/base/error.html');
+            if (!$this->beginOutput)
+            {
+                $this->outputHttp();
+                $this->outputHead();
+            }
+            $page_data = array();
+            $page_data['msg'] = $ex->getMessage();
+            if (!MCore_Tool_Env::isProd())
+            {
+                $page_data['trace_str'] = $ex->getTraceAsString();
+                $page_data['trace'] = var_export($ex->getTrace(), true);
+            }
+            $this->getView()->setPageData($page_data)->display('admin/base/error.html');
 
-        if (!$this->beginOutput)
+            if (!$this->beginOutput)
+            {
+                $this->outputTail();
+            }
+        }
+        catch (Exception $ex)
         {
-            $this->outputTail();
+            if (!MCore_Tool_Env::isProd())
+            {
+                echo '<pre>';
+                echo $ex->getTraceAsString();
+            }
+            else
+            {
+                echo 'error when process Exception';
+                exit;
+            }
         }
     }
 }
