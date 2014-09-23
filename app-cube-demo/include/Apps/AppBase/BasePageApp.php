@@ -57,6 +57,7 @@ abstract class MApps_AppBase_BasePageApp extends MCore_Web_BasePageApp
     protected function outputHead()
     {
         $header_data = array();
+        $header_data['title'] = $this->getTitle();
         $header_data['css_html'] = $this->getResTool()->getCssHtml();
         $header_data['js_html'] = $this->getResTool()->getHeadJsHtml();
 
