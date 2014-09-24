@@ -89,16 +89,18 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
                 'position': 'absolute',
                 'opacity': 0,
                 'display': 'none',
-                'z-index': 0
+                'z-index': 0,
+                'margin': '0 0 30px 0',
             });
 
             this._mask = $('<div class="_j_dialog_mask"></div>');
             var maskCss = {
                 'position': 'absolute',
+                'width': '100%',
                 'height': '100%',
                 'display': "none",
                 'background': 'black',
-                'opacity': '0.1',
+                'opacity': '0.2',
                 'z-index': 30
             };
             this._mask.css(maskCss);
@@ -195,18 +197,14 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
                 'height': $(window).height()
             };
 
-            // 默认定位（水平居中，垂直min50 2/5*total）
+            // horizontal-center; top:  2/5 * (winWH - height), min 30;
             var w = (this._getNumric(action.width) > 0 ? this._getNumric(action.width) : panelRect.width);
             var h = (this._getNumric(action.height) > 0 ? this._getNumric(action.height) : panelRect.height);
-
-            if (h > winWH.height) {
-                // h = winWH.height - 40;
-            }
 
             var defaultLeft = (winWH.width - w) / 2,
             defaultTop = (winWH.height - h) * 2 / 5;
 
-            defaultTop = defaultTop < 0 ? 0 : defaultTop;
+            defaultTop = defaultTop < 0 ? 30 : defaultTop;
             if (isOldIE || !this.fixed) {
                 var scrollTop = $(window).scrollTop();
                 if (scrollTop > 0) {
@@ -232,10 +230,8 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
                 }
             }
 
-            var size = {};
-            size.width = w;
-            size.height = h;
-            this._panel.css(size);
+            pos.width = w;
+            pos.height = h;
 
             var that = this;
             var done = function () {

@@ -78,6 +78,10 @@ define('core/dialog/AsyncDialog', ['core/ajax/Request', 'core/dialog/DialogBase'
             return this.title;
         },
 
+        getBody: function() {
+            return this._dialogBody;
+        },
+
         setBodyContent: function(content) {
             this._dialogBody.html(content);
         },
