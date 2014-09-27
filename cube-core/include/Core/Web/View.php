@@ -55,6 +55,10 @@ class MCore_Web_View
         $argv = func_get_args();
         if ($argc == 1)
         {
+            if (!is_array($argv[0]))
+            {
+                throw new Exception('setPageData error');
+            }
             $this->pageData = array_merge($this->pageData, $argv[0]);
         }
         else

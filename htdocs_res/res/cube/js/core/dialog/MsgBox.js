@@ -5,6 +5,12 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
 
     var MsgBox = function(options) {
 
+        this.dialog_data = null;
+        this.ok_callback = null;
+        this.cancel_callback = null;
+        this.close_callback = null;
+        this.dismiss_callback = null;
+
         MsgBox.$super.call(this, options);
         // K.__callsuper(MsgBox, this, options);
     };
@@ -12,11 +18,6 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
     MsgBox = K.extend(MsgBox, AsyncDialog);
 
     K.mix(MsgBox.prototype, {
-
-        ok_callback: null,
-        cancel_callback: null,
-        close_callback: null,
-        dismiss_callback: null,
 
         close: function(){
             this.close_callback && this.close_callback();
@@ -32,6 +33,14 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
             MsgBox.$super.prototype._bindEvents.call(this);
 
             var me = this;
+
+            this._panel.delegate('._j_msgbox_btn_uni', 'click', function(ev) {
+                var title = $(ev.target).html();
+                var callback = me.dialog_data.buttons[title];
+                callback && callback();
+                me.___close();
+            });
+
             this._panel.delegate('._j_msgbox_btn_ok', 'click', function(ev) {
                 me.ok_callback && me.ok_callback();
                 me.___close();
@@ -62,9 +71,16 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
         success: function(msg, data) {
             var dialog_body ='<div class="modal-body">' +
                 '<div class="alert alert-success">' + msg + '</div></div>' +
-                '<div class="modal-footer">' +
-                '<button class="btn btn-success _j_msgbox_btn_ok">Yes</button>' +
-                '</div></div>';
+                '<div class="modal-footer">';
+
+            if (data.buttons) {
+                K.forEach(data.buttons, function(callback, title) {
+                    dialog_body += '<button class="btn btn-success _j_msgbox_btn_uni">' + title + '</button>';
+                });
+            } else {
+                dialog_body +='<button class="btn btn-success _j_msgbox_btn_ok">Yes</button>';
+            }
+            dialog_body += '</div></div>';
 
             return this.showDialog(dialog_body, data);
         },
@@ -112,6 +128,7 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
             var dialog = new MsgBox(options);
             dialog.show();
 
+            dialog.dialog_data = data;
             dialog.cancel_callback = data.on_cancel;
             dialog.ok_callback = data.on_ok;
             dialog.close_callback = data.on_close;

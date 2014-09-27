@@ -28,6 +28,7 @@ class MCore_Web_Router
 {
     private static $router_rule_list = array();
     private static $path_map_list = array();
+    private static $pre_path_map_list = array();
     private static $api_class_list = array();
 
     const PREFIX_API_PATH = 'api/';
@@ -47,20 +48,32 @@ class MCore_Web_Router
      */
     public static function addPathMapList($list)
     {
-        foreach ($list as $origin_path => $maped_path)
+        foreach ($list as $origin_path => $mapped_path)
         {
-            self::addPathMap($origin_path, $maped_path);
+            self::addPathMap($origin_path, $mapped_path);
         }
     }
 
     /**
      * Map a path to another.
      */
-    public static function addPathMap($origin_path, $maped_path)
+    public static function addPathMap($origin_path, $mapped_path)
     {
         $origin_path = self::tidyPath($origin_path);
-        $maped_path = self::tidyPath($maped_path);
-        self::$path_map_list[$origin_path] = $maped_path;
+        $mapped_path = self::tidyPath($mapped_path);
+        self::$path_map_list[$origin_path] = $mapped_path;
+    }
+
+    /**
+     * Prefix path map
+     * {'img' => 'common/image.php'}
+     */
+    public static function addPrePathMap($list)
+    {
+        foreach ($list as $pre => $path)
+        {
+            self::$pre_path_map_list[self::tidyPath($pre)] = self::tidyPath($path);
+        }
     }
 
     /**
@@ -71,6 +84,9 @@ class MCore_Web_Router
         self::$router_rule_list[] = $rule;
     }
 
+    /**
+     * neither not slash begin with and, nor end with
+     */
     private static function tidyPath($path)
     {
         // remove slash if the path begins with
@@ -101,6 +117,16 @@ class MCore_Web_Router
         {
             $reuqest_info['origin_path'] = DS . $path;
             $path = self::$path_map_list[$path];
+        }
+
+        foreach (self::$pre_path_map_list as $pre => $mapped_path)
+        {
+            if (strpos($path, $pre) === 0)
+            {
+                $reuqest_info['origin_path'] = DS . $path;
+                $path = $mapped_path;
+                break;
+            }
         }
 
         // fetch arguments for specified path

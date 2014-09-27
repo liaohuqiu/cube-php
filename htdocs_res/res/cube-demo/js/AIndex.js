@@ -4,10 +4,24 @@ K.App('cube-demo/AIndex', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'cor
     var App = {
 
         events: {
-
+            'click .js-test-btn': 'clickTestButton',
         },
 
-        main: function(){
+        clickTestButton: function() {
+            var data = {
+                buttons: {
+                    'Button 1': function() {
+                        K.log('Button 1');
+                    },
+                    'Button 2': function() {
+                        K.log('Button 2');
+                    },
+                },
+            };
+            MsgBox.succ('aaa', data);
+        },
+
+        main: function() {
             K.log('main in AIndex');
         },
 

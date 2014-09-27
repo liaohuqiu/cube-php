@@ -125,4 +125,9 @@ class MCore_Web_DialogView
         $this->ajaxTool->setError($msg);
         $this->ajaxTool->output();
     }
+
+    public function getAjaxTool()
+    {
+        return $this->ajaxTool;
+    }
 }

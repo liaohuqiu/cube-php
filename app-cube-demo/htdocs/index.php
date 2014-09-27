@@ -10,7 +10,12 @@ $path_map = array(
     '/' => '/index',
     '/api' => '/api/api-list',
 );
+
+$pre_path_map = array(
+    '/img' => '/common/image.php',
+);
 MCore_Web_Router::addPathMapList($path_map);
+MCore_Web_Router::addPrePathMap($pre_path_map);
 MCore_Web_Router::addApiClassList($api_class_list);
 
 // MCore_Web_Router::addRule(array('admin/database/server-list', array('server_id', 'from_when')));

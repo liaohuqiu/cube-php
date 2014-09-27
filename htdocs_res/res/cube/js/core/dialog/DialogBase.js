@@ -154,6 +154,7 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
         _getPanelRect: function(pos) {
             var panelClone = this.getPanel().clone()
             var css_data = K.clone(pos) || {};
+
             K.mix(css_data, { position: "absolute", visibility: "hidden", display: "block" });
             panelClone.css(css_data).appendTo('body');
             panelHeight = panelClone.outerHeight(),
