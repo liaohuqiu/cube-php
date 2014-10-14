@@ -27,13 +27,13 @@ class MCore_Web_Request
         return self::$instance = new MCore_Web_Request($request_info);
     }
 
-    public function getData($varname, $source = "r", $type = "noclean")
+    public function getData($varname, $source = 'r', $type = 'noclean', $default = null)
     {
         if (isset($this->argv[$varname]))
         {
             return $this->argv[$varname];
         }
-        return MCore_Tool_Input::clean($source, $varname, $type);
+        return MCore_Tool_Input::clean($source, $varname, $type, $default);
     }
 
     public function getPath()

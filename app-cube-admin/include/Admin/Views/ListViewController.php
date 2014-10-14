@@ -161,7 +161,7 @@ class MAdmin_Views_ListViewController
     {
         $num_perpage = $this->input['pageinfo_num_perpage'];
         $data = $this->input->getPageIdentityData();
-        $this->pagination = new MAdmin_Views_ListPagination($num_perpage, $data);
+        $this->pagination = new MCore_View_Pagination($num_perpage, $data);
         $this->pagination->setStart($this->input['pageinfo_start'])->setTotal($total);
 
         $data = $this->pagination->getPaginationData();

@@ -27,12 +27,23 @@ class MCore_Tool_Input
     /**
      * ªÒ»° ‰»Î
      */
-    public static function clean($source, $varname, $type = 'noclean')
+    public static function clean($source, $varname, $type = 'noclean', $default = null)
     {
         self::processMagicQuotes();
 
         $container = $GLOBALS[self::$globalSources[$source]];
-        $var = isset($container[$varname]) ? $container[$varname] : '';
+        if (!isset($container[$varname]))
+        {
+            if ($default != null)
+            {
+                return $default;
+            }
+            $var = '';
+        }
+        else
+        {
+            $var = $container[$varname];
+        }
 
         return self::cast($var, $type);
     }
