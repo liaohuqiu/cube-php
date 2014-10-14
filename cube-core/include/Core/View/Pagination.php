@@ -1,12 +1,4 @@
 <?php
-/*
-$pagination = new MCore_View_Pagination($num_perpage, $data);
-$pagination->setStart($this->input['pageinfo_start'])->setTotal($total);
-$data = $pagination->getPaginationData();
-
-$list = array(20 => 20, 50 => 50, 100 => 100);
-$data['num_per_page_options'] = MCore_Str_Html::options($list, $num_perpage);
-*/
 /**
  *  list pagination
  *
@@ -209,3 +201,38 @@ class MCore_View_Pagination
         return $link;
     }
 }
+/*
+$pagination = new MCore_View_Pagination($num_perpage, $data);
+$pagination->setStart($this->input['pageinfo_start'])->setTotal($total);
+$data = $pagination->getPaginationData();
+
+$list = array(20 => 20, 50 => 50, 100 => 100);
+$data['num_per_page_options'] = MCore_Str_Html::options($list, $num_perpage);
+
+$data = array (
+    'total_page' => 2,
+    'current_page' => 1,
+    'head_url' => '',
+    'tail_url' => '?pageinfo_start=20',
+    'prev_url' => '',
+    'next_url' => '?pageinfo_start=20',
+    'pages' =>
+    array (
+        0 =>
+        array (
+            'page' => 1,
+            'url' => '?pageinfo_start=0',
+            'is_current' => true,
+        ),
+        1 =>
+        array (
+            'page' => 2,
+            'url' => '?pageinfo_start=20',
+            'is_current' => false,
+        ),
+    ),
+    'start' => 0,
+    'total' => 29,
+    'num_per_page_options' => '<option value=\'20\' selected = \'true\'>20</option><option value=\'50\'>50</option><option value=\'100\'>100</option>',
+)
+ */
