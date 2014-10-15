@@ -2,7 +2,7 @@
 <div class='ui_page form-horizontal col-md-1 mt-20 mr-10'>
     <div class='form-group'>
         <select class="col-md-4 __j_pageinfo_num_perpage form-control">
-            <?php $pager->o('numPerPageOptions', false);?>
+            <?php $pager->o('num_per_page_options', false);?>
         </select>
     </div>
 </div>
