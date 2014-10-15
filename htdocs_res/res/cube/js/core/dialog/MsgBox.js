@@ -73,7 +73,7 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
                 '<div class="alert alert-success">' + msg + '</div></div>' +
                 '<div class="modal-footer">';
 
-            if (data.buttons) {
+            if (data && data.buttons) {
                 K.forEach(data.buttons, function(callback, title) {
                     dialog_body += '<button class="btn btn-success _j_msgbox_btn_uni">' + title + '</button>';
                 });
