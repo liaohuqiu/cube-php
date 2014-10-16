@@ -1,6 +1,6 @@
 <?php
 /**
- *  配合cube框架使用
+ *  a resuorce manager for cube-js
  *
  * @author      huqiu
  */
@@ -57,6 +57,7 @@ class MCore_Tool_CssJs
             $list[] = "K.data.set($jsonData);";
         }
 
+        $outerLinks = array();
         if (!empty($this->_footJsList))
         {
             // for js Debug
@@ -67,17 +68,29 @@ class MCore_Tool_CssJs
             $list[] = 'K.Resource.setResPrePath("' . self::getResPrePath() . '");';
             foreach ($this->_footJsList as $js)
             {
-                $module = self::formatModuleName($js);
-                $list[] = 'Module.load("' . $module . '");';
+                if (self::isOuterLink($js))
+                {
+                    $outerLinks[] = "<script src='$js' type='text/javascript'></script>";
+                }
+                else
+                {
+                    $module = self::formatModuleName($js);
+                    $list[] = 'Module.load("' . $module . '");';
+                }
             }
         }
 
+        $html = '';
         if (!empty($list))
         {
-            $jsHtml = implode("", $list);
-            return "<script>$jsHtml</script>";
+            $jsHtml = implode('', $list);
+            $html .= "<script>$jsHtml</script>";
         }
-        return '';
+        if (!empty($outerLinks))
+        {
+            $html .= implode('', $outerLinks);
+        }
+        return $html;
     }
 
     public function getCssHtml()
@@ -125,9 +138,14 @@ class MCore_Tool_CssJs
         return $info;
     }
 
+    private static function isOuterLink($path)
+    {
+        return strpos($path, "http://") === 0 || strpos($path, "//") === 0;
+    }
+
     public static function getResUrl($path, $type)
     {
-        $isOuterLink = strpos($path, "http://") === 0 || strpos($path, "//") === 0;
+        $isOuterLink = self::isOuterLink($path);
         if ($isOuterLink)
         {
             return $path;
