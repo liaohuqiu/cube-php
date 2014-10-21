@@ -119,20 +119,7 @@ class MCore_Tool_Sql
      */
     public static function delete($table, $whereField)
     {
-        $where = '';
-        $list = array();
-        foreach ($whereField as $k=>$v)
-        {
-            if (!is_string($v))
-            {
-                $list[] = $k . ' = ' . $v;
-            }
-            else
-            {
-                $list[] = $k . " = '" . self::escape_string($v) . "'";
-            }
-        }
-        $where = implode(' and ', $list);
+        $where = self::where($whereField);
         $sql = self::deleteRawWhere($table, $where);
         return $sql;
     }

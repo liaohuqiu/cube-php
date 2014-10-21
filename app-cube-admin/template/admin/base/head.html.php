@@ -90,12 +90,12 @@
         </div>
     </div>
     <div class="col-md-10">
-        <ol class="breadcrumb">
+        <ol class="breadcrumb hidden">
           <li><a href="/">Home</a></li>
           <li><a href="<?php $_module->o('url'); ?>"><?php $_module->o('name'); ?></a></li>
           <li><a href="javascript:void(0);"><?php $_module['current_unit']->o('name'); ?></a></li>
           <li class='active'><?php $_module['current_unit']['current_item']->o('name'); ?></li>
         </ol>
-        <?php else: ?>
-        <div class="col-md-12">
-        <?php endif; ?>
+<?php else: ?>
+<div class="col-md-12">
+<?php endif; ?>
