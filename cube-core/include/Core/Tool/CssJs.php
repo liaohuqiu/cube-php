@@ -76,7 +76,8 @@ class MCore_Tool_CssJs
                 }
                 else
                 {
-                    $list[] = 'Module.load("' . $modulePath . '");';
+                    $module = self::formatModuleName($js);
+                    $list[] = 'Module.load("' . $module . '");';
                 }
             }
         }
