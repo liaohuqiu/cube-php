@@ -9,9 +9,9 @@ class MCore_Str_Html
     public static function options($nameValueList, $currentValue = null)
     {
         $html = '';
-		foreach($nameValueList as $name=>$value)
+		foreach ($nameValueList as $name => $value)
         {
-            if($value == $currentValue)
+            if ($value == $currentValue)
             {
                 $html .= "<option value='$value' selected = 'true'>$name</option>";
             }
@@ -29,31 +29,31 @@ class MCore_Str_Html
 
         $app = strpos($app, '?') ? $app."&start=" : $app."?start=";
         $pagenum = 5;
-        $curpage = floor( $start / $num ) + 1;
-        $totalpage = ceil( $total / $num );
-        $minpage = max( $curpage - round( $pagenum / 2 ) + 1, 1 );
-        $maxpage = min( $minpage + $pagenum - 1, $totalpage );
+        $curpage = floor($start / $num + 1;
+        $totalpage = ceil($total / $num;
+        $minpage = max($curpage - round($pagenum / 2 + 1, 1;
+        $maxpage = min($minpage + $pagenum - 1, $totalpage;
         $minpage = max($maxpage - $pagenum + 1, 1);
 
-        if ( $totalpage <= 1 )
+        if ($totalpage <= 1)
         {
             return "";
         }
 
-        if ( $curpage > 1 )
+        if ($curpage > 1)
         {
             if ($totalpage > 5 && $showFirstLast)
             {
                 $pagehtml .= "<a href=\"" . $app . "0\" onfocus=\"this.blur();\" class=\"word\"><span>首页</span></a>";
             }
-            $pagehtml .= "<a href=\"" . $app . ( ( $curpage-2 ) * $num ) . "\" onfocus=\"this.blur();\" class=\"word\"><span>上一页</span></a>";
+            $pagehtml .= "<a href=\"" . $app . (($curpage-2 * $num . "\" onfocus=\"this.blur();\" class=\"word\"><span>上一页</span></a>";
         }
 
-        for ( $i = $minpage; $i <= $maxpage; $i++ )
+        for ($i = $minpage; $i <= $maxpage; $i++
         {
-            if ( $i != $curpage )
+            if ($i != $curpage
             {
-                $pagehtml .= "<a href=\"" . $app . ( ( $i-1 ) * $num ) . "\" onfocus=\"this.blur();\"><span>" . $i . "</span></a>";
+                $pagehtml .= "<a href=\"" . $app . (($i-1 * $num . "\" onfocus=\"this.blur();\"><span>" . $i . "</span></a>";
             }
             else
             {
@@ -61,12 +61,12 @@ class MCore_Str_Html
             }
         }
 
-        if ( $curpage < $totalpage )
+        if ($curpage < $totalpage
         {
-            $pagehtml .= "<a href=\"" . $app . ( $curpage * $num ) . "\" onfocus=\"this.blur();\" class=\"word\"><span>下一页</span></a>";
+            $pagehtml .= "<a href=\"" . $app . ($curpage * $num . "\" onfocus=\"this.blur();\" class=\"word\"><span>下一页</span></a>";
             if ($totalpage > 5 && $showFirstLast)
             {
-                $pagehtml .= "<a href=\"" . $app . ( ( $totalpage-1 ) * $num ) . "\" onfocus=\"this.blur();\" class=\"word\"><span>末页</span></a>";
+                $pagehtml .= "<a href=\"" . $app . (($totalpage-1 * $num . "\" onfocus=\"this.blur();\" class=\"word\"><span>末页</span></a>";
             }
         }
         return '<div class="ui_page">' . $pagehtml . '</div>';
@@ -80,38 +80,38 @@ class MCore_Str_Html
         $start = intval($listData['start']);
         $num = intval($listData['num']);
         $total = intval($listData['total']);
-        return self::getPagehtml( $start, $num, $total, $app,$showFirstLast);
+        return self::getPagehtml($start, $num, $total, $app,$showFirstLast);
     }
 
-    function getJsPagehtml( $start, $num, $total,$showFirstLast = false)
+    function getJsPagehtml($start, $num, $total,$showFirstLast = false)
     {
         $pagenum = 5;
-        $curpage = floor( $start / $num ) + 1;
-        $totalpage = ceil( $total / $num );
-        $minpage = max( $curpage - round( $pagenum / 2 ) + 1, 1 );
-        $maxpage = min( $minpage + $pagenum - 1, $totalpage );
+        $curpage = floor($start / $num + 1;
+        $totalpage = ceil($total / $num;
+        $minpage = max($curpage - round($pagenum / 2 + 1, 1;
+        $maxpage = min($minpage + $pagenum - 1, $totalpage;
         $minpage = max($maxpage - $pagenum + 1, 1);
 
-        if ( $totalpage <= 1 )
+        if ($totalpage <= 1
         {
             return "";
         }
 
         $pagehtml = "";
-        if ( $curpage > 1 )
+        if ($curpage > 1
         {
             if ($totalpage > 5 && $showFirstLast)
             {
                 $pagehtml .= "<a href=### class=\"_j_page\" data-start=0 onfocus=\"this.blur();\" class=\"word\"><span>首页</span></a> ";
             }
-            $pagehtml .= "<a href=### class=\"_j_page\" data-start=".( ( $curpage-2 ) * $num )." onfocus=\"this.blur();\" class=\"word\"><span>上一页</span></a>";
+            $pagehtml .= "<a href=### class=\"_j_page\" data-start=".(($curpage-2 * $num." onfocus=\"this.blur();\" class=\"word\"><span>上一页</span></a>";
         }
 
-        for ( $i = $minpage; $i <= $maxpage; $i++ )
+        for ($i = $minpage; $i <= $maxpage; $i++
         {
-            if ( $i != $curpage )
+            if ($i != $curpage
             {
-                $pagehtml .= "<a href=### class=\"_j_page\" data-start=".( ( $i-1 ) * $num )." onfocus=\"this.blur();\"><span>" . $i . "</span></a>";
+                $pagehtml .= "<a href=### class=\"_j_page\" data-start=".(($i-1 * $num." onfocus=\"this.blur();\"><span>" . $i . "</span></a>";
             }
             else
             {
@@ -119,49 +119,49 @@ class MCore_Str_Html
             }
         }
 
-        if ( $curpage < $totalpage )
+        if ($curpage < $totalpage
         {
-            $pagehtml .= "<a href=### class=\"_j_page\" data-start=".( $curpage * $num )." onfocus=\"this.blur();\" class=\"word\"><span>下一页</span></a>";
+            $pagehtml .= "<a href=### class=\"_j_page\" data-start=".($curpage * $num." onfocus=\"this.blur();\" class=\"word\"><span>下一页</span></a>";
             if ($totalpage > 5 && $showFirstLast)
             {
-                $pagehtml .= "<a href=\### class=\"_j_page\" data-start=".( ( $totalpage-1 ) * $num )." onfocus=\"this.blur();\" class=\"word\"><span>末页</span></a>";
+                $pagehtml .= "<a href=\### class=\"_j_page\" data-start=".(($totalpage-1 * $num." onfocus=\"this.blur();\" class=\"word\"><span>末页</span></a>";
             }
         }
         return $pagehtml;
     }
 
-    public function ajaxPagehtml( $start, $num, $total, $app, $showFirstLast = false)
+    public function ajaxPagehtml($start, $num, $total, $app, $showFirstLast = false)
     {
         $pagehtml = "";
 
         $app = strpos($app, '?') !== false ? $app."&_ajax=1&start=" : $app."?_ajax=1&start=";
         $pagenum = 5;
-        $curpage = floor( $start / $num ) + 1;
-        $totalpage = ceil( $total / $num );
-        $minpage = max( $curpage - round( $pagenum / 2 ) + 1, 1 );
-        $maxpage = min( $minpage + $pagenum - 1, $totalpage );
+        $curpage = floor($start / $num + 1;
+        $totalpage = ceil($total / $num;
+        $minpage = max($curpage - round($pagenum / 2 + 1, 1;
+        $maxpage = min($minpage + $pagenum - 1, $totalpage;
         $minpage = max($maxpage - $pagenum + 1, 1);
 
-        if ( $totalpage <= 1 )
+        if ($totalpage <= 1
         {
             //return "共" . $total . "条";
             return "";
         }
 
-        if ( $curpage > 1 )
+        if ($curpage > 1
         {
             if ($totalpage > 5 && $showFirstLast)
             {
                 $pagehtml .= "<a class=\"word\" data-ajax=\"request\" href=\"" . $app . "0\" onfocus=\"this.blur();\"><span>首页</span></a>";
             }
-            $pagehtml .= "<a class=\"word\" data-ajax=\"request\" href=\"" . $app . ( ( $curpage-2 ) * $num ) . "\" onfocus=\"this.blur();\"><span>上一页</span></a>";
+            $pagehtml .= "<a class=\"word\" data-ajax=\"request\" href=\"" . $app . (($curpage-2 * $num . "\" onfocus=\"this.blur();\"><span>上一页</span></a>";
         }
 
-        for ( $i = $minpage; $i <= $maxpage; $i++ )
+        for ($i = $minpage; $i <= $maxpage; $i++
         {
-            if ( $i != $curpage )
+            if ($i != $curpage
             {
-                $pagehtml .= "<a data-ajax=\"request\" href=\"" . $app . ( ( $i-1 ) * $num ) . "\" onfocus=\"this.blur();\"><span>" . $i . "</span></a>";
+                $pagehtml .= "<a data-ajax=\"request\" href=\"" . $app . (($i-1 * $num . "\" onfocus=\"this.blur();\"><span>" . $i . "</span></a>";
             }
             else
             {
@@ -169,12 +169,12 @@ class MCore_Str_Html
             }
         }
 
-        if ( $curpage < $totalpage )
+        if ($curpage < $totalpage
         {
-            $pagehtml .= "<a class=\"word\" data-ajax=\"request\" href=\"" . $app . ( $curpage * $num ) . "\" onfocus=\"this.blur();\"><span>下一页</span></a>";
+            $pagehtml .= "<a class=\"word\" data-ajax=\"request\" href=\"" . $app . ($curpage * $num . "\" onfocus=\"this.blur();\"><span>下一页</span></a>";
             if ($totalpage > 5 && $showFirstLast)
             {
-                $pagehtml .= "<a class=\"word\" data-ajax=\"request\" href=\"" . $app . ( ( $totalpage-1 ) * $num ) . "\" onfocus=\"this.blur();\"><span>末页</span></a>";
+                $pagehtml .= "<a class=\"word\" data-ajax=\"request\" href=\"" . $app . (($totalpage-1 * $num . "\" onfocus=\"this.blur();\"><span>末页</span></a>";
             }
         }
         // TODO style...

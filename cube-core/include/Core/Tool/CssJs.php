@@ -68,14 +68,15 @@ class MCore_Tool_CssJs
             $list[] = 'K.Resource.setResPrePath("' . self::getResPrePath() . '");';
             foreach ($this->_footJsList as $js)
             {
-                if (self::isOuterLink($js))
+                $modulePath = self::tryFindModulePath($js, 'js');
+                if ($modulePath === false)
                 {
+                    $js = self::getResUrl($js, 'js');
                     $outerLinks[] = "<script src='$js' type='text/javascript'></script>";
                 }
                 else
                 {
-                    $module = self::formatModuleName($js);
-                    $list[] = 'Module.load("' . $module . '");';
+                    $list[] = 'Module.load("' . $modulePath . '");';
                 }
             }
         }
@@ -105,7 +106,6 @@ class MCore_Tool_CssJs
             $list[] = '<link href="' . $url . '" rel="stylesheet" />';
         }
         $html = implode("\n", $list);
-        // echo $html;
         return $html;
     }
 
@@ -123,9 +123,30 @@ class MCore_Tool_CssJs
         }
     }
 
+    /**
+     * http://static_res_host/res
+     */
     public static function getResPrePath()
     {
-        return 'http://' . MCore_Tool_Conf::getDataConfigByEnv('mix', 'static_res_host') . '/res';
+        static $path;
+        if (!$path)
+        {
+            $path = 'http://' . MCore_Tool_Conf::getDataConfigByEnv('mix', 'static_res_host') . '/res';
+        }
+        return $path;
+    }
+
+    /**
+     * http://static_res_host
+     */
+    public static function getResRootPath()
+    {
+        static $path;
+        if (!$path)
+        {
+            $path = 'http://' . MCore_Tool_Conf::getDataConfigByEnv('mix', 'static_res_host');
+        }
+        return $path;
     }
 
     public static function getResList()
@@ -140,25 +161,44 @@ class MCore_Tool_CssJs
 
     private static function isOuterLink($path)
     {
-        return strpos($path, "http://") === 0 || strpos($path, "//") === 0;
+        return strpos($path, "http") === 0 || strpos($path, "//") === 0;
+    }
+
+    private static function tryFindModulePath($path, $type)
+    {
+        if (self::isOuterLink($path))
+        {
+            return false;
+        }
+
+        $moduleId = self::formatModuleName($path);
+        $resList = self::getResList();
+        if (isset($resList[$type][$moduleId]))
+        {
+            return $resList[$type][$moduleId];
+        }
+        return false;
     }
 
     public static function getResUrl($path, $type)
     {
-        $isOuterLink = self::isOuterLink($path);
-        if ($isOuterLink)
+        $modulePath = self::tryFindModulePath($path, $type);
+        if ($modulePath === false)
         {
-            return $path;
+            if (self::isOuterLink($path))
+            {
+                return $path;
+            }
+            else
+            {
+                strpos($path, '/') !== 0 && $path = '/' . $path;
+                return self::getResRootPath() . $path;
+            }
         }
-        $moduleId = self::formatModuleName($path);
-        $resList = self::getResList();
-
-        if (!isset($resList[$type][$moduleId]))
+        else
         {
-            throw new Exception("Can not find url information for $moduleId, type: $type");
+            return self::getResPrePath() . $modulePath;
         }
-
-        return self::getResPrePath() . $resList[$type][$moduleId];
     }
 
     public static function formatModuleName($name)
