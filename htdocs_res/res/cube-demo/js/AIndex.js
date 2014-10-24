@@ -7,18 +7,27 @@ K.App('cube-demo/AIndex', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'cor
             'click .js-test-btn': 'clickTestButton',
         },
 
-        clickTestButton: function() {
-            var data = {
-                buttons: {
-                    'Button 1': function() {
-                        K.log('Button 1');
+        clickTestButton: function(e) {
+            var action = $(e.target).data('action');
+            K.log(action);
+            if (action == 'show-msgbox-success') {
+                var data = {
+                    buttons: {
+                        'Button 1': function() {
+                            K.log('Button 1');
+                        },
+                        'Button 2': function() {
+                            K.log('Button 2');
+                        },
                     },
-                    'Button 2': function() {
-                        K.log('Button 2');
-                    },
-                },
-            };
-            MsgBox.succ('aaa', data);
+                };
+                MsgBox.succ('aaa', data);
+            } else if (action == 'show-ajax-error-tip') {
+                var tip = $('#ajax-error-message');
+                tip.show(function() {
+                    return $(this).addClass("visible")
+                })
+            }
         },
 
         main: function() {

@@ -13,6 +13,7 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
 
     private $beginOutput = false;
     private $error = false;
+    private $show_left_side = true;
 
     protected function checkAuth()
     {
@@ -97,9 +98,12 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
             $header_data['user_data'] = $this->userData->getData();
             $header_data['title'] = $this->getTitle();
 
+            $module_info = $this->moduleMan->getCurrentModuleInfo();
+            $this->show_left_side = $module_info && !$module_info['current_unit']['current_item']['no_left_side'];
             $header_data['module_list'] = $this->moduleMan->getModuleList();
             $header_data['module_info'] = $this->moduleMan->getCurrentModuleInfo();
             $header_data['base_path'] = $this->moduleMan->getBasePath() . DS;
+            $header_data['show_left_side'] = $this->show_left_side;
         }
 
         $this->getView()->setData('header_data', $header_data);

@@ -15,8 +15,8 @@
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
-  <script src="<?php $base_data->o('static_pre_path'); ?>/html5shiv/3.7.0/html5shiv.js"></script>
-  <script src="<?php $base_data->o('static_pre_path'); ?>/respond.js/1.4.2/respond.min.js"></script>
+<script src="<?php $base_data->o('static_pre_path'); ?>/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="<?php $base_data->o('static_pre_path'); ?>/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 
 <!-- jquery -->
@@ -45,57 +45,61 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                 <a class='' data-toggle="dropdown" href="javascript:void(0)"><?php $header_data['user_data']->o('name'); ?> <span class="caret"></span></a>
-                </button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <?php if (!$header_data['proxy_auth']): ?>
-                    <li role="presentation"><a id="_j_btn_change_pwd" role="menuitem" tabindex="-1" href="javascript:void(0)">Change Pwd</a></li>
-                    <li role="presentation" class="divider"></li>
-                    <?php endif; ?>
-                    <?php foreach ($header_data['right_links'] as $link): ?>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php $link->o('href');?>"><?php $link->o('name'); ?></a></li>
-                    <li role="presentation" class="divider"></li>
-                    <?php endforeach; ?>
-                    <li role="presentation"><a id="_j_btn_logout" role="menuitem" tabindex="-1" href="javascript:void(0)">Logout</a></li>
-                </ul>
+            </button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <?php if (!$header_data['proxy_auth']): ?>
+                <li role="presentation"><a id="_j_btn_change_pwd" role="menuitem" tabindex="-1" href="javascript:void(0)">Change Pwd</a></li>
+                <li role="presentation" class="divider"></li>
+                <?php endif; ?>
+                <?php foreach ($header_data['right_links'] as $link): ?>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php $link->o('href');?>"><?php $link->o('name'); ?></a></li>
+                <li role="presentation" class="divider"></li>
+                <?php endforeach; ?>
+                <li role="presentation"><a id="_j_btn_logout" role="menuitem" tabindex="-1" href="javascript:void(0)">Logout</a></li>
+            </ul>
             </li>
         </ul>
     </nav>
 </div>
 </header>
 <?php endif; ?>
+<?php $_module = $header_data['module_info'];?>
+<!--- begin of container --->
 <div class="container">
-<div class="row">
-    <?php if ($header_data['module_info']): ?>
-  <?php $_module = $header_data['module_info'];?>
-    <div class="col-md-2">
-        <div class='bs-sidebar'>
-            <ul class="nav bs-sidenav">
-                <?php foreach ($_module['units'] as $unit): ?>
-                <li>
-                <a class='active'><?php $unit->o('name'); ?></a>
-                <ul class='nav'>
-                    <?php foreach ($unit['list'] as $item): ?>
-                    <?php if ($item['is_current']): ?>
-                    <li class='active'>
-                    <?php else: ?>
+<?php if ($header_data['show_left_side']): ?>
+    <!--- begin of row --->
+    <div class="row">
+        <div class="col-md-2">
+            <div class='bs-sidebar'>
+                <ul class="nav bs-sidenav">
+                    <?php foreach ($_module['units'] as $unit): ?>
                     <li>
-                    <?php endif; ?>
-                    <a href="<?php $item->o('url'); ?>"><?php $item->o('name'); ?></a>
+                    <a class='active'><?php $unit->o('name'); ?></a>
+                    <ul class='nav'>
+                        <?php foreach ($unit['list'] as $item): ?>
+                        <?php if ($item['is_current']): ?>
+                        <li class='active'>
+                        <?php else: ?>
+                        <li>
+                        <?php endif; ?>
+                        <a href="<?php $item->o('url'); ?>"><?php $item->o('name'); ?></a>
+                        </li>
+                        <?php endforeach; ?>
+                    </ul>
                     </li>
                     <?php endforeach; ?>
                 </ul>
-                </li>
-                <?php endforeach; ?>
-            </ul>
+            </div>
         </div>
-    </div>
-    <div class="col-md-10">
-        <ol class="breadcrumb hidden">
-          <li><a href="/">Home</a></li>
-          <li><a href="<?php $_module->o('url'); ?>"><?php $_module->o('name'); ?></a></li>
-          <li><a href="javascript:void(0);"><?php $_module['current_unit']->o('name'); ?></a></li>
-          <li class='active'><?php $_module['current_unit']['current_item']->o('name'); ?></li>
-        </ol>
+        <!--- begin of rigth content --->
+        <div class="col-md-10">
 <?php else: ?>
-<div class="col-md-12">
+    <?php if ($_module): ?>
+    <ol class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="<?php $_module->o('url'); ?>"><?php $_module->o('name'); ?></a></li>
+        <li class='active'><?php $_module['current_unit']->o('name'); ?></li>
+        <li class='active'><?php $_module['current_unit']['current_item']->o('name'); ?></li>
+    </ol>
+    <?php endif; ?>
 <?php endif; ?>

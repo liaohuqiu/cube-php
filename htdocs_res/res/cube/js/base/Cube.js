@@ -1646,15 +1646,9 @@ else{
 
     function getId(info) {
         var id = info[ 0 ];
-        if (id && K.isString(id)) {
-            // App id 必须以A开头
-            if (K.last(id.split(/\//ig)).charAt(0) != 'A') {
-                throw new Error(id + ' is a invalid name for a App');
-            }
-        } else {
+        if (!id || !K.isString(id)) {
             id = genAppId();
         }
-
         return id;
     }
 
