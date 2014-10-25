@@ -94,7 +94,7 @@
         <!--- begin of rigth content --->
         <div class="col-md-10">
 <?php else: ?>
-    <?php if ($_module): ?>
+    <?php if ($_module && !$_module['current_unit']['current_item']['no_right_nav']): ?>
     <ol class="breadcrumb">
         <li><a href="/">Home</a></li>
         <li><a href="<?php $_module->o('url'); ?>"><?php $_module->o('name'); ?></a></li>

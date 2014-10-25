@@ -53,11 +53,7 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
             return '';
         }
         $module = $this->moduleMan->getCurrentModuleInfo();
-        $title = '';
-        if ($module)
-        {
-            $title = $module['name'];
-        }
+        $title = $module['current_unit']['current_item']['name'];
         return $title . ' - Cube for ' . APP_NAME;
     }
 

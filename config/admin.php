@@ -12,7 +12,6 @@ $data['module_list'] = array(
                     array(
                         'name' => 'Table Config',
                         'url' => '/database/table-config',
-                        'no_left_side' => true,
                     ),
                     array(
                         'name' => 'DB List',
@@ -70,6 +69,7 @@ $data['module_list'] = array(
                         'name' => 'ajax upload',
                         'url' => 'ajax-upload',
                         'no_left_side' => true,
+                        'no_right_nav' => true,
                     ),
                 )
             )
