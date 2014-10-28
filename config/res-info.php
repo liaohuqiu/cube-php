@@ -54,9 +54,9 @@ $data = array (
     'core/cookie/Cookie' => '/cube/js/core/cookie/Cookie.js?140818800a1',
     'core/cutHTML' => '/cube/js/core/cutHTML.js?140818800a1',
     'core/dialog/AsyncDialog' => '/cube/js/core/dialog/AsyncDialog.js?1410289d10d',
-    'core/dialog/DialogBase' => '/cube/js/core/dialog/DialogBase.js?14092772185',
+    'core/dialog/DialogBase' => '/cube/js/core/dialog/DialogBase.js?14102875736',
     'core/dialog/Layer' => '/cube/js/core/dialog/Layer.js?1409238b15e',
-    'core/dialog/MsgBox' => '/cube/js/core/dialog/MsgBox.js?141028ddfb4',
+    'core/dialog/MsgBox' => '/cube/js/core/dialog/MsgBox.js?1410282acb6',
     'core/doT' => '/cube/js/core/doT.js?140818800a1',
     'core/placeholder' => '/cube/js/core/placeholder.js?140818800a1',
     'core/popup/ClickPopUp' => '/cube/js/core/popup/ClickPopUp.js?140818800a1',
@@ -72,7 +72,7 @@ $data = array (
     'core/webcam' => '/cube/js/core/webcam.js?140818800a1',
     'cube-demo/AGlobal' => '/cube-demo/js/AGlobal.js?140818800a1',
     'cube-demo/AIndex' => '/cube-demo/js/AIndex.js?141028ad53d',
-    'version' => '/version.js?1410281712ddfb4',
+    'version' => '/version.js?14102819312acb6',
   ),
   'css' => 
   array (

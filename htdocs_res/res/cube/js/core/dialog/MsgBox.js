@@ -58,9 +58,9 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
                 }
             };
 
-            $(document).on('keydown', key_fn);
-            this.on('afterdestroy', $.proxy(function() {
-                $(document).off('keydown', key_fn);
+            $(document).on('keyup', key_fn);
+            this.on('beforedestroy', $.proxy(function() {
+                $(document).off('keyup', key_fn);
             }, this));
         },
     });
@@ -137,15 +137,15 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
             options.width = data.width || 500;
             options.height = data.height ||'auto';
             options.body = body;
+            options.dialog_data = data;
+            options.cancel_callback = data.on_cancel;
+            options.ok_callback = data.on_ok;
+            options.close_callback = data.on_close;
+            options.dismiss_callback = data.on_dismiss;
+
             var dialog = new MsgBox(options);
             dialog.show();
             dialog.getPanel().find('._j_msgbox_btn_ok').focus();
-
-            dialog.dialog_data = data;
-            dialog.cancel_callback = data.on_cancel;
-            dialog.ok_callback = data.on_ok;
-            dialog.close_callback = data.on_close;
-            dialog.dismiss_callback = data.on_dismiss;
 
             if (data.auto_close)
                 dialog.autoClose(data.auto_close, data.on_auto_close);
