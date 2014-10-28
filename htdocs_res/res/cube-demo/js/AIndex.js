@@ -22,6 +22,10 @@ K.App('cube-demo/AIndex', ['core/dialog/AsyncDialog', 'core/dialog/MsgBox', 'cor
                     },
                 };
                 MsgBox.succ('aaa', data);
+            } else if (action == 'show-msgbox-error') {
+                var data = {
+                };
+                MsgBox.error('error message', data);
             } else if (action == 'show-ajax-error-tip') {
                 var tip = $('#ajax-error-message');
                 tip.show(function() {

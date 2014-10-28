@@ -62,7 +62,7 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
         $viewDisplyer = new MCore_Web_SimpleView(ADMIN_ROOT_DIR . '/template');
         $view = new MCore_Web_View($viewDisplyer);
         $baseData = array();
-        $baseData['static_pre_path'] = 'http://' . MCore_Tool_Conf::getDataConfigByEnv('mix', 'static_res_host') . '/cube-admin-mix';
+        $baseData['static_pre_path'] = 'http://' . MCore_Tool_Conf::getDataConfigByEnv('mix', 's_host') . '/cube-admin-mix';
         $view->setBaseData('base_data', $baseData);
         return $view;
     }

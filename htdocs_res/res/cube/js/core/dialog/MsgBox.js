@@ -50,6 +50,18 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
                 me.cancel_callback && me.cancel_callback();
                 me.___close();
             });
+
+            var key_fn = function(ev) {
+                if (ev.keyCode == 13) {
+                    me.ok_callback && me.ok_callback();
+                    me.___close();
+                }
+            };
+
+            $(document).on('keydown', key_fn);
+            this.on('afterdestroy', $.proxy(function() {
+                $(document).off('keydown', key_fn);
+            }, this));
         },
     });
 
@@ -127,6 +139,7 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
             options.body = body;
             var dialog = new MsgBox(options);
             dialog.show();
+            dialog.getPanel().find('._j_msgbox_btn_ok').focus();
 
             dialog.dialog_data = data;
             dialog.cancel_callback = data.on_cancel;

@@ -125,27 +125,27 @@ class MCore_Tool_CssJs
     }
 
     /**
-     * http://static_res_host/res
+     * http://s_host/res
      */
     public static function getResPrePath()
     {
         static $path;
         if (!$path)
         {
-            $path = 'http://' . MCore_Tool_Conf::getDataConfigByEnv('mix', 'static_res_host') . '/res';
+            $path = 'http://' . MCore_Tool_Conf::getDataConfigByEnv('mix', 's_host') . '/res';
         }
         return $path;
     }
 
     /**
-     * http://static_res_host
+     * http://s_host
      */
     public static function getResRootPath()
     {
         static $path;
         if (!$path)
         {
-            $path = 'http://' . MCore_Tool_Conf::getDataConfigByEnv('mix', 'static_res_host');
+            $path = 'http://' . MCore_Tool_Conf::getDataConfigByEnv('mix', 's_host');
         }
         return $path;
     }
