@@ -24,6 +24,10 @@ class MCore_Util_SimpleConf
                 $info = array('code' => $info);
             }
             $code = $info[$codeFieldName];
+            if (!$code)
+            {
+                $code = $key;
+            }
             $this->_confInfoListByKey[$key] = $info;
             $this->_confInfoListByCode[$code] = $info;
             $this->_keyCodeMap[$key] = $code;
