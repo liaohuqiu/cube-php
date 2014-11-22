@@ -42,6 +42,12 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
 
     protected function init()
     {
+        if (MCore_Tool_Conf::getDataConfigByEnv('mix', 'disable_admin', false))
+        {
+            header('Status: 403 Forbidden');
+            echo '<h1>403 Forbidden</h1>';
+            exit;
+        }
         $this->getResTool()->addCss('admin/admin-base.css');
         $this->getResTool()->addFootJs('admin/AAdminGlobal.js');
     }

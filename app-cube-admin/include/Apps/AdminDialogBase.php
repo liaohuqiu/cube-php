@@ -10,6 +10,12 @@ abstract class MApps_AdminDialogBase extends MCore_Web_BaseDialogApp
 
     protected function init()
     {
+        if (MCore_Tool_Conf::getDataConfigByEnv('mix', 'disable_admin', false))
+        {
+            header('Status: 403 Forbidden');
+            echo '<h1>403 Forbidden</h1>';
+            exit;
+        }
         parent::init();
         $this->renderView = MApps_AdminPageBase::createDisplayView();
     }
