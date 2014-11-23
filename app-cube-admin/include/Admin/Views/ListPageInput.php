@@ -43,6 +43,17 @@ class MAdmin_Views_ListPageInput extends MCore_Util_ArrayLike
         $this['page_identity_url'] = $this->getPageIdentityUrl();
     }
 
+    public function removeValueForQuickSelect($list)
+    {
+        foreach ($list as $key => $value)
+        {
+            if (isset($this[$key]) && $this[$key] == $value)
+            {
+                unset($this[$key]);
+            }
+        }
+    }
+
     protected function getPageIdentityUrl()
     {
         $url = $_SERVER['REQUEST_URI'];

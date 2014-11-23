@@ -35,7 +35,7 @@ class MAdmin_Views_ListViewController
         $this->listHeader = new MAdmin_Views_ListHeader($conf['header']);
         $this->dataTable = new MAdmin_Views_ListDataTable($conf['table'], $dataOne);
 
-        $this->pageQuickQuery = new MAdmin_Views_ListQuickQuery($conf['quick_query']);
+        $this->pageQuickQuery = new MAdmin_Views_ListQuickQuery($conf['quick_select']);
         $this->pageQuickQuery->addSearchInfo($conf['table']['search']);
 
         if (isset($conf['format_data_item']))
@@ -55,6 +55,7 @@ class MAdmin_Views_ListViewController
     {
         $this->input = new MAdmin_Views_ListPageInput();
         $this->input->addTableFieldsInput($this->dataTable->getFieldsInput());
+        $this->input->removeValueForQuickSelect($this->pageQuickQuery->getDefaultValues());
 
         $tableData = $this->dataTable->queryData($this->input);
         $tableHeaderData = $this->listHeader->getHeaderData($this->input, $this->dataTable->getTableFields());
@@ -69,9 +70,11 @@ class MAdmin_Views_ListViewController
             $data = array();
             $data['thead'] = $tableHeaderData;
             $data['pagination'] = $this->_getPaginationData($tableData['total']);
-            $data['rowList'] = $this->_processRowList($tableData['list'], $tableHeaderData);
+            $data['row_list'] = $this->_processRowList($tableData['list'], $tableHeaderData);
             $data['url_create_new'] = $this->_buildCreateNewUrl();
             $data['conf'] = $this->conf;
+            $data['quick_select'] = $this->pageQuickQuery->getSelectList($this->input);
+            add_debug_log($data['quick_select']);
 
             $view = MApps_AdminPageBase::createDisplayView();
             $view->setPageData($data);
@@ -125,7 +128,7 @@ class MAdmin_Views_ListViewController
 
     protected function _processRowList($list, $tableHeaderData)
     {
-        $rowList = array();
+        $row_list = array();
         $subTableInfo = $this->conf['subTableInfo'];
 
         $primaryKeys = $this->dataTable->getPrimaryKeys();
@@ -149,12 +152,12 @@ class MAdmin_Views_ListViewController
                 {
                     $subTableQueryInfo[$outKey] = $dataItem[$key];
                 }
-                $row['subTableLink'] = MCore_Str_Url::buildUrl($subTableQueryInfo,$subTableInfo['url']);
+                $row['subTableLink'] = MCore_Str_Url::buildUrl($subTableQueryInfo, $subTableInfo['url']);
             }
             $row['dataItem'] = $this->_formatDisplayItem($dataItem);
-            $rowList[] = $row;
+            $row_list[] = $row;
         }
-        return $rowList;
+        return $row_list;
     }
 
     private function _getPaginationData($total)

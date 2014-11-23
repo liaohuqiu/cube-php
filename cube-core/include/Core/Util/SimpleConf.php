@@ -23,10 +23,13 @@ class MCore_Util_SimpleConf
             {
                 $info = array('code' => $info);
             }
-            $code = $info[$codeFieldName];
-            if (!$code)
+            if (!isset($info[$codeFieldName]))
             {
                 $code = $key;
+            }
+            else
+            {
+                $code = $info[$codeFieldName];
             }
             $this->_confInfoListByKey[$key] = $info;
             $this->_confInfoListByCode[$code] = $info;

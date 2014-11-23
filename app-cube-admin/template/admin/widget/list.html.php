@@ -1,19 +1,23 @@
 <?php
 $_listPageInfo = array();
 ?>
-<div>
+<div class='row'>
     <?php if ($_listPageInfo['title']): ?>
     <h4><?php $_listPageInfo->o('title'); ?></h4>
     <?php endif; ?>
-    <?php if ($page_data['conf']['edit_info']['can_create']): ?>
-    <div style="padding: 0px 0px 10px 0px"> <a href="<?php $page_data->o('url_create_new'); ?>">create new</a> </div>
-    <?php endif; ?>
-    <div class="row-fluid">
-        <div class="span8">
-            <?php if ($_listPageInfo['easySelectInfo']): ?>
-            <?php include $view->getTemplate('widget/list_header.html'); ?>
-            <?php endif; ?>
+    <div class='row mb-10'>
+        <?php if ($page_data['conf']['edit_info']['can_create']): ?>
+        <div class='col-md-1'>
+            <a class='btn btn-primary' href="<?php $page_data->o('url_create_new'); ?>">Add</a>
         </div>
+        <?php endif; ?>
+        <?php if ($page_data['quick_select']): ?>
+        <div class="col-md-7">
+            <?php include $view->getTemplate('admin/widget/list_header.html'); ?>
+        </div>
+        <?php endif; ?>
+    </div>
+    <div class="row mb-10">
         <?php if ($searchInfo): ?>
         <div class="span4">
             <form class="form-horizontal" action='<?php $_listPageInfo->o('pageInfoUrl'); ?>' method = 'POST'>
@@ -27,7 +31,7 @@ $_listPageInfo = array();
         </form>
         <?php endif; ?>
     </div>
-    <?php if ($page_data['rowList'] || $searchInfo || $_listPageInfo['download']): ?>
+    <?php if ($page_data['row_list'] || $searchInfo || $_listPageInfo['download']): ?>
     <div class="page-info">
     </div>
     <?php endif; ?>
@@ -59,7 +63,7 @@ $_listPageInfo = array();
                 <?php endif; ?>
             </tr>
         </thead>
-        <?php foreach ($page_data['rowList'] as $row): ?>
+        <?php foreach ($page_data['row_list'] as $row): ?>
         <tr>
             <?php if ($page_data['conf']['edit_info']['can_delete']): ?>
             <td>
@@ -98,7 +102,7 @@ $_listPageInfo = array();
 </tr>
 <?php endforeach; ?>
     </table>
-    <?php if ($page_data['rowList']): ?>
+    <?php if ($page_data['row_list']): ?>
     <div class="page-info">
     <?php include $view->getTemplate('admin/widget/list_pageinfo.html'); ?>
     </div>

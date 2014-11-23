@@ -68,8 +68,8 @@ $data['module_list'] = array(
                     array(
                         'name' => 'ajax upload',
                         'url' => 'ajax-upload',
-                        'no_left_side' => true,
-                        'no_right_nav' => true,
+                        'no_left_side' => true, // no left side
+                        'no_right_nav' => true, // no right top nav
                     ),
                 )
             )

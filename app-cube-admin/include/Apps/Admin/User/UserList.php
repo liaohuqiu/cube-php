@@ -7,6 +7,7 @@ class MApps_Admin_User_UserList extends MApps_AdminPageBase
 
     protected function outputBody()
     {
+        // sample config
         $table_kind_name = MEngine_SysConfig::getSysConfig('admin_user_table');
         $table = array(
             'kind' => $table_kind_name,
@@ -21,8 +22,20 @@ class MApps_Admin_User_UserList extends MApps_AdminPageBase
             ),
         );
 
-        // todo
-        $quick_query = array(
+        $value_name_map = array(
+            '1' => 'xxxx',
+            '2' => '22'
+        );
+        $name_value_map = array();
+
+        $quick_select = array(
+            'cate' => array(
+                "field" => "cate",
+                'des' => 'Category',
+                'default_value' => 0,
+                'value_name_map' => $value_name_map,
+                'name_value_map' => $name_value_map,
+            ),
         );
 
         $edit = array(
@@ -72,6 +85,7 @@ class MApps_Admin_User_UserList extends MApps_AdminPageBase
         $conf['edit_info'] = $edit;
         $conf['table'] = $table;
         $conf['header'] = $header;
+        $conf['quick_select'] = $quick_select;
         // $conf['format_data_item'] = $call_back;      // data from db will be filter by this callback
         // $conf['format_display_data_item'] = $call_back;
         $c = new MAdmin_Views_ListViewController($conf, MCore_Dao_DB::create());

@@ -7,12 +7,10 @@
 class MCore_Tool_UserKv
 {
     private $table;
-    private static $useCache = false;
 
     function __construct()
     {
-        $data = MCore_Tool_Conf::getDataConfigByEnv('base');
-        $this->table = $data['userkv_table'];
+        $this->table = MCore_Tool_Conf::getDataConfigByEnv('mix', 'userkv_table');
     }
 
     public function set($uid, $key, $value)
@@ -24,13 +22,9 @@ class MCore_Tool_UserKv
         );
         $insertField = $orginInfo;
         $insertField['v'] = serialize($value);
-        $ret = $this->mcore_data_split->insert($this->table, $uid, $insertField,array('v'));
 
-        if (self::$useCache)
-        {
-            $mcKey = $this->_getMCKey($uid, $key);
-            $this->mcore_mid_mCache->delete($mcKey);
-        }
+        $ret = MCore_Dao_DB::create()->insert($this->table, $insertField, array('v'));
+
         return true;
     }
 
@@ -46,30 +40,18 @@ class MCore_Tool_UserKv
 
     public function getRaw($uid, $key)
     {
-        if (self::$useCache)
-        {
-            $mcKey = $this->_getMCKey($uid, $key);
-
-            $cache = $this->mcore_mid_mCache->getObj($mcKey);
-            if(false !== $cache)
-            {
-                return $cache;
-            }
-        }
-
         $dbArr = $this->_getRawDataFromDb($uid, $key);
-        if ($dbArr && self::$useCache)
-        {
-            $this->mcore_mid_mCache->setObj($mcKey, $dbArr, 86400);
-        }
         return $dbArr;
     }
 
     private function _getRawDataFromDb($uid, $key)
     {
         $selectField = array('uid', 'v', 'mtime');
-        $where = array('k' => $key);
-        $ret = $this->mcore_data_split->select($this->table, $uid, $selectField, $where);
+        $where = array(
+            'uid' => $uid,
+            'k' => $key
+        );
+        $ret = MCore_Dao_DB::create()->select($this->table, $selectField, $where);
         if($ret['row_num']>0)
         {
             $data = $ret['data'][0];
@@ -87,19 +69,10 @@ class MCore_Tool_UserKv
      */
     public function delete($uid, $key)
     {
-        $whereField = array('k'=>$key);
-        $ret = $this->mcore_data_split->delete($this->table, $uid, $whereField);
-
-        if (self::$useCache)
-        {
-            $mcKey = $this->_getMCKey($uid, $key);
-            $this->mcore_mid_mCache->delete($mcKey);
-        }
-    }
-
-    private function _getMCKey($uid, $key)
-    {
-        return sprintf('kv_%s_%s', $uid, $key);
+        $whereField = array(
+            'uid' => $uid,
+            'k' => $key
+        );
+        MCore_Dao_DB::create()->delete($this->table, $whereField);
     }
 }
-?>
