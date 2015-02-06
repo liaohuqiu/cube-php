@@ -35,13 +35,13 @@ class MCore_Proxy_CubeProxy
     {
         $this->service = $service;
 
-        $socket = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         if ($socket === false)
         {
             throw new MCore_Proxy_Exception('socket_create() failed: reason: ' . socket_strerror(socket_last_error()));
         }
 
-        $result = socket_connect($socket, $host, $port);
+        $result = @socket_connect($socket, $host, $port);
         if ($result === false)
         {
             throw new MCore_Proxy_Exception('socket_connect() failed: reason: ' . socket_strerror(socket_last_error()));
