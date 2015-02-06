@@ -8,7 +8,31 @@ class MAdmin_UserRaw
 {
     private static $_userInfoList = array();
 
-    public static function create($email, $pwd, $authKeys = array(), $isSysAdmin = false)
+    private static function keyForAppUid($app_admin_key)
+    {
+        return 'admin_app_admin_key' . $app_admin_key;
+    }
+
+    public static function getInfoByAppAdminKey($app_admin_key)
+    {
+        // no cache will be used
+        $getFn = function() use ($app_admin_key) {
+            $db = MCore_Dao_DB::create();
+            $where = array('app_admin_key' => $app_admin_key);
+            $ret = $db->select(self::getTableKind(), array('*'), $where)->first();
+            if (!$ret)
+            {
+                return false;
+            }
+            return $ret;
+        };
+        $onToLocalFn = function($item) {
+            return self::formatItem($item);
+        };
+        return MCore_Tool_Cache::fetch(self::keyForAppUid($app_admin_key), $getFn, $onToLocalFn, 0);
+    }
+
+    public static function create($email, $pwd, $authKeys = array(), $isSysAdmin = false, $app_admin_key = '')
     {
         if (self::isExist($email))
         {
@@ -20,6 +44,7 @@ class MAdmin_UserRaw
         $info = array();
         $info['email'] = $email;
         $info['pwd'] = $pwd;
+        $info['app_admin_key'] = $app_admin_key;
         $info['salt'] = $salt;
         $info['ctime'] = 'now()';
         $info['is_sysadmin'] = $isSysAdmin;

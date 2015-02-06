@@ -11,7 +11,10 @@ class MAdmin_Views_ListQuickQuery
 
     public function __construct($itemList)
     {
-        $this->itemList = $itemList;
+        if (is_array($itemList))
+        {
+            $this->itemList = $itemList;
+        }
     }
 
     public function addSearchInfo($searchInfo)

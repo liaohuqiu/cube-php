@@ -9,6 +9,13 @@
     </div>
 
     <div class="form-group">
+        <label class="col-md-4 control-label" for="app_admin_key">app_admin_key</label>
+        <div class="col-md-4">
+            <input class='form-control' id="app_admin_key" type="text" name="app_admin_key" value='<?php $page_data->o('app_admin_key'); ?>'>
+        </div>
+    </div>
+
+    <div class="form-group">
         <label class="col-md-4 control-label" for="user_name">Account</label>
         <div class="col-md-4">
             <input class='form-control' id="user_name" type="text" name="email" value='<?php $page_data->o('email'); ?>'

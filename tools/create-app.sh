@@ -24,9 +24,13 @@ exe_cmd "cp -rf $root_dir/htdocs_res/res/cube-demo/* $res_dir"
 
 f_app_boot_php=$app_root_dir/app-boot.php
 replace $f_app_boot_php 'cube-demo.php' $app_name'.php'
+replace $root_dir/boot-base.php 'cube-demo' $app_name
 replace $app_root_dir/include/Apps/Index.php 'cube-demo' $app_name
 replace $app_root_dir/include/Apps/AppBase/BasePageApp.php 'cube-demo' $app_name
 replace $app_root_dir/include/Apps/AppBase/BasePageApp.php 'Cube Demo' $app_name
+
+make_dir $root_dir/writable
+chmod a+w $root_dir/writable
 
 exe_cmd "cd $root_dir/app-cube-admin/cli-app/js/"
 exe_cmd "sh do-update-res-info.sh"

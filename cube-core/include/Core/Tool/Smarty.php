@@ -8,11 +8,6 @@ if (!defined('SMARTY_WRITALE_DIR'))
 {
     throw new Exception('SMARTY_WRITALE_DIR undifiend');
 }
-if (!defined('SMARTY_CLASS_PATH'))
-{
-    throw new Exception('SMARTY_CLASS_PATH undifiend');
-}
-include SMARTY_CLASS_PATH;
 class MCore_Tool_Smarty implements MCore_Web_IViewDisplayer
 {
     private $smarty;

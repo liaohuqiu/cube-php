@@ -10,9 +10,11 @@ class MCore_Web_Request
 
     private $argv;
     private $path;
+    private $info;
 
     public function __construct($info)
     {
+        $this->info = $info;
         $this->path = $info['path'];
         $this->argv = $info['argv'];
     }
@@ -36,8 +38,18 @@ class MCore_Web_Request
         return MCore_Tool_Input::clean($source, $varname, $type, $default);
     }
 
+    public function getArgs()
+    {
+        return $this->argv;
+    }
+
     public function getPath()
     {
         return $this->path;
+    }
+
+    public function getInfo()
+    {
+        return $this->info;
     }
 }

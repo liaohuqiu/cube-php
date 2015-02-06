@@ -66,11 +66,6 @@ class MAdmin_Module
         }
 
         $auth_key = $module['auth_key'];
-        // skip user
-        if ($auth_key == 'user' && MAdmin_UserAuth::hasAuthProxy())
-        {
-            return false;
-        }
         $module['user_has_auth'] = in_array($auth_key, $this->user_auth_keys) ? 1 : 0;
         $this->module_auth_keys[] = $auth_key;
         return $module;

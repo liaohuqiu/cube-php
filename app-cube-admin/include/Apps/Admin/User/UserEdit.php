@@ -4,7 +4,7 @@ class MApps_Admin_User_UserEdit extends MApps_AdminPageBase implements MAdmin_Vi
     protected function main()
     {
         $keys = $this->moduleMan->getModuleAuthKeys();
-        $input_keys = array('email', 'pwd', 'is_sysadmin');
+        $input_keys = array('email', 'pwd', 'is_sysadmin', 'app_admin_key');
         foreach ($keys as $key)
         {
             $input_keys[] = 'input_auth_' . $key;
@@ -34,6 +34,7 @@ class MApps_Admin_User_UserEdit extends MApps_AdminPageBase implements MAdmin_Vi
         {
             $info = array();
             $info['is_sysadmin'] = $input_info['is_sysadmin'];
+            $info['app_admin_key'] = $input_info['app_admin_key'];
             MAdmin_UserRaw::updateInfo($uid, $info, $auth_keys);
         }
         else
@@ -52,6 +53,7 @@ class MApps_Admin_User_UserEdit extends MApps_AdminPageBase implements MAdmin_Vi
             $user_info = MAdmin_UserRaw::getInfo($uid);
             $auth_keys = $user_info['auth_keys'];
             $data['email'] = $user_info['email'];
+            $data['app_admin_key'] = $user_info['app_admin_key'];
             $data['is_sysadmin_checked'] = $user_info['is_sysadmin'] ? 'checked=true' : '';
         }
 

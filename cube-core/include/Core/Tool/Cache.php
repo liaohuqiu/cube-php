@@ -44,7 +44,10 @@ class MCore_Tool_Cache
         return $ret;
     }
 
-    public static function set($key, $value, $expired = 0)
+    /**
+     * set $expire to lower than 0, will call delete before set
+     */
+    public static function set($key, $value, $expire = 0)
     {
         if ($value === false)
         {
@@ -54,12 +57,12 @@ class MCore_Tool_Cache
         {
             MCore_Tool_Log::addDebugLog('cache', 'set: ' . $key);
         }
-        if ($expired == -1)
+        if ($expire == -1)
         {
             return self::delete($key);
         }
         unset(self::$cacheList[$key]);
-        return self::getCacheProxy()->set($key, $value, $expired);
+        return self::getCacheProxy()->set($key, $value, $expire);
     }
 
     /**
@@ -106,9 +109,10 @@ class MCore_Tool_Cache
     }
 
     /**
-     * set array to cache
+     * set value to cache, value can be an array, but can not be object.
+     * set $expire to 0, will call delete before set
      */
-    public static function setObj($key, $value, $expired = 0)
+    public static function setObj($key, $value, $expire = 0)
     {
         if ($value === false)
         {
@@ -118,12 +122,12 @@ class MCore_Tool_Cache
         {
             MCore_Tool_Log::addDebugLog('cache', 'setObj: ' . $key);
         }
-        if ($expired == -1)
+        if ($expire == -1)
         {
             return self::delete($key);
         }
         unset(self::$cacheList[$key]);
-        return self::getCacheProxy()->setObj($key, $value, $expired);
+        return self::getCacheProxy()->setObj($key, $value, $expire);
     }
 
     /**
@@ -131,7 +135,7 @@ class MCore_Tool_Cache
      *
      * You can store the data in process cache by set $localCache to true
      *
-     * the data will be cache in process cache.
+     * the data will be cached in process cache.
      *
      * When $localCache is set to true and you can filter the value by $onToLocalFn
      */
@@ -223,6 +227,9 @@ class MCore_Tool_Cache
         return $ret;
     }
 
+    /**
+     * delete data from cache and local cache
+     */
     public static function delete($key)
     {
         if (!MCore_Tool_Env::isProd())
@@ -240,21 +247,23 @@ class MCore_Tool_Cache
      *
      * $onToLocalFn($info) filter the data
      *
-     * You can pass $expired by a value lower than 0 to set the data returned by $getFn to cache.
+     * $expire lower than 0 will disable cache.
+     *
+     * $data will be always set to local cache.
      */
-    public static function fetch($cacheKey, $getFn, $onToLocalFn = null, $expired = 0)
+    public static function fetch($cacheKey, $getFn, $onToLocalFn = null, $expire = 0)
     {
         $data = false;
-        if ($expired >= 0)
+        if ($expire >= 0)
         {
             $data = self::getObj($cacheKey, true, $onToLocalFn);
         }
         if ($data === false)
         {
             $data = call_user_func($getFn);
-            if ($data !== false || $expired < 0)
+            if ($data !== false)
             {
-                self::setObj($cacheKey, $data, $expired);
+                self::setObj($cacheKey, $data, $expire);
             }
             if ($onToLocalFn)
             {
@@ -275,7 +284,7 @@ class MCore_Tool_Cache
      *
      * onToLocalFn($id, $item)
      */
-    public static function fetchList($ids, $getKeyFn, $getListFn, $onToLocalFn = null, $expired = 0, $default = false)
+    public static function fetchList($ids, $getKeyFn, $getListFn, $onToLocalFn = null, $expire = 0, $default = false)
     {
         if (empty($ids))
         {
@@ -300,7 +309,7 @@ class MCore_Tool_Cache
         }
 
         $cacheList = array();
-        if ($expired >= 0)
+        if ($expire >= 0)
         {
             $onToLocalFnProxy = null;
             if ($onToLocalFn != null)
@@ -337,7 +346,7 @@ class MCore_Tool_Cache
                 {
                     $item = $rawList[$id];
                     $cacheKey = $keys[$id];
-                    self::setObj($cacheKey, $item, $expired);
+                    self::setObj($cacheKey, $item, $expire);
                     if ($onToLocalFn)
                     {
                         $item = call_user_func($onToLocalFn, $id, $item);

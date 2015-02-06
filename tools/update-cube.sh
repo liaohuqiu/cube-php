@@ -29,6 +29,7 @@ exe_cmd 'cd ..'
 update_dir 'cube-core'
 update_dir 'app-cube-admin'
 update_dir 'app-cube-demo'
+update_dir 'tools'
 
 update_dir 'htdocs_res/cube-admin-mix'
 update_dir 'htdocs_res/cube-demo-static'

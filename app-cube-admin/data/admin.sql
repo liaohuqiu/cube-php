@@ -3,6 +3,7 @@
 -- split_id=uid
 CREATE TABLE IF NOT EXISTS {admin_user_table} (
     uid int(11) NOT NULL auto_increment PRIMARY KEY,
+    app_admin_key varchar(50) NOT NULL default 0,
     user_group tinyint NOT NULL default 0,
     status tinyint NOT NULL default 0,
     email varchar(50) NOT NULL default '',
@@ -14,6 +15,7 @@ CREATE TABLE IF NOT EXISTS {admin_user_table} (
     data blob NOT NULL default '',
     ctime timestamp NOT NULL default 0,
     mtime timestamp NOT NULL default current_timestamp ON UPDATE current_timestamp,
+    key app_admin_key(app_admin_key),
     UNIQUE KEY (email),
     KEY (email, ctime)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

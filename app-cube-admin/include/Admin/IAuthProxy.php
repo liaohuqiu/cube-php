@@ -2,7 +2,8 @@
 interface MAdmin_IAuthProxy
 {
     /**
-     * return MAdmin_UserData / false
+     * return app_admin_key / name;
+     * unlogin return false
      */
     public function checkLoginByGetUser();
 

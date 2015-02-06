@@ -79,9 +79,20 @@ class MCore_Web_Router
     /**
      * Add rule for extract arguments from path
      */
-    public static function addRule($rule)
+    public static function addRule()
     {
-        self::$router_rule_list[] = $rule;
+        $args = func_get_args();
+        if (is_array($args[0]))
+        {
+            foreach ($args[0] as $path => $arg_keys)
+            {
+                self::$router_rule_list[self::tidyPath($path)] = $arg_keys;
+            }
+        }
+        else
+        {
+            self::$router_rule_list[self::tidyPath($args[0])] = $args[1];
+        }
     }
 
     /**
@@ -112,33 +123,15 @@ class MCore_Web_Router
 
         $path = self::tidyPath($path);
 
-        // check path map
-        if (isset(self::$path_map_list[$path]))
-        {
-            $reuqest_info['origin_path'] = DS . $path;
-            $path = self::$path_map_list[$path];
-        }
-
-        foreach (self::$pre_path_map_list as $pre => $mapped_path)
-        {
-            if (strpos($path, $pre) === 0)
-            {
-                $reuqest_info['origin_path'] = DS . $path;
-                $path = $mapped_path;
-                break;
-            }
-        }
-
         // fetch arguments for specified path
         $argv = array();
-        foreach (self::$router_rule_list as $item)
+        foreach (self::$router_rule_list as $want_path => $arg_keys)
         {
-            $want_path = $item[0];
             if (strpos($path, $want_path . DS) === 0)
             {
                 $values = explode(DS, substr($path, strlen($want_path) + 1));
                 $path = $want_path;
-                foreach ($item[1] as $index => $key)
+                foreach ($arg_keys as $index => $key)
                 {
                     if (isset($values[$index]))
                     {
@@ -149,11 +142,29 @@ class MCore_Web_Router
             }
         }
 
+        // check path map
+        if (isset(self::$path_map_list[$path]))
+        {
+            $reuqest_info['origin_path'] = DS . $path;
+            $path = self::$path_map_list[$path];
+        }
+
+        // check path prefix
+        foreach (self::$pre_path_map_list as $pre => $mapped_path)
+        {
+            if (strpos($path, $pre) === 0)
+            {
+                $reuqest_info['origin_path'] = DS . $path;
+                $path = $mapped_path;
+                break;
+            }
+        }
+
         // process the API version
         if (strpos($path, self::PREFIX_API_PATH) === 0 && $path = substr($path, strlen(self::PREFIX_API_PATH)))
         {
             $reuqest_info['is_api'] = true;
-            $class_name = self::PREFIX_APIS. self::classNameFromPath($path);
+            $class_name = self::PREFIX_APIS . self::classNameFromPath($path);
             $v = MCore_Tool_Input::clean('r', 'v', 'int');
             while ($v > 0)
             {

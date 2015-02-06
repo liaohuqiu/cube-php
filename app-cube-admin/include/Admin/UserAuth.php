@@ -22,6 +22,16 @@ class MAdmin_UserAuth
         return array();
     }
 
+    public static function getLoginAdmin()
+    {
+        static $admin_info;
+        if (!$admin_info)
+        {
+            $admin_info = self::checkLoginByGetUser();
+        }
+        return $admin_info;
+    }
+
     public static function hasAuthProxy()
     {
         return self::$proxy;
@@ -42,11 +52,43 @@ class MAdmin_UserAuth
         setcookie(self::_getSessionKey(), $token, $time, '/', $host);
     }
 
+    private static function checkLoginForApp($ret)
+    {
+        if ($ret === false)
+        {
+            return false;
+        }
+
+        $name = $ret['name'];
+        $app_admin_key = $ret['app_admin_key'];
+        $info = MAdmin_UserRaw::getInfoByAppAdminKey($app_admin_key);
+
+        if (empty($info))
+        {
+            return false;
+        }
+
+        $data = array();
+        $data['uid'] = $info['uid'];
+        $data['is_sysadmin'] = $info['is_sysadmin'];
+        $data['name'] = $name;
+        $data['auth_keys'] = $info['auth_keys'];
+        return new MAdmin_UserData($data);
+    }
+
+    /**
+     * check login for admin
+     */
     public static function checkLoginByGetUser()
     {
         if (self::$proxy)
         {
-            return self::$proxy->checkLoginByGetUser();
+            $ret = self::$proxy->checkLoginByGetUser();
+            $ret = self::checkLoginForApp($ret);
+            if ($ret)
+            {
+                return $ret;
+            }
         }
         $token = MCore_Tool_Input::clean('c', self::_getSessionKey(), 'str');
         list($time, $hashStr, $uid) = explode('_', $token);
