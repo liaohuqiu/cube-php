@@ -58,6 +58,7 @@ class MAdmin_UserRaw
 
         $info = self::formatItem($info);
         self::$_userInfoList[$uid] = $info;
+        MAdmin_UserAuth::invalidateAppAdminList();
         return $info;
     }
 
@@ -147,12 +148,16 @@ class MAdmin_UserRaw
         $where = array('uid' => $uid);
         $info['auth_keys'] = implode(',', $authKeys);
         $ret = $db->update(self::getTableKind(), $info, array(), $where);
+
+        MAdmin_UserAuth::invalidateAppAdmin($info['app_admin_key']);
+
         unset(self::$_userInfoList[$uid]);
     }
 
     public static function delete($uid)
     {
         MCore_Dao_DB::create()->delete(self::getTableKind(), array('uid' => $uid));
+        MAdmin_UserAuth::invalidateAppAdminList();
         unset(self::$_userInfoList[$uid]);
     }
 

@@ -13,6 +13,24 @@ class MAdmin_UserAuth
         self::$proxy = $proxy;
     }
 
+    public static function invalidateAppAdminList()
+    {
+        if (!self::$proxy)
+        {
+            return;
+        }
+        self::$proxy->invalidateAdminList();
+    }
+
+    public static function invalidateAppAdmin($app_admin_key)
+    {
+        if (!self::$proxy)
+        {
+            return;
+        }
+        self::$proxy->invalidateAdmin($app_admin_key);
+    }
+
     public static function getRightLinks()
     {
         if (self::$proxy)

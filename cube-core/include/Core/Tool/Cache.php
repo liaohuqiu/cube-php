@@ -9,6 +9,11 @@ class MCore_Tool_Cache
     private static $proxy; // MCore_Proxy_IMCache
     private static $cacheList = array();
 
+    const MASK_ONLY_LOCAL_CACHE = 0x02;
+    const MASK_USE_LOCAL_CACHE = 0x03;
+    const FLAG_USE_LOCAL_CACHE = 0x01;
+    const FLAG_ONLY_LOCAL_CACHE = 0x02;
+
     /**
      * return an instance of cache proxy
      */
@@ -25,19 +30,26 @@ class MCore_Tool_Cache
         return self::$proxy;
     }
 
-    public static function get($key, $localCache = true)
+    public static function get($key, $localCacheTag = self::FLAG_USE_LOCAL_CACHE)
     {
         if (!MCore_Tool_Env::isProd())
         {
             MCore_Tool_Log::addDebugLog('cache', 'get: ' . $key);
         }
-        if ($localCache && isset(self::$cacheList[$key]))
+        $useLocalCache = $localCacheTag & self::MASK_USE_LOCAL_CACHE;
+        $onlyLocalCache = $localCacheTag & self::MASK_ONLY_LOCAL_CACHE;
+        if ($useLocalCache && isset(self::$cacheList[$key]))
         {
             return self::$cacheList[$key];
         }
+
+        if ($onlyLocalCache)
+        {
+            return false;
+        }
         $ret = self::getCacheProxy()->get($key);
         // cache even the $ret is false;
-        if ($localCache && $ret !== false)
+        if ($useLocalCache && $ret !== false)
         {
             self::$cacheList[$key] = $ret;
         }
@@ -68,11 +80,13 @@ class MCore_Tool_Cache
     /**
      * return an array indexed by key
      */
-    public static function getMulti($keys, $localCache = true)
+    public static function getMulti($keys, $localCacheTag = self::FLAG_USE_LOCAL_CACHE)
     {
         $list = array();
         $unHitKeys = array();
-        if ($localCache)
+        $useLocalCache = $localCacheTag & self::MASK_USE_LOCAL_CACHE;
+        $onlyLocalCache = $localCacheTag & self::MASK_ONLY_LOCAL_CACHE;
+        if ($useLocalCache)
         {
             foreach ($keys as $key)
             {
@@ -91,12 +105,17 @@ class MCore_Tool_Cache
             $unHitKeys = $keys;
         }
 
+        if ($onlyLocalCache)
+        {
+            return $list;
+        }
+
         if (!empty($unHitKeys))
         {
             $cacheList = self::getCacheProxy()->getMulti($unHitKeys);
             $list = $list + $cacheList;
 
-            if ($localCache && is_array($cacheList))
+            if ($useLocalCache && is_array($cacheList))
             {
                 foreach ($cacheList as $key => $item)
                 {
@@ -110,7 +129,8 @@ class MCore_Tool_Cache
 
     /**
      * set value to cache, value can be an array, but can not be object.
-     * set $expire to 0, will call delete before set
+     * set $expire to -1, will call delete before set
+     * set $expire to 0, will never expire
      */
     public static function setObj($key, $value, $expire = 0)
     {
@@ -131,26 +151,32 @@ class MCore_Tool_Cache
     }
 
     /**
-     * get array by $key
+     * get value/ array by $key from localCache and cache
      *
-     * You can store the data in process cache by set $localCache to true
+     * You can store the data in process cache by set $localCacheTag
      *
      * the data will be cached in process cache.
      *
-     * When $localCache is set to true and you can filter the value by $onToLocalFn
+     * When $localCacheTag is set to true and you can filter the value by $onToLocalFn
      */
-    public static function getObj($key, $localCache = true, $onToLocalFn = null)
+    public static function getObj($key, $localCacheTag = self::FLAG_USE_LOCAL_CACHE, $onToLocalFn = null)
     {
-        if ($localCache && isset(self::$cacheList[$key]))
+        $useLocalCache = $localCacheTag & self::MASK_USE_LOCAL_CACHE;
+        $onlyLocalCache = $localCacheTag & self::MASK_ONLY_LOCAL_CACHE;
+        if ($useLocalCache && isset(self::$cacheList[$key]))
         {
             return self::$cacheList[$key];
+        }
+        if ($onlyLocalCache)
+        {
+            return false;
         }
         if (!MCore_Tool_Env::isProd())
         {
             MCore_Tool_Log::addDebugLog('cache', 'getObj: ' . $key);
         }
         $ret = self::getCacheProxy()->getObj($key);
-        if ($ret !== false && $localCache)
+        if ($ret !== false && $useLocalCache)
         {
             if ($onToLocalFn)
             {
@@ -164,15 +190,17 @@ class MCore_Tool_Cache
     /**
      * batch get a list or array, indexed by key
      */
-    public static function getMultiObj($keys, $localCache = true, $onToLocalFn = null)
+    public static function getMultiObj($keys, $localCacheTag = self::FLAG_USE_LOCAL_CACHE, $onToLocalFn = null)
     {
+        $useLocalCache = $localCacheTag & self::MASK_USE_LOCAL_CACHE;
+        $onlyLocalCache = $localCacheTag & self::MASK_ONLY_LOCAL_CACHE;
         if (!MCore_Tool_Env::isProd())
         {
             MCore_Tool_Log::addDebugLog('cache', 'getMultiObj: ' . implode(',', $keys));
         }
         $list = array();
         $unHitKeys = array();
-        if ($localCache)
+        if ($useLocalCache)
         {
             foreach ($keys as $key)
             {
@@ -191,6 +219,11 @@ class MCore_Tool_Cache
             $unHitKeys = $keys;
         }
 
+        if ($onlyLocalCache)
+        {
+            return $list;
+        }
+
         if (!empty($unHitKeys))
         {
             $cacheList = self::getCacheProxy()->getMultiObj($unHitKeys);
@@ -198,7 +231,7 @@ class MCore_Tool_Cache
             {
                 foreach ($cacheList as $key => $item)
                 {
-                    if ($localCache)
+                    if ($useLocalCache)
                     {
                         if ($onToLocalFn)
                         {
@@ -247,21 +280,27 @@ class MCore_Tool_Cache
      *
      * $onToLocalFn($info) filter the data
      *
-     * $expire lower than 0 will disable cache.
+     * $expire lower than 0 will disable cache, data will not be set to mcache
      *
-     * $data will be always set to local cache.
+     * $data will be always set to local cache
+     *
+     * set $expire to 0, will use local cache only, and data will not be set to mcache
      */
     public static function fetch($cacheKey, $getFn, $onToLocalFn = null, $expire = 0)
     {
         $data = false;
+
         if ($expire >= 0)
         {
-            $data = self::getObj($cacheKey, true, $onToLocalFn);
+            // cache time set to 0, local cache will be used only
+            $flag = $expire == 0 ? self::FLAG_ONLY_LOCAL_CACHE : self::FLAG_USE_LOCAL_CACHE;
+            $data = self::getObj($cacheKey, $flag, $onToLocalFn);
         }
+
         if ($data === false)
         {
             $data = call_user_func($getFn);
-            if ($data !== false)
+            if ($data !== false && $expire != 0)
             {
                 self::setObj($cacheKey, $data, $expire);
             }
@@ -269,6 +308,8 @@ class MCore_Tool_Cache
             {
                 $data = call_user_func($onToLocalFn, $data);
             }
+
+            // always set to local cache
             if ($data !== false)
             {
                 self::$cacheList[$cacheKey] = $data;
@@ -278,7 +319,9 @@ class MCore_Tool_Cache
     }
 
     /**
-     * fetch all the values by given $ids, if the value is not in cache, $getListFn will be called to get value
+     * like #fetch()
+     *
+     * this function fetchs all the values by given $ids, if the value is not in cache, $getListFn will be called to get value
      *
      * $getListFn($ids)
      *
@@ -302,8 +345,7 @@ class MCore_Tool_Cache
         {
             if (is_array($id))
             {
-                var_export($ids);
-                throw new Exception();
+                throw new Exception('The key of each item should not be array');
             }
             $keys[$id] = call_user_func($getKeyFn, $id);
         }
@@ -346,7 +388,10 @@ class MCore_Tool_Cache
                 {
                     $item = $rawList[$id];
                     $cacheKey = $keys[$id];
-                    self::setObj($cacheKey, $item, $expire);
+                    if ($expire != 0)
+                    {
+                        self::setObj($cacheKey, $item, $expire);
+                    }
                     if ($onToLocalFn)
                     {
                         $item = call_user_func($onToLocalFn, $id, $item);

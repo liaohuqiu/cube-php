@@ -74,7 +74,6 @@ class MAdmin_Views_ListViewController
             $data['url_create_new'] = $this->_buildCreateNewUrl();
             $data['conf'] = $this->conf;
             $data['quick_select'] = $this->pageQuickQuery->getSelectList($this->input);
-            add_debug_log($data['quick_select']);
 
             $view = MApps_AdminPageBase::createDisplayView();
             $view->setPageData($data);

@@ -16,4 +16,14 @@ interface MAdmin_IAuthProxy
      * logout
      */
     public function logout();
+
+    /**
+     * when admin information update
+     */
+    public function invalidateAdmin($app_admin_key);
+
+    /**
+     * when admin list update
+     */
+    public function invalidateAdminList();
 }

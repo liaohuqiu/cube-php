@@ -1,9 +1,12 @@
 <?php
 include dirname(dirname(dirname(__FILE__))) . '/app-boot.php';
-function fn_getCacheProxy()
+if (!function_exists('fn_getCacheProxy'))
 {
-    // return new MCore_Min_NullCache();
-    return MCore_Min_RedisCache::create();
+    function fn_getCacheProxy()
+    {
+        // return new MCore_Min_NullCache();
+        return MCore_Min_RedisCache::create();
+    }
 }
 class App extends MCore_Cli_ConsoleBase
 {
@@ -17,11 +20,11 @@ class App extends MCore_Cli_ConsoleBase
         $onToLocalFn = function ($time) {
             return $time * 2;
         };
-        $ret = MCore_Tool_Cache::fetch($key, $getFn);
-        p($ret);
-
-        $ret = MCore_Tool_Cache::fetch($key, $getFn, $onToLocalFn);
-        p($ret);
+        foreach (range(1, 10) as $i)
+        {
+            $ret = MCore_Tool_Cache::fetch($key, $getFn, null, 1);
+            p($ret);
+        }
 
         $cache = MCore_Tool_Cache::getCacheProxy();
         $key_inc = 'inct2';
