@@ -9,7 +9,7 @@ class MApps_Admin_Database_DbList extends MApps_AdminPageBase
     {
         $table = array(
             'kind' => 'sys_db_info',
-            'default_order' => 'order by sid asc',
+            'default_order_by' => 'order by sid asc',
         );
 
         $edit = array(

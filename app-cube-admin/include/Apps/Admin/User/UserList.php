@@ -11,7 +11,7 @@ class MApps_Admin_User_UserList extends MApps_AdminPageBase
         $table_kind_name = MEngine_SysConfig::getSysConfig('admin_user_table');
         $table = array(
             'kind' => $table_kind_name,
-            'default_order' => 'order by sid asc',
+            'default_order_by' => 'order by sid asc',
             // todo
             'search' => array(
                 'fields' => array(

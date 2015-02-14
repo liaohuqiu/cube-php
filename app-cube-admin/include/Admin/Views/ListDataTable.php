@@ -132,7 +132,7 @@ class MAdmin_Views_ListDataTable
         }
         else
         {
-            $str = $this->_conf['default_order'];
+            $str = $this->defaultOrderBy;
         }
         return $str;
     }
