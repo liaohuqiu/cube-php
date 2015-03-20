@@ -416,6 +416,10 @@ class MCore_Tool_Cache
                 {
                     $ret[$id] = $list[$id];
                 }
+                else if ($default !== false)
+                {
+                    $ret[$id] = $default;
+                }
             }
             return $ret;
         }

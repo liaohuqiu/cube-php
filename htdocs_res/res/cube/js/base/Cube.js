@@ -1,6 +1,8 @@
 // Global Namespace
 var K = this.K || {};
 
+window.K = K;
+
 // Loading Resource
 K.Resource = K.Resource || {};
 
@@ -1122,7 +1124,7 @@ else{
         var url = Resource.getFullPath(mid);
         if (_loaded[url] || _loading[url])
             return;
-        Resource.loadJS(url);
+        _load(url);
     };
 
     Resource.getModuleName = function(js){
@@ -1316,12 +1318,21 @@ else{
     };
 
     /**
-    * 加载JS文件
+    * load js
     * @param {mixed} src JS文件绝对地址
     * @param {function} callback js加载完成后回调函数
     **/
     Resource.loadJS = function(src, callback) {
-        _load(src, callback);
+        var list = K.isArray(src) ? src : [ src ];
+
+        for (var i = 0, j = list.length; i < j; i++) {
+            var url = list[i];
+            if (url.indexOf('//') == -1) {
+                Resource.loadModule(url)
+            } else {
+                _load(url, callback);
+            }
+        }
     };
 
     /**
@@ -2221,6 +2232,7 @@ else{
     };
 
 })(K);
+
 
 K.define('core/jQuery',[], function() {
     return jQuery;

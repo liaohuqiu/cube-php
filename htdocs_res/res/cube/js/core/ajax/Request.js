@@ -156,7 +156,7 @@ define('core/ajax/Request', ['core/jQuery', 'core/URI'] , function(require) {
                 callback();
             }
             if ('js' in resource && !K.isEmpty(resource.js)) {
-                K.Resource.loadViaKxVersion(resource.js);
+                K.Resource.loadJS(resource.js);
             }
             var me = this;
             if ('onloads' in resource) {

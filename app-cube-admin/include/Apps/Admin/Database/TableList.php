@@ -11,10 +11,10 @@ class MApps_Admin_Database_TableList extends MApps_AdminPageBase
         $table = array(
             'kind' => 'sys_table_info',
             'select_field' => array(),
-            'default_order_by' => 'order by kind asc',
+            'default_order_by' => 'order by name asc',
             'search' => array(
-                'fields' => array('kind'),
-                'desc' => 'kind',
+                'fields' => array('name'),
+                'desc' => 'name',
             ),
         );
 
