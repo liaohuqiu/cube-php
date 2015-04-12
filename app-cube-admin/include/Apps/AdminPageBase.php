@@ -24,7 +24,7 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
         $userData = MAdmin_UserAuth::checkLoginByGetUser();
         if (!$userData)
         {
-            $this->go2('/admin/user/login');
+            MAdmin_UserAuth::goToLoginPage();
         }
         $this->userData = $userData;
         $this->moduleMan = new MAdmin_Module($this->request->getPath(), $userData);

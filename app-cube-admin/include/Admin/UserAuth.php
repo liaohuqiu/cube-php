@@ -95,6 +95,19 @@ class MAdmin_UserAuth
     }
 
     /**
+     * redirect to login page
+     */
+    public static function goToLoginPage()
+    {
+        if (!self::$proxy || !($url = self::$proxy->getLoginUrl()))
+        {
+            $url = '/admin/user/login';
+        }
+        header("Location: $url");
+        exit;
+    }
+
+    /**
      * check login for admin
      */
     public static function checkLoginByGetUser()
@@ -106,6 +119,10 @@ class MAdmin_UserAuth
             if ($ret)
             {
                 return $ret;
+            }
+            else
+            {
+                return false;
             }
         }
         $token = MCore_Tool_Input::clean('c', self::_getSessionKey(), 'str');

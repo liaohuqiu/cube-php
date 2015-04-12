@@ -26,4 +26,9 @@ interface MAdmin_IAuthProxy
      * when admin list update
      */
     public function invalidateAdminList();
+
+    /**
+     * login url for user to login
+     */
+    public function getLoginUrl();
 }
