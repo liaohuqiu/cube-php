@@ -138,6 +138,10 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
             return this._panel;
         },
 
+        getLayer: function() {
+            return this._layer;
+        },
+
         /**
         * 获得遮罩层(显示之前，getMask返回false)
         */
@@ -155,7 +159,7 @@ define('core/dialog/DialogBase', ['core/dialog/Layer', 'core/tool/Browser'], fun
             var panelClone = this.getPanel().clone()
             var css_data = K.clone(pos) || {};
 
-            K.mix(css_data, { position: "absolute", visibility: "hidden", display: "block" });
+            K.mix(css_data, { position: "absolute", visibility: "hidden", display: "block", "height": "initial" });
             panelClone.css(css_data).appendTo('body');
             panelHeight = panelClone.outerHeight(),
             panelWidth = panelClone.outerWidth();

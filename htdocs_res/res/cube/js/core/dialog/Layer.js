@@ -163,6 +163,10 @@ define('core/dialog/Layer', ['core/tool/Browser'], function(require) {
             return this._mask;
         },
 
+        getContainer: function() {
+            return this._layerContainer;
+        },
+
         'show': function(callback) {
             var me = this;
             Layer.pushToActvieStatck(this.id);

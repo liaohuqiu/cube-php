@@ -12,7 +12,9 @@
  *  on error will output:
  *      array(
  *          'error' => true,
- *          'errorMsg' => '...',
+ *          'error_msg' => '...',
+ *          'error_code' => '...',
+ *          'error_code' => '...',
  *          );
  *
  * @author      huqiu
@@ -21,6 +23,8 @@ class MCore_Web_AjaxTool extends MCore_Web_JsonTool
 {
     private $error = false;
     private $errorMsg = '';
+    private $errorCode = 0;
+    private $errorTrace = null;
     private $handler;
 
     private $cacheTime;
@@ -74,13 +78,15 @@ class MCore_Web_AjaxTool extends MCore_Web_JsonTool
             $res = $this->getResource();
             $res && $data['resource'] = $res;
             $this->handler && $data["handler"] = $this->handler;
-            $this->cacheTime && $data["cacheTime"] = $this->cacheTime;
+            $this->cacheTime && $data["cache_time"] = $this->cacheTime;
             $data['ok'] = true;
         }
         else
         {
             $data['error'] = $this->error;
-            $data['errorMsg'] = $this->errorMsg;
+            $data['error_msg'] = $this->errorMsg;
+            $data['error_code'] = $this->errorCode;
+            $this->errorTrace && $data['error_trace'] = $this->errorTrace;
         }
 
         $data = self::encode($data);
@@ -110,22 +116,24 @@ class MCore_Web_AjaxTool extends MCore_Web_JsonTool
     public function processException($ex)
     {
         $errorMsg = $ex->getMessage();
+        $trace = null;
         if (!MCore_Tool_Env::isProd())
         {
             $traceStr = $ex->getTraceAsString();
             $trace = var_export($ex->getTrace(), true);
-            $errorMsg .= "\n\n$traceStr\n\n$trace";
-            $errorMsg = '<pre>' . $errorMsg . '</pre>';
+            $trace = "<pre>$traceStr\n\n$trace</pre>";
         }
 
-        $this->setError($errorMsg);
+        $this->setError($errorMsg, $ex->getCode(), $trace);
         $this->output();
     }
 
-    public function setError($msg)
+    public function setError($msg, $code = 0, $trace = null)
     {
         $this->error = true;
         $this->errorMsg = $msg;
+        $this->errorCode = $code;
+        $this->errorTrace = $trace;
     }
 
     private function getResource()

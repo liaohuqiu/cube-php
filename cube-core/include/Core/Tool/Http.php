@@ -149,7 +149,6 @@ class MCore_Tool_Http
 
         $pairs = array();
 
-        $boundary = '';
         $boundary = uniqid('------------------');
 
         $MPboundary = '--'.$boundary;
@@ -158,44 +157,14 @@ class MCore_Tool_Http
 
         foreach ($params as $parameter => $value)
         {
-            if(in_array($parameter, array('pic', 'image', 'Filedata')) && $value{0} == '@' )
+            if(is_array($value))
             {
-                $url = ltrim( $value, '@' );
-                $content = file_get_contents( $url );
-                $array = explode( '?', basename( $url ) );
-                $filename = $array[0];
-
-                $multipartbody .= $MPboundary . "\r\n";
-                $multipartbody .= 'Content-Disposition: form-data; name="' . $parameter . '"; filename="' . $filename . '"'. "\r\n";
-                if($parameter == 'Filedata')
-                {
-                    $content_type = 'video/quicktime';
-                }
-                else
-                {
-                    $content_type = 'image/unknown';
-                }
-                $multipartbody .= "Content-Type: ". $content_type ."\r\n\r\n";
-                $multipartbody .= $content. "\r\n";
-            }
-            else if($parameter == 'blob')
-            {
-                if(is_array($value))
-                {
-                    $name = $value["name"];
-                    $filename = $value["filename"];
-                    $content = $value["data"];
-                    $content_type = $value['content_type'];
-                }
-                else
-                {
-                    $content = $value;
-                }
-
-                !$name && $name = 'pic';
-                !$content_type && $content_type = 'image/unknown';
-                !$filename && $filename = tempnam("tmp", "baobeipost_tmp");
+                $name = $parameter;
+                $filename = $value["filename"];
                 $filename = basename($filename);
+                $content = $value["data"];
+                $content_type = $value['content_type'];
+                !$content_type && $content_type = 'application/octet-stream';
 
                 $multipartbody .= $MPboundary . "\r\n";
                 $multipartbody .= 'Content-Disposition: form-data; name="' . $name . '"; filename="' . $filename . '"'. "\r\n";

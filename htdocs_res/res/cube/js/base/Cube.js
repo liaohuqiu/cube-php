@@ -1,20 +1,21 @@
 // Global Namespace
-var K = this.K || {};
+var Cube = this.Cube || {};
+var K = Cube;
 
-window.K = K;
+window.Cube = Cube;
 
 // Loading Resource
-K.Resource = K.Resource || {};
+Cube.Resource = Cube.Resource || {};
 
-K.error = function(obj, type) {
+Cube.error = function(obj, type) {
     type = type || Error;
     throw new type(obj);
 };
 
-K.global = this;
+Cube.global = this;
 
 // Tool function
-(function(K) {
+(function(Cube) {
 
     var ArrayProto = Array.prototype, ObjProto = Object.prototype, FuncProto = Function.prototype;
 
@@ -40,8 +41,8 @@ K.global = this;
     nativeBind         = FuncProto.bind;
 
     // Debug
-    K.log = function() {
-        if (! K.__debug) {
+    Cube.log = function() {
+        if (!Cube.__debug) {
             return;
         }
         if ('console' in window && 'log' in window.console) {
@@ -62,13 +63,13 @@ K.global = this;
     var breaker = {};
 
     // foreach
-    K.forEach = function(obj, iterator, context) {
+    Cube.forEach = function(obj, iterator, context) {
         if (obj == null) {
             return;
         }
         if (nativeForEach && obj.forEach === nativeForEach) {
             obj.forEach(iterator, context);
-        } else if (K.isNumber(obj.length)) {
+        } else if (Cube.isNumber(obj.length)) {
             for (var i = 0, l = obj.length; i < l; i++) {
                 if (iterator.call(context, obj[i], i, obj) == breaker) {
                     return;
@@ -86,7 +87,7 @@ K.global = this;
     };
 
     // map the property, use the return value.
-    K.map = function(obj, iterator, context) {
+    Cube.map = function(obj, iterator, context) {
         var results = [];
         if (obj == null) {
             return results;
@@ -94,25 +95,25 @@ K.global = this;
         if (nativeMap && obj.map === nativeMap) {
             return obj.map(iterator, context);
         }
-        K.forEach(obj, function(value, index, list) {
+        Cube.forEach(obj, function(value, index, list) {
             results[results.length] = iterator.call(context, value, index, list);
         });
         return results;
     };
 
     // reduce
-    K.reduce = function(obj, iterator, memo, context) {
+    Cube.reduce = function(obj, iterator, memo, context) {
         var initial = memo !== void 0;
         if (obj == null) {
             obj = [];
         }
         if (nativeReduce && obj.reduce === nativeReduce) {
             if (context) {
-                iterator = K.bind(iterator, context);
+                iterator = Cube.bind(iterator, context);
             }
             return initial ? obj.reduce(iterator, memo) : obj.reduce(iterator);
         }
-        K.forEach(obj, function(value, index, list) {
+        Cube.forEach(obj, function(value, index, list) {
             if (!initial && index === 0) {
                 memo = value;
                 initial = true;
@@ -127,22 +128,22 @@ K.global = this;
     };
 
     // reduce reverse
-    K.reduceRight = function(obj, iterator, memo, context) {
+    Cube.reduceRight = function(obj, iterator, memo, context) {
         if (obj == null) {
             obj = [];
         }
         if (nativeReduceRight && obj.reduceRight === nativeReduceRight) {
-            if (context) iterator = K.bind(iterator, context);
+            if (context) iterator = Cube.bind(iterator, context);
             return memo !== void 0 ? obj.reduceRight(iterator, memo) : obj.reduceRight(iterator);
         }
-        var reversed = (K.isArray(obj) ? obj.slice() : K.toArray(obj)).reverse();
-        return K.reduce(reversed, iterator, memo, context);
+        var reversed = (Cube.isArray(obj) ? obj.slice() : Cube.toArray(obj)).reverse();
+        return Cube.reduce(reversed, iterator, memo, context);
     };
 
     // find the first one
-    K.detect = function(obj, iterator, context) {
+    Cube.detect = function(obj, iterator, context) {
         var result;
-        K.some(obj, function(value, index, list) {
+        Cube.some(obj, function(value, index, list) {
             if (iterator.call(context, value, index, list)) {
                 result = value;
                 return true;
@@ -152,7 +153,7 @@ K.global = this;
     };
 
     // filter
-    K.filter = function(obj, iterator, context) {
+    Cube.filter = function(obj, iterator, context) {
         var results = [];
         if (obj == null) {
             return results;
@@ -160,14 +161,14 @@ K.global = this;
         if (nativeFilter && obj.filter === nativeFilter) {
             return obj.filter(iterator, context);
         }
-        K.forEach(obj, function(value, index, list) {
+        Cube.forEach(obj, function(value, index, list) {
             if (iterator.call(context, value, index, list)) results[results.length] = value;
         });
         return results;
     };
 
     // check every
-    K.every = function(obj, iterator, context) {
+    Cube.every = function(obj, iterator, context) {
         var result = true;
         if (obj == null) {
             return result;
@@ -175,7 +176,7 @@ K.global = this;
         if (nativeEvery && obj.every === nativeEvery) {
             return obj.every(iterator, context);
         }
-        K.forEach(obj, function(value, index, list) {
+        Cube.forEach(obj, function(value, index, list) {
             if (!(result = result && iterator.call(context, value, index, list))) {
                 return breaker;
             }
@@ -184,8 +185,8 @@ K.global = this;
     };
 
     // has some
-    K.some = function(obj, iterator, context) {
-        iterator || (iterator = K.identity);
+    Cube.some = function(obj, iterator, context) {
+        iterator || (iterator = Cube.identity);
         var result = false;
         if (obj == null) {
             return result;
@@ -193,7 +194,7 @@ K.global = this;
         if (nativeSome && obj.some === nativeSome) {
             return obj.some(iterator, context);
         }
-        K.forEach(obj, function(value, index, list) {
+        Cube.forEach(obj, function(value, index, list) {
             if (iterator.call(context, value, index, list)) {
                 result = true;
                 return breaker;
@@ -203,7 +204,7 @@ K.global = this;
     };
 
     // contains
-    K.contains = function(obj, target) {
+    Cube.contains = function(obj, target) {
         var found = false;
         if (obj == null) {
             return found;
@@ -211,7 +212,7 @@ K.global = this;
         if (nativeIndexOf && obj.indexOf === nativeIndexOf) {
             return obj.indexOf(target) != -1;
         }
-        K.some(obj, function(value) {
+        Cube.some(obj, function(value) {
             if (found = value === target) {
                 return true;
             }
@@ -220,15 +221,15 @@ K.global = this;
     };
 
     // get fields
-    K.pluck = function(obj, key) {
-        return K.map(obj, function(value) {
+    Cube.pluck = function(obj, key) {
+        return Cube.map(obj, function(value) {
             return value[key];
         });
     };
 
     // sort
-    K.sortBy = function(obj, iterator, context) {
-        return K.pluck(K.map(obj, function(value, index, list) {
+    Cube.sortBy = function(obj, iterator, context) {
+        return Cube.pluck(Cube.map(obj, function(value, index, list) {
             return {
                 value : value,
                 criteria : iterator.call(context, value, index, list)
@@ -241,8 +242,8 @@ K.global = this;
 
     // Use a comparator function to figure out at what index an object should
     // be inserted so as to maintain order. Uses binary search.
-    K.sortedIndex = function(array, obj, iterator) {
-        iterator || (iterator = K.identity);
+    Cube.sortedIndex = function(array, obj, iterator) {
+        iterator || (iterator = Cube.identity);
         var low = 0, high = array.length;
         while (low < high) {
             var mid = (low + high) >> 1;
@@ -252,35 +253,35 @@ K.global = this;
     };
 
     // toArray
-    K.toArray = function(iterable) {
+    Cube.toArray = function(iterable) {
         if (!iterable)                return [];
         if (iterable.toArray)         return iterable.toArray();
-        if (K.isArray(iterable))      return iterable;
-        if (K.isArguments(iterable))  return slice.call(iterable);
-        return K.values(iterable);
+        if (Cube.isArray(iterable))      return iterable;
+        if (Cube.isArguments(iterable))  return slice.call(iterable);
+        return Cube.values(iterable);
     };
 
     // Array
     // ---------------
 
     // last
-    K.last = function(array) {
+    Cube.last = function(array) {
         var len = array.length;
         return len > 0 ? array[ len - 1 ] : undefined;
     };
 
     // return which is true
-    K.compact = function(array) {
-        return K.filter(array, function(value) {
+    Cube.compact = function(array) {
+        return Cube.filter(array, function(value) {
             return !!value;
         });
     };
 
     // flatten
-    K.flatten = function(array) {
-        return K.reduce(array, function(memo, value) {
-            if (K.isArray(value)) {
-                return memo.concat(K.flatten(value));
+    Cube.flatten = function(array) {
+        return Cube.reduce(array, function(memo, value) {
+            if (Cube.isArray(value)) {
+                return memo.concat(Cube.flatten(value));
             }
             memo[memo.length] = value;
             return memo;
@@ -288,37 +289,37 @@ K.global = this;
     };
 
     // remove
-    K.without = function(array, obj) {
+    Cube.without = function(array, obj) {
         var values = slice.call(arguments, 1);
-        return K.filter(array, function(value) {
-            return !K.contains(values, value);
+        return Cube.filter(array, function(value) {
+            return !Cube.contains(values, value);
         });
     };
 
     // unique
-    K.unique = function(array, isSorted) {
-        return K.reduce(array, function(memo, el, i) {
-            if (0 == i || (isSorted === true ? K.last(memo) != el : !K.contains(memo, el))) memo[memo.length] = el;
+    Cube.unique = function(array, isSorted) {
+        return Cube.reduce(array, function(memo, el, i) {
+            if (0 == i || (isSorted === true ? Cube.last(memo) != el : !Cube.contains(memo, el))) memo[memo.length] = el;
             return memo;
         }, []);
     };
 
     // intersect
-    K.intersect = function(array) {
+    Cube.intersect = function(array) {
         var rest = slice.call(arguments, 1);
-        return K.filter(K.unique(array), function(item) {
-            return K.every(rest, function(other) {
-                return K.indexOf(other, item) >= 0;
+        return Cube.filter(Cube.unique(array), function(item) {
+            return Cube.every(rest, function(other) {
+                return Cube.indexOf(other, item) >= 0;
             });
         });
     };
 
     // indexOf
-    K.indexOf = function(array, item, isSorted) {
+    Cube.indexOf = function(array, item, isSorted) {
         if (array == null) return -1;
         var i, l;
         if (isSorted) {
-            i = K.sortedIndex(array, item);
+            i = Cube.sortedIndex(array, item);
             return array[i] === item ? i : -1;
         }
         if (nativeIndexOf && array.indexOf === nativeIndexOf) {
@@ -331,7 +332,7 @@ K.global = this;
     };
 
     // lastIndexOf
-    K.lastIndexOf = function(array, item) {
+    Cube.lastIndexOf = function(array, item) {
         if (array == null) return -1;
         if (nativeLastIndexOf && array.lastIndexOf === nativeLastIndexOf) {
             return array.lastIndexOf(item);
@@ -347,14 +348,14 @@ K.global = this;
     // ------------------
 
     // bind
-    K.bind = function(func, context) {
+    Cube.bind = function(func, context) {
         var extraArgs = Array.prototype.slice.call(arguments, 2);
         return function() {
-            context = context || (this == K.global ? false : this);
+            context = context || (this == Cube.global ? false : this);
             var args = extraArgs.concat(Array.prototype.slice.call(arguments));
             if (typeof(func) == "string" && context[func]) {
                 context[func].apply(context, args);
-            } else if (K.isFunction(func)) {
+            } else if (Cube.isFunction(func)) {
                 return func.apply(context, args);
             } else {
             }
@@ -362,7 +363,7 @@ K.global = this;
     };
 
     // methodize, the first will be: this, or this[attr]
-    K.methodize = function(func, attr) {
+    Cube.methodize = function(func, attr) {
         if (attr) {
             return function() {
                 return func.apply(null, [this[attr]].concat([].slice.call(arguments)));
@@ -373,7 +374,7 @@ K.global = this;
         };
     };
 
-    K.extend = function(klass, proto) {
+    Cube.extend = function(klass, proto) {
 
         var T = function() {}; //构造prototype-chain
         T.prototype = proto.prototype;
@@ -383,19 +384,19 @@ K.global = this;
         klass.prototype = new T();
 
         // coyp the methods if the prototype has some
-        K.mix(klass.prototype, klassProto, true);
+        Cube.mix(klass.prototype, klassProto, true);
 
-        K.mix(klass, proto);
+        Cube.mix(klass, proto);
         klass.$super = proto; // use arguments.callee.$super to call parent construct.
 
         return klass;
     };
 
     // 以某对象为原型创建一个新的对象
-    K.create = nativeCreate || function(proto, props) {
+    Cube.create = nativeCreate || function(proto, props) {
         var ctor = function(ps) {
             if (ps) {
-                K.mix(this, ps, true);
+                Cube.mix(this, ps, true);
             }
         };
         ctor.prototype = proto;
@@ -403,22 +404,22 @@ K.global = this;
     };
 
     // delay
-    K.delay = function(func, wait) {
+    Cube.delay = function(func, wait) {
         var args = slice.call(arguments, 2);
         return setTimeout(function() {
             return func.apply(func, args);
         }, wait);
     };
 
-    K.defer = function(func) {
-        return K.delay.apply(K, [func, 1].concat(slice.call(arguments, 1)));
+    Cube.defer = function(func) {
+        return Cube.delay.apply(Cube, [func, 1].concat(slice.call(arguments, 1)));
     };
 
     // Object
     // ----------------
 
     // 得到一个对象中所有可以被枚举出的属性的列表
-    K.keys = nativeKeys || function(obj) {
+    Cube.keys = nativeKeys || function(obj) {
         if (obj !== Object(obj)) {
             throw new TypeError('Invalid object');
         }
@@ -430,20 +431,20 @@ K.global = this;
     };
 
     // 得到一个对象中所有可以被枚举出的属性值的列表
-    K.values = function(obj) {
-        return K.map(obj, K.identity);
+    Cube.values = function(obj) {
+        return Cube.map(obj, Cube.identity);
     };
 
     // 得到一个对象中所有可以被枚举出的方法列表
-    K.methods = function(obj) {
-        return K.filter(K.keys(obj), function(key) {
-            return K.isFunction(obj[key]);
+    Cube.methods = function(obj) {
+        return Cube.filter(Cube.keys(obj), function(key) {
+            return Cube.isFunction(obj[key]);
         }).sort();
     };
 
     // 将源对象的属性并入到目标对象
-    K.mix = function(obj) {
-        K.forEach(slice.call(arguments, 1), function(source) {
+    Cube.mix = function(obj) {
+        Cube.forEach(slice.call(arguments, 1), function(source) {
             for (var prop in source) if (source[prop] !== void 0) {
                 obj[prop] = source[prop];
             }
@@ -452,13 +453,13 @@ K.global = this;
     };
 
     // 克隆
-    K.clone = function(obj) {
-        return K.isArray(obj) ? obj.slice() : K.mix({}, obj);
+    Cube.clone = function(obj) {
+        return Cube.isArray(obj) ? obj.slice() : Cube.mix({}, obj);
     };
 
     // 是否为空数组或对象
-    K.isEmpty = function(obj) {
-        if (K.isArray(obj) || K.isString(obj)) {
+    Cube.isEmpty = function(obj) {
+        if (Cube.isArray(obj) || Cube.isString(obj)) {
             return obj.length === 0;
         }
         for (var key in obj) if (hasOwnProperty.call(obj, key)) {
@@ -468,68 +469,68 @@ K.global = this;
     };
 
     // 判断一个变量是否是Html的Element元素
-    K.isElement = function(obj) {
+    Cube.isElement = function(obj) {
         return !!(obj && obj.nodeType == 1);
     };
 
     // 判断对象是否为数组
-    K.isArray = nativeIsArray || function(obj) {
+    Cube.isArray = nativeIsArray || function(obj) {
         return toString.call(obj) === '[object Array]';
     };
 
     // 判断对象是否为函数
-    K.isFunction = function(obj) {
+    Cube.isFunction = function(obj) {
         return !!(obj && obj.constructor && obj.call && obj.apply);
     };
 
     if (toString.call(arguments) == '[object Arguments]') {
-        K.isArguments = function(obj) {
+        Cube.isArguments = function(obj) {
             return toString.call(obj) == '[object Arguments]';
         };
     } else {
-        K.isArguments = function(obj) {
+        Cube.isArguments = function(obj) {
             return !!(obj && hasOwnProperty.call(obj, 'callee'));
         };
     }
 
 
     // 判断对象是否为字符串
-    K.isString = function(obj) {
+    Cube.isString = function(obj) {
         return !!(obj === '' || (obj && obj.charCodeAt && obj.substr));
     };
 
     // 判断对象是否为数字
-    K.isNumber = function(obj) {
+    Cube.isNumber = function(obj) {
         return !!(obj === 0 || (obj && obj.toExponential && obj.toFixed));
     };
 
     // 判断对象是否是Nan
-    K.isNaN = function(obj) {
+    Cube.isNaN = function(obj) {
         return obj !== obj;
     };
 
     // 判断对象是否为boolean类型
-    K.isBoolean = function(obj) {
+    Cube.isBoolean = function(obj) {
         return obj === true || obj === false;
     };
 
     // 判断对象是否为Date类型
-    K.isDate = function(obj) {
+    Cube.isDate = function(obj) {
         return !!(obj && obj.getTimezoneOffset && obj.setUTCFullYear);
     };
 
     // 判断对象是否为正则
-    K.isRegExp = function(obj) {
+    Cube.isRegExp = function(obj) {
         return !!(obj && obj.test && obj.exec && (obj.ignoreCase || obj.ignoreCase === false));
     };
 
     // 判断对象是否为null
-    K.isNull = function(obj) {
+    Cube.isNull = function(obj) {
         return obj === null;
     };
 
     // 判断对象是否为undefined
-    K.isUndefined = function(obj) {
+    Cube.isUndefined = function(obj) {
         return obj === void 0;
     };
 
@@ -537,22 +538,22 @@ K.global = this;
     // -----------------
 
     // 除去字符串两边的空白字符
-    K.trim = function(str) {
+    Cube.trim = function(str) {
         return str.replace(/^[\s\xa0\u3000]+|[\u3000\xa0\s]+$/g, "");
     };
 
     // 得到字节长度
-    K.byteLen = function(str) {
+    Cube.byteLen = function(str) {
         return str.replace(/[^\x00-\xff]/g, "--").length;
     };
 
     // 得到指定字节长度的子字符串
-    K.subByte = function(str, len, tail) {
-        if (K.byteLen(str) <= len) {
+    Cube.subByte = function(str, len, tail) {
+        if (Cube.byteLen(str) <= len) {
             return str;
         }
         tail = tail || '';
-        len -= K.byteLen(tail);
+        len -= Cube.byteLen(tail);
         return str.substr(0, len).replace(/([^\x00-\xff])/g, "$1 ") //双字节字符替换成两个
         .substr(0, len) // 截取长度
         .replace(/[^\x00-\xff]$/, "") //去掉临界双字节字符
@@ -560,7 +561,7 @@ K.global = this;
     };
 
     // 字符串为javascript转码
-    K.encode4JS = function(str) {
+    Cube.encode4JS = function(str) {
         return str.replace(/\\/g, "\\u005C")
         .replace(/"/g, "\\u0022")
         .replace(/'/g, "\\u0027")
@@ -571,7 +572,7 @@ K.global = this;
     };
 
     // 为http的不可见字符、不安全字符、保留字符作转码
-    K.encode4HTTP = function(str) {
+    Cube.encode4HTTP = function(str) {
         return str.replace(/[\u0000-\u0020\u0080-\u00ff\s"'#\/\|\\%<>\[\]\{\}\^~;\?\:@=&]/, function(s) {
             return encodeURIComponent(s);
         });
@@ -587,7 +588,7 @@ K.global = this;
     var s="<div>dd";
     alert(encode4Html(s));
     */
-    K.encode4Html = function(s){
+    Cube.encode4Html = function(s){
         return s.replace(/&(?!\w+;|#\d+;|#x[\da-f]+;)/gi, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;').replace(/\//g,'&#x2F;');
     };
 
@@ -601,12 +602,12 @@ K.global = this;
         var s="<div>\"\'ddd";
         alert("<input value='"+encode4HtmlValue(s)+"'>");
         */
-        K.encode4HtmlValue = function(s){
-            return K.encode4Html(s).replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+        Cube.encode4HtmlValue = function(s){
+            return Cube.encode4Html(s).replace(/"/g,"&quot;").replace(/'/g,"&#039;");
         }
 
         // 将所有tag标签消除，即去除<tag>，以及</tag>
-        K.stripTags = function(str) {
+        Cube.stripTags = function(str) {
             return str.replace(/<[^>]*>/gi, '');
         };
 
@@ -623,7 +624,7 @@ K.global = this;
         var d=new Date();
         alert(format(d," yyyy年M月d日\n yyyy-MM-dd\n MM-dd-yy\n yyyy-MM-dd hh:mm:ss"));
         */
-        K.formatDate = function(d,pattern){
+        Cube.formatDate = function(d,pattern){
             pattern=pattern||"yyyy-MM-dd";
             var y=d.getFullYear();
             var o = {
@@ -643,21 +644,21 @@ K.global = this;
         // 工具函数
         // -----------------
 
-        K.identity = function(value) {
+        Cube.identity = function(value) {
             return value;
         };
 
         // 生成唯一ID
         var idCounter = 0;
-        K.uniqueId = function(prefix) {
+        Cube.uniqueId = function(prefix) {
             var id = idCounter++;
             return prefix ? prefix + id : id;
         };
 
-})(K);
+})(Cube);
 
 // touch事件检测
-(function(K, undefined) {
+(function(Cube, undefined) {
     var result;
 
     var detect = function() {
@@ -681,16 +682,16 @@ K.global = this;
         return flag;
     };
 
-    K.isSupportTouch = function() {
+    Cube.isSupportTouch = function() {
         if (result === undefined) {
             result = detect();
         }
         return result;
     };
-})(K);
+})(Cube);
 
 // js的运行环境，浏览器以及版本信息。（Browser仅基于userAgent进行嗅探，存在不严谨的缺陷。）
-K.Browser = (function() {
+Cube.Browser = (function() {
     var na = window.navigator,
     ua = na.userAgent.toLowerCase(),
     browserTester = /(msie|webkit|gecko|presto|opera|safari|firefox|chrome|maxthon)[ \/]([\d.]+)/ig,
@@ -718,7 +719,7 @@ K.Browser = (function() {
     return Browser;
 }());
 
-if (K.Browser.ie) {
+if (Cube.Browser.ie) {
     try {
         document.execCommand("BackgroundImageCache", false, true);
     } catch (e) {}
@@ -726,14 +727,14 @@ if (K.Browser.ie) {
 
 //鉴于该脚本加载时间比较靠前，故将窗口是否Focus的判断放在此处，提高准确性
 function onDetectFocus(){
-    K.windowFocused = true;
+    Cube.windowFocused = true;
 }
 function onDetectBlur(){
-    K.windowFocused = false;
+    Cube.windowFocused = false;
 }
 
 
-if (K.Browser.ie){
+if (Cube.Browser.ie){
     document.attachEvent('onfocusin', onDetectFocus);
     document.attachEvent('onfocusout', onDetectBlur);
 }
@@ -743,16 +744,16 @@ else{
 }
 
 // 内部使用的 Event
-(function(K) {
+(function(Cube) {
 
     var Pubsub = function() {
         this.__callbacks__ = {};
     };
 
-    K.mix(Pubsub.prototype, {
+    Cube.mix(Pubsub.prototype, {
         on: function(name, callback, context) {
             if (context) {
-                callback = K.bind(callback, context);
+                callback = Cube.bind(callback, context);
             }
 
             var arr = this.__callbacks__[name];
@@ -775,7 +776,7 @@ else{
 
             if (name in this.__callbacks__) {
                 var callbacks = this.__callbacks__[name];
-                K.forEach(callbacks, function(cb, i) {
+                Cube.forEach(callbacks, function(cb, i) {
                     if (callback == cb) {
                         callbacks[i] = null;
                     }
@@ -795,7 +796,7 @@ else{
             if (name in this.__callbacks__) {
                 var callbacks = this.__callbacks__[name];
                 var args = Array.prototype.slice.call(arguments, 1);
-                K.forEach(callbacks, function(callback, i) {
+                Cube.forEach(callbacks, function(callback, i) {
                     if (typeof(callback) != "function") {
                         return null;
                     }
@@ -813,7 +814,7 @@ else{
                 callbacks = this.__callbacks__[name] = [];
             }
             var args = Array.prototype.slice.call(arguments, 1);
-            K.forEach(callbacks, function(callback, i) {
+            Cube.forEach(callbacks, function(callback, i) {
                 if (typeof(callback) != "function") {
                     return null;
                 }
@@ -824,19 +825,19 @@ else{
         }
     });
 
-    K.Pubsub = Pubsub;
-    K.mix(K, (new Pubsub()));
+    Cube.Pubsub = Pubsub;
+    Cube.mix(Cube, (new Pubsub()));
 
-})(K);
+})(Cube);
 
 // Module
-(function(K, Resource, global) {
+(function(Cube, Resource, global) {
 
     var definedModules = {};
     var loadingModules = {};
 
     function Module (id, dependency, factory) {
-        if (K.indexOf(dependency, id) >= 0) {
+        if (Cube.indexOf(dependency, id) >= 0) {
             throw new Error('Module:' + id + ' could\'t depends on itself!');
         }
 
@@ -860,17 +861,17 @@ else{
             throw new Error('module has invalid parameters');
         }
 
-        if (! K.isString(moduleId)) {
+        if (! Cube.isString(moduleId)) {
             throw new Error('module must have a ID');
         }
 
         // define('xx', function() {});
-        if (K.isFunction(dependency)) {
+        if (Cube.isFunction(dependency)) {
             factory = dependency;
             dependency = [];
         }
         // define('xxx', {});
-        else if (!K.isArray(dependency)) {
+        else if (!Cube.isArray(dependency)) {
             var def = dependency; // 不能省略这个赋值，因为dependency在后面被改写了。
             factory = function(){ return def; };
             dependency = [];
@@ -884,7 +885,7 @@ else{
             return;
         }
 
-        var realDependency = K.unique(dependency),
+        var realDependency = Cube.unique(dependency),
         allModules = Module.getDependencyDeeply(realDependency);
         Module.load(allModules);
         Module.wait(allModules, function() {
@@ -895,7 +896,7 @@ else{
                 delete loadingModules[ moduleId ];
             } catch(e) {}
 
-            K.fire('Module:' + moduleId + ':Ready');
+            Cube.fire('Module:' + moduleId + ':Ready');
         });
     };
 
@@ -908,7 +909,7 @@ else{
 
     Module.createRequire = function(depends, sourceId) {
         function require(id, async) {
-            if (!async && K.indexOf(depends, id) == -1) {
+            if (!async && Cube.indexOf(depends, id) == -1) {
                 throw new Error(id + ' counld\'t be required in ' + sourceId + ', as you not declared to depend it ');
             }
 
@@ -926,10 +927,10 @@ else{
         }
 
         require.async = function(modules, callback, context) {
-            modules = K.isString(modules) ? [ modules ] : modules;
-            var realModules = K.unique(modules);
+            modules = Cube.isString(modules) ? [ modules ] : modules;
+            var realModules = Cube.unique(modules);
             var allModules = Module.getDependencyDeeply(realModules);
-            allModules = K.unique(allModules.concat(modules));
+            allModules = Cube.unique(allModules.concat(modules));
 
             Module.load(allModules);
             Module.wait(allModules, function() {
@@ -962,9 +963,9 @@ else{
     */
     Module.load = function(moduleList) {
 
-        moduleList = K.isString(moduleList) ? [ moduleList ] : moduleList;
+        moduleList = Cube.isString(moduleList) ? [ moduleList ] : moduleList;
 
-        K.forEach(moduleList, function(mid) {
+        Cube.forEach(moduleList, function(mid) {
             if (definedModules[mid])
                 return;
             Resource.loadModule(mid);
@@ -982,7 +983,7 @@ else{
     * 检测加载中模块
     */
     Module.waiting = function() {
-        return K.keys(loadingModules);
+        return Cube.keys(loadingModules);
     };
 
     /**
@@ -990,14 +991,14 @@ else{
     * 如果没有则等待
     */
     Module.check = function(mid, callback) {
-        mid = K.trim(mid);
+        mid = Cube.trim(mid);
         if (mid.length == 0 || definedModules[ mid ]) {
             callback && callback();
 
         } else {
             // 记录正在加载中的模块
             loadingModules[ mid ] = true;
-            K.on('Module:' + mid + ':Ready', callback);
+            Cube.on('Module:' + mid + ':Ready', callback);
         }
     };
 
@@ -1023,7 +1024,7 @@ else{
         var factory = mod.factory,
         ret;
 
-        if (K.isFunction(factory)) {
+        if (Cube.isFunction(factory)) {
             mod.exports = {};
             ret = factory(Module.createRequire(mod.dependency, mod.id), mod.exports, mod);
             if (ret) {
@@ -1036,13 +1037,13 @@ else{
     }
 
     // 暴露api
-    global.define = K.define = define;
-    global.Module = K.Module = Module;
+    global.define = Cube.define = define;
+    global.Module = Cube.Module = Module;
 
-})(K, K.Resource, this);
+})(Cube, Cube.Resource, this);
 
 
-(function(K, Resource) {
+(function(Cube, Resource) {
 
     var jsInfo = {};
     var dependsMap = {};
@@ -1068,7 +1069,7 @@ else{
     * @param {object} info
     */
     Resource.addJsInfo = function(info) {
-        K.mix(jsInfo, info);
+        Cube.mix(jsInfo, info);
     };
 
 
@@ -1088,7 +1089,7 @@ else{
     * @param {object} map
     */
     Resource.addResourceDepends = function(map) {
-        K.mix(dependsMap, map);
+        Cube.mix(dependsMap, map);
     };
 
     /**
@@ -1098,13 +1099,13 @@ else{
     * todo 处理循环依赖
     */
     Resource.getDependencyDeeply = function(midList) {
-        var unload = [].concat(K.isString(midList) ? [ midList ] : midList);
+        var unload = [].concat(Cube.isString(midList) ? [ midList ] : midList);
         var ret = [].concat(unload);
         if (unload.length == 0)
             return [];
         var loaded = [];
         while (mid = unload.shift()) {
-            if (K.indexOf(loaded, mid) == -1) {
+            if (Cube.indexOf(loaded, mid) == -1) {
                 if (mid == 'core/jQuery')
                     continue;
                 if (!jsInfo[mid] ) {
@@ -1116,7 +1117,7 @@ else{
                 loaded.push(mid);
             }
         }
-        K.unique(ret);
+        Cube.unique(ret);
         return ret;
     };
 
@@ -1183,7 +1184,7 @@ else{
         for (i=0; i<list.length; i++) {
             item = list[i];
             delete item.resources[uri];
-            if (K.isEmpty(item.resources)) {
+            if (Cube.isEmpty(item.resources)) {
                 item.callback && item.callback();
                 list.splice(i--, 1);
             }
@@ -1199,7 +1200,7 @@ else{
             var link = sheets[i],
             ready = false;
 
-            if (! K.Browser.firefox) {
+            if (! Cube.Browser.firefox) {
                 ready = true;
             } else {
                 try {
@@ -1248,7 +1249,7 @@ else{
             _complete(uri);
         };
 
-        K.mix(script, {
+        Cube.mix(script, {
             type: 'text/javascript',
             src: uri,
             async: true
@@ -1265,7 +1266,7 @@ else{
 
     var _injectCSS = function(uri) {
         var link = document.createElement('link');
-        K.mix(link, {
+        Cube.mix(link, {
             type: 'text/css',
             rel: 'stylesheet',
             href: uri,
@@ -1292,13 +1293,13 @@ else{
 
         _initResourceMap();
 
-        list = K.isArray(list) ? list : [ list ];
+        list = Cube.isArray(list) ? list : [ list ];
         for (var i=0, j=list.length; i < j; i++) {
             uri = Resource.canonicalURI(list[i]);
             resources[uri] = true;
 
             if (_loaded[uri]) {
-                setTimeout(K.bind(_complete, null, uri), 0);
+                setTimeout(Cube.bind(_complete, null, uri), 0);
             } else if (! _loading[uri]) {
                 _loading[uri] = true;
                 if (uri.indexOf('.css') > -1) {
@@ -1323,7 +1324,7 @@ else{
     * @param {function} callback js加载完成后回调函数
     **/
     Resource.loadJS = function(src, callback) {
-        var list = K.isArray(src) ? src : [ src ];
+        var list = Cube.isArray(src) ? src : [ src ];
 
         for (var i = 0, j = list.length; i < j; i++) {
             var url = list[i];
@@ -1369,42 +1370,42 @@ else{
     // -abced.js | .js
     var jsPost = /(?:-[A-Za-z0-9]+)?.js?$/gi;
 
-})(K, K.Resource);
+})(Cube, Cube.Resource);
 
 
 // Dom Ready
-(function(K) {
+(function(Cube) {
 
     var isDomContentLoaded = false;
     var isWindowLoaded = false;
 
-    K.ready = function(callback) {
+    Cube.ready = function(callback) {
         if (isDomContentLoaded) {
             callback();
         } else {
-            K.on('Onload:DomContentLoaded', callback);
+            Cube.on('Onload:DomContentLoaded', callback);
         }
     };
 
-    K.load = function(callback) {
+    Cube.load = function(callback) {
         if (isWindowLoaded) {
             callback();
         } else {
-            K.on('Onload:Loaded', callback);
+            Cube.on('Onload:Loaded', callback);
         }
     };
 
     var onDomContentLoaded = function() {
         if (! isDomContentLoaded) {
             isDomContentLoaded = true;
-            K.fire("Onload:DomContentLoaded");
+            Cube.fire("Onload:DomContentLoaded");
         }
     };
 
     var onWindowLoaded = function() {
         if (! isWindowLoaded) {
             isWindowLoaded = true;
-            K.fire("Onload:Loaded");
+            Cube.fire("Onload:Loaded");
         }
     };
 
@@ -1444,7 +1445,7 @@ else{
 
     var bootstrapHandler = function() {
 
-        var window = K.global,
+        var window = Cube.global,
         document = window.document,
         onloadHandler = function() {
             if (! isDomContentLoaded) {
@@ -1483,11 +1484,11 @@ else{
 
     bootstrapHandler();
 
-})(K);
+})(Cube);
 
 
 // APP
-(function(K, Module) {
+(function(Cube, Module) {
 
     var reserveMethods = 'require getContainer'.split(/\s+/ig);  // 一些保留属性或者方法
     var appList = {};
@@ -1508,7 +1509,7 @@ else{
         this.destroyed = false;
     }
 
-    K.mix(Application.prototype, {
+    Cube.mix(Application.prototype, {
 
         destroy: function() {
             this.destroy_fns.forEach(function(fn) {
@@ -1524,11 +1525,11 @@ else{
 
         define: function(definition) {
 
-            var dependency = K.unique(this.requiredModList),
+            var dependency = Cube.unique(this.requiredModList),
             allModules = Module.getDependencyDeeply(dependency),
             me = this,
             ready = function() {
-                K.fire('App:' + me.id + ':Ready', me);
+                Cube.fire('App:' + me.id + ':Ready', me);
             };
 
             Module.load(allModules);
@@ -1539,9 +1540,9 @@ else{
                 // factory 方法
                 // 如果factory里覆盖了require方法，暂时无法检测
                 var require = Module.createRequire(dependency, me.id);
-                if (K.isFunction(definition)) {
+                if (Cube.isFunction(definition)) {
                     definition = definition.call({}, require);
-                    definition = K.mix(definition, me);
+                    definition = Cube.mix(definition, me);
                 };
 
                 // App的factory可能没有return definition
@@ -1579,14 +1580,14 @@ else{
                 }
 
                 // 入口初始化
-                if (K.isFunction(definition.main)) {
+                if (Cube.isFunction(definition.main)) {
                     if (me.execBeforeDomready) {
                         definition.main();
                         ready();
                     }
                     // Dom Ready 后再执行
                     else {
-                        K.ready(function() {
+                        Cube.ready(function() {
                             definition.main();
                             ready();
                         });
@@ -1625,11 +1626,11 @@ else{
     function bindEvents(app, container) {
         var events = app.events;
 
-        K.map(events, function(handler, evtStr) {
+        Cube.map(events, function(handler, evtStr) {
             var match = evtStr.match(eventSpliter),
             evtName = match[1],
             selector = match[2];
-            method = K.bind(app[handler], app);
+            method = Cube.bind(app[handler], app);
 
             var _handler = function() {
                 app[handler].apply(app, arguments);
@@ -1657,21 +1658,21 @@ else{
 
     function getId(info) {
         var id = info[ 0 ];
-        if (!id || !K.isString(id)) {
+        if (!id || !Cube.isString(id)) {
             id = genAppId();
         }
         return id;
     }
 
     function getDepends(info) {
-        return K.detect(info, function(item) {
-            return K.isArray(item);
+        return Cube.detect(info, function(item) {
+            return Cube.isArray(item);
         }) || [];
     }
 
     function unsafeExec(info) {
-        var execBeforeDomready = K.last(info);
-        return K.isBoolean(execBeforeDomready) ? execBeforeDomready : false;
+        var execBeforeDomready = Cube.last(info);
+        return Cube.isBoolean(execBeforeDomready) ? execBeforeDomready : false;
     }
 
     /**
@@ -1679,31 +1680,31 @@ else{
     * @param {string|optinal} id  App id
     * @param {array|optional} depends 依赖模块
     */
-    K.App = function(id, depends, execBeforeDomready) {
+    Cube.App = function(id, depends, execBeforeDomready) {
         return new Application(getId(arguments), getDepends(arguments), unsafeExec(arguments));
     };
 
-    K.App.get = function(appID) {
+    Cube.App.get = function(appID) {
         return appList[ appID ] || appList;
     };
 
-})(K, K.Module);
+})(Cube, Cube.Module);
 
 // 自定义事件
-(function(K) {
-    var mix = K.mix,
-    indexOf = K.indexOf;
+(function(Cube) {
+    var mix = Cube.mix,
+    indexOf = Cube.indexOf;
 
-    //----------K.CustEvent----------
+    //----------Cube.CustEvent----------
     /**
     * @class CustEvent 自定义事件
-    * @namespace K
+    * @namespace Cube
     * @param {object} target 事件所属对象，即：是哪个对象的事件。
     * @param {string} type 事件类型。备用。
     * @param {object} eventArgs (Optional) 自定义事件参数
     * @returns {CustEvent} 自定义事件
     */
-    var CustEvent = K.CustEvent = function(target, type, eventArgs) {
+    var CustEvent = Cube.CustEvent = function(target, type, eventArgs) {
         this.target = target;
         this.type = type;
         mix(this, eventArgs || {});
@@ -1736,7 +1737,7 @@ else{
         }
     });
     /**
-    * 为一个对象添加一系列事件，并添加on/un/fire三个方法，参见：K.CustEventTarget.createEvents
+    * 为一个对象添加一系列事件，并添加on/un/fire三个方法，参见：Cube.CustEventTarget.createEvents
     * @static
     * @method createEvents
     * @param {Object} obj 事件所属对象，即：是哪个对象的事件。
@@ -1746,10 +1747,10 @@ else{
 
     /**
     * @class CustEventTargetH  自定义事件Target
-    * @namespace K
+    * @namespace Cube
     */
 
-    K.CustEventTargetH = {
+    Cube.CustEventTargetH = {
         /**
         * 添加监控
         * @method on
@@ -1759,7 +1760,7 @@ else{
         * @throw {Error} 如果没有对事件进行初始化，则会抛错
         */
         on: function(target, sEvent, fn) {
-            var cbs = (target.__custListeners && target.__custListeners[sEvent]) || K.error("unknown event type", TypeError);
+            var cbs = (target.__custListeners && target.__custListeners[sEvent]) || Cube.error("unknown event type", TypeError);
             if (indexOf(cbs, fn) > -1) {
                 return false;
             }
@@ -1775,13 +1776,13 @@ else{
         * @throw {Error} 如果没有对事件进行初始化，则会抛错
         */
         once: function(target, sEvent, fn) {
-            var cbs = (target.__custListeners && target.__custListeners[sEvent]) || K.error("unknown event type", TypeError);
+            var cbs = (target.__custListeners && target.__custListeners[sEvent]) || Cube.error("unknown event type", TypeError);
             var handler = $.proxy(function(custEvent) {
                 fn.call(target, custEvent);
-                K.CustEventTargetH.un(target, sEvent, handler);
+                Cube.CustEventTargetH.un(target, sEvent, handler);
             }, this);
 
-            K.CustEventTargetH.on(target, sEvent, handler);
+            Cube.CustEventTargetH.on(target, sEvent, handler);
             return true;
         },
         /**
@@ -1793,7 +1794,7 @@ else{
         * @throw {Error} 如果没有对事件进行初始化，则会抛错
         */
         un: function(target, sEvent, fn) {
-            var cbs = (target.__custListeners && target.__custListeners[sEvent]) || K.error("unknown event type", TypeError);
+            var cbs = (target.__custListeners && target.__custListeners[sEvent]) || Cube.error("unknown event type", TypeError);
             if (fn) {
                 var idx = indexOf(cbs, fn);
                 if (idx < 0) {
@@ -1825,7 +1826,7 @@ else{
                 custEvent = new CustEvent(target, sEvent, eventArgs);
             }
 
-            var cbs = (target.__custListeners && target.__custListeners[sEvent]) || K.error("unknown event type", TypeError);
+            var cbs = (target.__custListeners && target.__custListeners[sEvent]) || Cube.error("unknown event type", TypeError);
             if (sEvent != "*") {
                 cbs = cbs.concat(target.__custListeners["*"] || []);
             }
@@ -1868,9 +1869,9 @@ else{
         }
     };
 
-}(K));
+}(Cube));
 
-(function(K) {
+(function(Cube) {
 
     var Methodized = function() {};
 
@@ -1889,39 +1890,39 @@ else{
 
             for (var i in helper) {
                 if (typeof helper[i] == "function" && !/^_/.test(i)) {
-                    ret[i] = K.methodize(helper[i], attr);
+                    ret[i] = Cube.methodize(helper[i], attr);
                 }
             }
             return ret;
         }
     };
 
-    K.Helper = Helper;
-}(K));
+    Cube.Helper = Helper;
+}(Cube));
 
-(function(K) {
-    var mix = K.mix;
+(function(Cube) {
+    var mix = Cube.mix;
 
-    var CustEventTarget = K.CustEventTarget = function() {
+    var CustEventTarget = Cube.CustEventTarget = function() {
         this.__custListeners = {};
     };
 
-    var methodized = K.Helper.methodize(K.CustEventTargetH, null, {
+    var methodized = Cube.Helper.methodize(Cube.CustEventTargetH, null, {
         on: 'operator',
         un: 'operator'
     }); //将Helper方法变成prototype方法，同时修改on/un的返回值
 
     mix(CustEventTarget.prototype, methodized);
 
-    K.CustEvent.createEvents = CustEventTarget.createEvents = function(target, types) {
-        K.CustEventTargetH.createEvents(target, types);
+    Cube.CustEvent.createEvents = CustEventTarget.createEvents = function(target, types) {
+        Cube.CustEventTargetH.createEvents(target, types);
         return mix(target, CustEventTarget.prototype); //尊重对象本身的on。
     };
-}(K));
+}(Cube));
 
 //由于onbeforeunload事件在浏览器中只能独占，因此在添加时很容易相互覆盖，以下方法可以保留已有的方法
-(function(K) {
-    K.onbeforeunload = function(callback) {
+(function(Cube) {
+    Cube.onbeforeunload = function(callback) {
         if (!callback) return;
         if (typeof window.onbeforeunload == 'function') {
             var oldBeforeUnload = window.onbeforeunload;
@@ -1937,27 +1938,27 @@ else{
             window.onbeforeunload = callback;
         }
     };
-})(K);
+})(Cube);
 
 // 性能数据
-(function(K) {
-    K.Performance = { timing: {} };
+(function(Cube) {
+    Cube.Performance = { timing: {} };
     var performance = window.performance || window.msPerformance || window.webkitPerformance || window.mozPerformance;
     if (performance && performance.timing) {
-        K.Performance.timing = performance.timing;
+        Cube.Performance.timing = performance.timing;
     } else {
-        K.Performance.timing.responseStart = K.global.pageStart;
-        K.ready(function() {
-            K.Performance.timing.domContentLoadedEventStart = (new Date()).getTime();
+        Cube.Performance.timing.responseStart = Cube.global.pageStart;
+        Cube.ready(function() {
+            Cube.Performance.timing.domContentLoadedEventStart = (new Date()).getTime();
         });
-        K.load(function() {
-            K.Performance.timing.loadEventStart = (new Date()).getTime();
+        Cube.load(function() {
+            Cube.Performance.timing.loadEventStart = (new Date()).getTime();
         });
     }
-})(K);
+})(Cube);
 
 // Default Event Handler
-(function(K) {
+(function(Cube) {
 
     var getParentByTag = function(node, tagName) {
         tagName = tagName.toUpperCase();
@@ -1980,7 +1981,7 @@ else{
     };
 
     var isAppReady = function(app) {
-        if (! ('App' in K) || ! K.App.get(app)) {
+        if (! ('App' in Cube) || ! Cube.App.get(app)) {
             return false;
         }
         return true;
@@ -1998,7 +1999,7 @@ else{
         var app = getNotReadyApp(container),
         ajax, href;
         if (app) {
-            K.once('App:' + app + ':Ready', function(app) {
+            Cube.once('App:' + app + ':Ready', function(app) {
                 app.__jQuery__(target || container)[eventName]();
             });
             return false;
@@ -2009,13 +2010,13 @@ else{
                 switch (ajax) {
                     case 'dialog-post':
                         case 'dialog':
-                        K.Module.createRequire().async('core/dialog/AsyncDialog', function(Dialog) {
+                        Cube.Module.createRequire().async('core/dialog/AsyncDialog', function(Dialog) {
                         Dialog.open(href, container);
                     });
                     break;
                     case 'request-post':
                         case 'request':
-                        K.Module.createRequire().async('core/ajax/Request', function(Request) {
+                        Cube.Module.createRequire().async('core/ajax/Request', function(Request) {
                         Request.load(href, container);
                     });
                     break;
@@ -2049,7 +2050,7 @@ else{
     })();
 
     var defaultEventHandler = function() {
-        var document = K.global.document,
+        var document = Cube.global.document,
         documentElement = document.documentElement;
 
         var target = null;
@@ -2102,7 +2103,7 @@ else{
 
     defaultEventHandler();
 
-})(K);
+})(Cube);
 
 /**
 *
@@ -2116,11 +2117,11 @@ else{
 /**
 * data
 */
-(function(K) {
+(function(Cube) {
     var dataList = {};
     var baseInfo = {};
 
-    K.data = {
+    Cube.data = {
 
         set: function() {
             if (arguments.length == 2)
@@ -2148,13 +2149,13 @@ else{
             return baseInfo;
         }
     };
-}(K));
+}(Cube));
 
 /**
 * img
 */
-(function(K) {
-    K.img = {
+(function(Cube) {
+    Cube.img = {
         getImageWrapper: function(target) {
             var wrapper = target.parentNode;
             var time = 0;
@@ -2165,17 +2166,20 @@ else{
             return wrapper;
         },
 
-        resize: function(img, width, height, getFullPic) {
+        resizeAfterLoad: function(img, width, height, getFullPic) {
             var w = img.width;
             var h = img.height;
+            return this.resize(img, w, h, width, height, getFullPic, true);
+        },
 
+        resize: function(img, w, h, width, height, getFullPic, fade) {
             var wrapper = this.getImageWrapper(img);
 
             if (!wrapper) return;
 
+            // centerCorp
             if (!getFullPic) {
 
-                // 按较小边显示，多余切除
                 wrapper.style["overflow"] = "hidden";
                 wrapper.style["width"] = width + "px";
                 wrapper.style["height"] = height + "px";
@@ -2187,8 +2191,7 @@ else{
                     if (p1 > p2) {
                         w = w / p2;
                         h = height;
-                    }
-                    else {
+                    } else {
                         w = width;
                         h = h / p1;
                     }
@@ -2202,7 +2205,7 @@ else{
 
             } else {
 
-                //获得整张图片的显示，先获取较大的边的缩放比例，然后居中
+                // centerFit
                 var scallValue = ((h / height) > (w / width)) ? (h /height) : (w/width);
 
                 img.width = w / scallValue;
@@ -2216,25 +2219,27 @@ else{
             img = $(img);
             wrapper = $(wrapper);
 
-            wrapper.css('opacity', 0);
-            if (wrapper.css('opacity') == 0 && img.css('opacity') == 0) {
-                img.css('opacity', 1);
-                wrapper.animate({"opacity": 1}, "slow");
-            } else {
-                if (img.css('opacity') == 0) {
-                    img.animate({"opacity": 1}, "slow");
-                }
-                if (wrapper.css('opacity') == 0) {
+            if (fade) {
+                wrapper.css('opacity', 0);
+                if (wrapper.css('opacity') == 0 && img.css('opacity') == 0) {
+                    img.css('opacity', 1);
                     wrapper.animate({"opacity": 1}, "slow");
+                } else {
+                    if (img.css('opacity') == 0) {
+                        img.animate({"opacity": 1}, "slow");
+                    }
+                    if (wrapper.css('opacity') == 0) {
+                        wrapper.animate({"opacity": 1}, "slow");
+                    }
                 }
             }
         },
     };
 
-})(K);
+})(Cube);
 
 
-K.define('core/jQuery',[], function() {
+Cube.define('core/jQuery',[], function() {
     return jQuery;
 });
 

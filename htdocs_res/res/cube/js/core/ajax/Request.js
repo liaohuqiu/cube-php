@@ -4,7 +4,8 @@
 *
 *   succ :  {ok: true, data: {...}, ... }
 *
-*   error:  {error: true, errorMsg: "...", ...}
+*   error:  {error: true, error_msg: "...", error_code: int, 'error_trace': '...", ...}
+*   error_trace will no be displayed in prod environment.
 */
 define('core/ajax/Request', ['core/jQuery', 'core/URI'] , function(require) {
 
@@ -58,27 +59,36 @@ define('core/ajax/Request', ['core/jQuery', 'core/URI'] , function(require) {
             this._loadingElement = element;
         },
 
-        send: function() {
+        send: function(prepare) {
             var cacheData = dataCache[this._uniqueKey];
             if (cacheData) {
                 this.dispatchResponse(cacheData);
+                // unlock
+                this.unlockRequest();
                 return this;
             }
             else {
                 var me = this;
-                this.xhr = $.ajax({
+                var setting = {
                     type: this.method,
                     url: this.url,
                     data: this.data,
                     dataType: 'json'
-                }).success(function(ret) {
-                    if (!ret.error && ret.ok) {
+                };
+                if (prepare) {
+                    setting = prepare(setting);
+                }
+                this.xhr = $.ajax(setting).success(function(ret) {
+                    if (!ret.error || ret.ok) {
                         me.invokeResponseHandler(ret);
                     } else {
                         me.invokeErrorHandler(ret);
                     }
                 }).error(function(ret) {
                     me.invokeErrorHandler(ret);
+                }).always(function() {
+                    // unlock
+                    me.unlockRequest();
                 });
                 return this;
             }
@@ -94,7 +104,11 @@ define('core/ajax/Request', ['core/jQuery', 'core/URI'] , function(require) {
         },
 
         setData: function(data) {
-            data['forajax'] = 1;
+            if (data instanceof FormData) {
+                data.append('forajax', 1);
+            } else {
+                data['forajax'] = 1;
+            }
             this.data = data;
             return this;
         },
@@ -171,12 +185,12 @@ define('core/ajax/Request', ['core/jQuery', 'core/URI'] , function(require) {
         dispatchResponse: function(ret) {
 
             // TOOD: cache by time
-            if (ret.cacheTime) {
+            if (ret.cache_time) {
                 dataCache[this._uniqueKey] = ret;
             }
 
             // pop dialog
-            if (ret.data.pop_dialog) {
+            if (ret && ret.data && ret.data.pop_dialog) {
 
                 var dialog = ret.data.pop_dialog;
                 require.async('core/dialog/MsgBox', function(MsgBox) {
@@ -195,18 +209,12 @@ define('core/ajax/Request', ['core/jQuery', 'core/URI'] , function(require) {
                 }
             }
 
-            // unlock
-            this.unlockRequest();
-
             if (this.handler) {
                 this.handler(ret);
             }
         },
 
         dispatchErrorResponse: function(ret) {
-
-            // unlock
-            this.unlockRequest();
 
             if (this.errorHandler) {
                 var processed = this.errorHandler(ret);
@@ -218,10 +226,12 @@ define('core/ajax/Request', ['core/jQuery', 'core/URI'] , function(require) {
             var width = 650;
 
             // php exception
-            if (ret.errorMsg && ret.error) {
-                msg = ret.errorMsg;
+            if (ret.error_msg && ret.error) {
+                msg = ret.error_msg;
+                if (ret.error_trace) {
+                    msg += ret.error_trace;
+                }
                 this.showError(msg);
-
             } else {
 
                 width = 1024;

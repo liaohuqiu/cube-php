@@ -89,6 +89,7 @@ class MCore_View_Pagination
 
         $pageInfo['start'] = $this->currentStart;
         $pageInfo['total'] = $this->total;
+        $pageInfo['has_more'] = $this->total > $this->currentStart + $this->numPerPage;
         return $pageInfo;
     }
 
@@ -233,6 +234,7 @@ $data = array (
     ),
     'start' => 0,
     'total' => 29,
+    'has_more' => true,
     'num_per_page_options' => '<option value=\'20\' selected = \'true\'>20</option><option value=\'50\'>50</option><option value=\'100\'>100</option>',
 )
  */
