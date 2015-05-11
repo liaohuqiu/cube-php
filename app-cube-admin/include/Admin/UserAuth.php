@@ -166,4 +166,21 @@ class MAdmin_UserAuth
     {
         return '_' . APP_NAME . '_admin_token';
     }
+
+    public static function getAppAuthKeys()
+    {
+        if (self::$proxy)
+        {
+            $list = self::$proxy->getAppAuthKeys();
+            foreach ($list as $item)
+            {
+                if (strpos($item, 'app_') !== 0)
+                {
+                    throw new Exception('The this authorization key must start with "app_": ' . $item);
+                }
+            }
+            return $list;
+        }
+        return array();
+    }
 }

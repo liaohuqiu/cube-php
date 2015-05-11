@@ -331,13 +331,8 @@ class MCore_Tool_Array
         return $return;
     }
 
-    public static function itemOrList($func_get_args, $list, $default, $no_default_for_list = false)
+    public static function itemOrList($id_or_ids, $list, $default, $no_default_for_list = false)
     {
-        if (!is_array($func_get_args) || empty($func_get_args) || !is_array($list))
-        {
-            return false;
-        }
-        $id_or_ids = $func_get_args[0];
         if (is_array($id_or_ids))
         {
             $ret = [];

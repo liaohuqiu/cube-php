@@ -149,6 +149,6 @@ class MAdmin_Module
 
     public function getModuleAuthKeys()
     {
-        return $this->module_auth_keys;
+        return array_merge($this->module_auth_keys, MAdmin_UserAuth::getAppAuthKeys());
     }
 }

@@ -31,4 +31,9 @@ interface MAdmin_IAuthProxy
      * login url for user to login
      */
     public function getLoginUrl();
+
+    /**
+     * the authorization keys for app
+     */
+    public function getAppAuthKeys();
 }

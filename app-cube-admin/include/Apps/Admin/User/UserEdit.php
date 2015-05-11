@@ -1,10 +1,15 @@
 <?php
 class MApps_Admin_User_UserEdit extends MApps_AdminPageBase implements MAdmin_Views_OnItemAction
 {
+    private $auth_keys;
+
     protected function main()
     {
-        $keys = $this->moduleMan->getModuleAuthKeys();
+        $this->auth_keys = $this->moduleMan->getModuleAuthKeys();
+
         $input_keys = array('email', 'pwd', 'is_sysadmin', 'app_admin_key');
+
+        $keys = $this->auth_keys;
         foreach ($keys as $key)
         {
             $input_keys[] = 'input_auth_' . $key;
@@ -23,23 +28,29 @@ class MApps_Admin_User_UserEdit extends MApps_AdminPageBase implements MAdmin_Vi
     {
         $uid = $identity_info['uid'];
         $auth_keys = array();
-        foreach ($this->moduleMan->getModuleAuthKeys() as $key)
+
+        $keys = $this->auth_keys;
+        foreach ($keys as $key)
         {
             if (!empty($input_info['input_auth_' . $key]))
             {
                 $auth_keys[] = $key;
             }
         }
+
+        $app_admin_key = $input_info['app_admin_key'];
+        $is_sysadmin = $input_info['is_sysadmin'];
+
         if ($uid)
         {
             $info = array();
-            $info['is_sysadmin'] = $input_info['is_sysadmin'];
-            $info['app_admin_key'] = $input_info['app_admin_key'];
+            $info['is_sysadmin'] = $is_sysadmin;
+            $info['app_admin_key'] = $app_admin_key;
             MAdmin_UserRaw::updateInfo($uid, $info, $auth_keys);
         }
         else
         {
-            MAdmin_UserRaw::create($input_info['email'], $input_info['pwd'], $auth_keys, $input_info['is_sysadmin']);
+            MAdmin_UserRaw::create($input_info['email'], $input_info['pwd'], $auth_keys, $is_sysadmin, $app_admin_key);
         }
     }
 
@@ -58,7 +69,7 @@ class MApps_Admin_User_UserEdit extends MApps_AdminPageBase implements MAdmin_Vi
         }
 
         $auth_infos = array();
-        $keys = $this->moduleMan->getModuleAuthKeys();
+        $keys = $this->auth_keys;
         foreach ($keys as $key)
         {
             $info = array();

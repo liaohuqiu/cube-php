@@ -71,7 +71,7 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
             var dialog_body ='<div class="modal-body">' +
                 '<div class="">' + msg + '</div></div>' +
                 '<div class="modal-footer">' +
-                '<button class="btn btn-success _j_msgbox_btn_ok">Yes</button>' +
+                '<span class="btn btn-success _j_msgbox_btn_ok">Yes</span>' +
                 '</div></div>';
             return this.showDialog(dialog_body, data);
         },
@@ -87,10 +87,10 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
 
             if (data && data.buttons) {
                 K.forEach(data.buttons, function(callback, title) {
-                    dialog_body += '<button class="btn btn-success _j_msgbox_btn_uni">' + title + '</button>';
+                    dialog_body += '<span class="btn btn-success _j_msgbox_btn_uni">' + title + '</span>';
                 });
             } else {
-                dialog_body +='<button class="btn btn-success _j_msgbox_btn_ok">Yes</button>';
+                dialog_body +='<span class="btn btn-success _j_msgbox_btn_ok">Yes</span>';
             }
             dialog_body += '</div></div>';
 
@@ -102,8 +102,8 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
             var dialog_body ='<div class="modal-body">' +
                 '<div class="alert alert-warning">' + msg + '</div></div>' +
                 '<div class="modal-footer">' +
-                '<button class="btn btn-danger _j_msgbox_btn_ok">Yes</button>' +
-                '<button class="btn _j_msgbox_btn_cancel">Cacel</button>' +
+                '<span class="btn btn-danger mr-20 _j_msgbox_btn_ok">Yes</span>' +
+                '<span class="btn btn-default _j_msgbox_btn_cancel">Cancel</span>' +
                 '</div></div>';
             this.showDialog(dialog_body, data);
         },
@@ -123,7 +123,7 @@ define('core/dialog/MsgBox', ['core/dialog/AsyncDialog'], function(require) {
             var dialog_body ='<div class="modal-body">' +
                 '<div class="alert alert-danger alert-error">' + msg + '</div></div>' +
                 '<div class="modal-footer">' +
-                '<button class="btn btn-primary _j_msgbox_btn_ok">OK</button>' +
+                '<span class="btn btn-primary _j_msgbox_btn_ok">OK</span>' +
                 '</div></div>';
 
             this.showDialog(dialog_body, data);

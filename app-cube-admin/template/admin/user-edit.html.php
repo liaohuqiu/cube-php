@@ -2,21 +2,21 @@
     <input type='hidden' name='edit_action_name' value='submit'>
 
     <div class="form-group">
-        <label class="col-md-4 control-label" for="uid">uid</label>
+        <label class="col-md-3 control-label" for="uid">uid</label>
         <div class="col-md-4">
             <input class='form-control' id="uid" type="text" name="uid" value='<?php $page_data->o('uid'); ?>' disabled>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-md-4 control-label" for="app_admin_key">app_admin_key</label>
+        <label class="col-md-3 control-label" for="app_admin_key">app_admin_key</label>
         <div class="col-md-4">
             <input class='form-control' id="app_admin_key" type="text" name="app_admin_key" value='<?php $page_data->o('app_admin_key'); ?>'>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="col-md-4 control-label" for="user_name">Account</label>
+        <label class="col-md-3 control-label" for="user_name">Account</label>
         <div class="col-md-4">
             <input class='form-control' id="user_name" type="text" name="email" value='<?php $page_data->o('email'); ?>'
             <?php if ($page_data['uid']): ?>disabled<?php endif; ?>/>
@@ -25,7 +25,7 @@
 
     <?php if (!$page_data['uid']): ?>
     <div class="form-group">
-        <label class="col-md-4 control-label" for="pwd">Password</label>
+        <label class="col-md-3 control-label" for="pwd">Password</label>
         <div class="col-md-4">
             <input class='form-control' id="pwd" type="text" name="pwd" value=''>
         </div>
@@ -33,7 +33,7 @@
     <?php endif; ?>
 
     <div class="form-group">
-        <label class="col-md-4 control-label" for="is_sysadmin">Is System Admin</label>
+        <label class="col-md-3 control-label" for="is_sysadmin">Is System Admin</label>
         <div class="col-md-4">
             <div class='checkbox'>
                 <label>
@@ -45,8 +45,8 @@
     </div>
 
     <div class="form-group">
-        <label class="col-md-4 control-label" for="">Authorization Keywords</label>
-        <div class="col-md-4">
+        <label class="col-md-3 control-label" for="">Authorization Keywords</label>
+        <div class="col-md-9">
             <?php foreach ($page_data['auth_infos'] as $key => $item): ?>
             <label class='checkbox-inline'>
                 <input type="checkbox" <?php $item->o('checked'); ?> value="1" name='<?php $item->o('name'); ?>' /><?php echo $key; ?>
@@ -55,7 +55,7 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="col-sm-offset-4 col-sm-4">
+        <div class="col-sm-offset-3 col-sm-4">
             <button type="submit" class="btn btn-outline">Submit</button>
         </div>
     </div>
