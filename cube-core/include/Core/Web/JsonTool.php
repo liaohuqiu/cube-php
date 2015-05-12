@@ -17,7 +17,14 @@ class MCore_Web_JsonTool
     {
         if (count($args) == 1)
         {
-            $this->data = array_merge($this->data, $args[0]);
+            if (is_array($args[0]))
+            {
+                $this->data = array_merge($this->data, $args[0]);
+            }
+            else
+            {
+                $this->data = $args[0];
+            }
         }
         else
         {
