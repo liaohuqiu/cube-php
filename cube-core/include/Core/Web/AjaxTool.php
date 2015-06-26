@@ -140,8 +140,8 @@ class MCore_Web_AjaxTool extends MCore_Web_JsonTool
     {
         $resource = array();
         $resource["onloads"] = $this->onloads;
-        $resource["js"] =  array();
-        $resource["css"] = array();
+        $resource["js"] =  $this->jsList;
+        $resource["css"] = $this->cssList;
 
         $resource = array_filter($resource);
         return $resource;
