@@ -56,11 +56,20 @@ abstract class MApps_AdminPageBase extends MCore_Web_BasePageApp
     {
         if (!$this->moduleMan)
         {
-            return '';
+            return $this->defaultTitle();
         }
         $module = $this->moduleMan->getCurrentModuleInfo();
         $title = $module['current_unit']['current_item']['name'];
-        return $title . ' - Cube for ' . APP_NAME;
+        if (!$title)
+        {
+            return $this->defaultTitle();
+        }
+        return $title . ' - ' . $this->defaultTitle();
+    }
+
+    private function defaultTitle()
+    {
+        return 'Cube for ' . APP_NAME;
     }
 
     public static function createDisplayView()
