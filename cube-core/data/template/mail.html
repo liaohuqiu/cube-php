@@ -1,0 +1,32 @@
+Return-path: {{$mailInfo.returnPath nofilter}}
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+From: =?{{$mailInfo.charset}}?B?{{$mailInfo.fromName}}?= <{{$mailInfo.from nofilter}}>
+To: {{$mailInfo.to nofilter}}
+{{if $mailInfo.cc}}
+Cc: {{$mailInfo.cc nofilter}}
+{{/if}}
+Subject: =?{{$mailInfo.charset}}?B?{{$mailInfo.subject}}?=
+Content-Type: multipart/mixed;
+	boundary="{{$mailInfo.boundary}}"
+
+{{foreach $mailInfo.bodyList as $body}}
+--{{$mailInfo.boundary}}
+Content-type: {{$body.type}}; charset={{$mailInfo.charset}}
+Content-Transfer-Encoding: base64
+
+{{$body.content}}
+
+{{/foreach}}
+{{foreach $mailInfo.attachmentList as $attachment}}
+--{{$mailInfo.boundary}}
+Content-type: application/octet-stream;
+	name="{{$attachment.name}}"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="{{$attachment.filename}}"
+
+{{$attachment.content}}
+
+{{/foreach}}
+--{{$mailInfo.boundary}}--

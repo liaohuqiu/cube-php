@@ -1,8 +1,8 @@
 <?php
 /**
- *   qmail
+ *   qmail wrap
  *
- * @author      huqiu
+ * @author      liaohuqiu@gmail.com
  */
 class MCore_Util_QMail
 {
@@ -71,7 +71,6 @@ class MCore_Util_QMail
 
         $this->_checkPara();
 
-        //邮件信息
         $mailInfo = array();
         $mailInfo['returnPath'] = $this->_returnPath;
         $mailInfo['fromName'] = base64_encode($this->_fromName);
@@ -84,10 +83,10 @@ class MCore_Util_QMail
         $mailInfo['bodyList'] = $this->_getBodyList();
         $mailInfo['attachmentList'] = $this->_getAttachmentList();
 
-        $path = KXM_ROOT_DIR . '/data/template';
+        $path = CUBE_ROOT_DIR . '/data/template';
         $smarty = new MCore_Tool_Smarty($path);
-        $smarty->assignRaw('mailInfo',$mailInfo);
-        $mailData = $smarty->fetch('mail.html');
+        $smarty->setData('mailInfo',$mailInfo);
+        $mailData = $smarty->render('mail.html');
 
         $handle = popen('/var/qmail/bin/qmail-inject', 'w');
         fwrite($handle,$mailData);

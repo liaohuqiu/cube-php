@@ -117,12 +117,16 @@ class MCore_Proxy_CubeProxy
         {
             $qid = ++$this->last_id;
         }
+
+        // pack data
         $data = array($qid, $this->service, $method, $params);
         $str = bin_encode($data);
         $data_len = strlen($str);
-        $header = pack('A2C2V', self::MESSAGE_MAGIC, self::MESSAGE_VER, self::MESSAGE_TYPE_QUERY, $data_len);
-        $msg = unpack('A2magic/Cver/Cmsg_type', $header);
 
+        // pack header
+        $header = pack('A2C2V', self::MESSAGE_MAGIC, self::MESSAGE_VER, self::MESSAGE_TYPE_QUERY, $data_len);
+
+        // send data
         $buf = $header . $str;
         $ret = socket_write($this->socket, $buf);
 

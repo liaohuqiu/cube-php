@@ -19,12 +19,12 @@ class MCore_Min_DBConection
     private function _activate()
     {
         $db = $this->_connection;
-        if (null == $db || !$db || !mysql_ping($db))
+        if (null == $db || !$db || !mysqli_ping($db))
         {
             // to handle MySql Server has gone away.
             if (null != $db)
             {
-                mysql_close($db);
+                mysqli_close($db);
             }
             $this->_connect();
             $this->selectDB();
@@ -41,7 +41,7 @@ class MCore_Min_DBConection
         $cnt = false;
         for ($i = 0; $i < 3; $i++)
         {
-            $cnt = @mysql_connect($host, $user, $pwd, true);
+            $cnt = @mysqli_connect($host, $user, $pwd, true);
             if ($cnt === false)
             {
                 continue;
@@ -84,7 +84,7 @@ class MCore_Min_DBConection
             {
                 throw new MCore_Min_DBException('Connection has not been initialized.');
             }
-            $ret = mysql_select_db($dbName, $this->_connection);
+            $ret = mysqli_select_db($dbName, $this->_connection);
             if (!$ret)
             {
                 throw new MCore_Min_DBException('Database is not existent or do not have privilege to access it: ' . $dbName);
@@ -100,10 +100,10 @@ class MCore_Min_DBConection
         {
             return false;
         }
-        $encoding = mysql_client_encoding($this->_connection);
+        $encoding = mysqli_client_encoding($this->_connection);
         if($encoding != $charset)
         {
-            mysql_set_charset($charset, $this->_connection);
+            mysqli_set_charset($charset, $this->_connection);
         }
     }
 
@@ -115,27 +115,27 @@ class MCore_Min_DBConection
         {
             MCore_Tool_Log::addDebugLog("query", $this->_dbConfInfo['key'] . ' ' . $sql);
         }
-        $sResult = mysql_query($sql, $this->_connection);
+        $sResult = mysqli_query($sql, $this->_connection);
         if(false === $sResult)
         {
-            throw new MCore_Min_DBException(mysql_error($this->_connection));
+            throw new MCore_Min_DBException(mysqli_error($this->_connection));
         }
 
         $data = array();
         $rownum = 0;
         $affectedRowNumber = 0;
 
-        // insert will return true, can not use mysql_fetch_array to fetch array result
+        // insert will return true, can not use mysqli_fetch_array to fetch array result
         if (true !== $sResult)
         {
-            while($row = mysql_fetch_array($sResult, MYSQL_ASSOC))
+            while($row = mysqli_fetch_array($sResult, MYSQLI_ASSOC))
             {
                 $data[] = $row;
                 $rownum ++;
             }
         }
-        $mysqlInsertId = mysql_insert_id();
-        $affectedRowNumber = mysql_affected_rows($this->_connection);
+        $mysqlInsertId = mysqli_insert_id();
+        $affectedRowNumber = mysqli_affected_rows($this->_connection);
         $result = new MCore_Dao_Result($data, $rownum, $mysqlInsertId, $affectedRowNumber);
 
         $actions = array('SELECT', 'SHOW', 'EXPLAIN', 'DESCRIBE');
@@ -144,11 +144,11 @@ class MCore_Min_DBConection
         {
             if (strpos($sqlPre, $act) === 0)
             {
-                mysql_free_result($sResult);
+                mysqli_free_result($sResult);
                 break;
             }
         }
-        $result['error'] = mysql_error();
+        $result['error'] = mysqli_error();
         return $result;
     }
 

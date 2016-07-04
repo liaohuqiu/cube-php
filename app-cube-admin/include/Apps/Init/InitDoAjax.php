@@ -98,7 +98,7 @@ class MApps_Init_InitDoAjax extends MApps_AdminAjaxBase
         MEngine_SysConfig::updateSysConfig($this->buildSysConfig());
 
         MAdmin_UserRaw::create($this->input['user_account'], $userPwd, array(), 1);
-        MAdmin_UserAuth::invalidateAdminList();
+        MAdmin_UserAuth::invalidateAppAdminList();
 
         $this->getConfigInfo();
         $this->popDialog('succ', 'Deployment has been done. Copy the configuration to the destination file.');
