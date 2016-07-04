@@ -38,10 +38,11 @@ class MCore_Min_DBConection
         $host = $this->_dbConfInfo->getHostAndPortStr();
         $user = $this->_dbConfInfo['u'];
         $pwd = $this->_dbConfInfo['p'];
+        $db = $this->_dbConfInfo['db'];
         $cnt = false;
         for ($i = 0; $i < 3; $i++)
         {
-            $cnt = @mysqli_connect($host, $user, $pwd, true);
+            $cnt = @mysqli_connect($host, $user, $pwd, $db);
             if ($cnt === false)
             {
                 continue;
@@ -59,6 +60,7 @@ class MCore_Min_DBConection
         {
             throw new MCore_Min_DBException('Fail to establish connection to Mysql');
         }
+        $this->_lastDB = $db;
         $this->_connection = $cnt;
     }
 
@@ -84,7 +86,7 @@ class MCore_Min_DBConection
             {
                 throw new MCore_Min_DBException('Connection has not been initialized.');
             }
-            $ret = mysqli_select_db($dbName, $this->_connection);
+            $ret = mysqli_select_db($this->_connection, $dbName);
             if (!$ret)
             {
                 throw new MCore_Min_DBException('Database is not existent or do not have privilege to access it: ' . $dbName);
@@ -100,10 +102,10 @@ class MCore_Min_DBConection
         {
             return false;
         }
-        $encoding = mysqli_client_encoding($this->_connection);
+        $encoding = mysqli_character_set_name($this->_connection);
         if($encoding != $charset)
         {
-            mysqli_set_charset($charset, $this->_connection);
+            mysqli_set_charset($this->_connection, $charset);
         }
     }
 
@@ -115,7 +117,7 @@ class MCore_Min_DBConection
         {
             MCore_Tool_Log::addDebugLog("query", $this->_dbConfInfo['key'] . ' ' . $sql);
         }
-        $sResult = mysqli_query($sql, $this->_connection);
+        $sResult = mysqli_query($this->_connection, $sql);
         if(false === $sResult)
         {
             throw new MCore_Min_DBException(mysqli_error($this->_connection));
@@ -134,7 +136,8 @@ class MCore_Min_DBConection
                 $rownum ++;
             }
         }
-        $mysqlInsertId = mysqli_insert_id();
+
+        $mysqlInsertId = mysqli_insert_id($this->_connection);
         $affectedRowNumber = mysqli_affected_rows($this->_connection);
         $result = new MCore_Dao_Result($data, $rownum, $mysqlInsertId, $affectedRowNumber);
 
@@ -148,7 +151,7 @@ class MCore_Min_DBConection
                 break;
             }
         }
-        $result['error'] = mysqli_error();
+        $result['error'] = mysqli_error($this->_connection);
         return $result;
     }
 
