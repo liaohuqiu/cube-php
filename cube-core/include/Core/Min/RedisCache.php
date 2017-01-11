@@ -13,7 +13,8 @@ class MCore_Min_RedisCache implements MCore_Proxy_IMCache
         static $instance;
         if (!$instance)
         {
-            $instance = new self();
+            $redis_info = MCore_Tool_Conf::getDataConfigByEnv('mix', 'redis');
+            $instance = new self($redis_info['host'], $redis_info['port']);
         }
         return $instance;
     }
